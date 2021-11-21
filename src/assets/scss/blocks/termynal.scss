@@ -1,0 +1,12 @@
+.myTermynal {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    justify-items: center;
+    padding-bottom: 120px;
+}
+
+#termynal {
+    width: fit-content;
+    max-width: 800px;
+}

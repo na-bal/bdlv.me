@@ -1,0 +1,360 @@
+.new-grid {
+    display: grid;
+    grid-template-areas: 
+                         "text text map map"
+                         "btn btn map map"
+                         "est est info info";
+
+    grid-template-columns: repeat(4, 1fr);
+    align-content: start;
+}
+
+.go-text {
+    grid-area: text;
+    justify-self: center;
+    align-self: start;
+
+    h2 {
+        font-size: 6.5rem;
+        line-height: 6.5rem;
+        font-weight: 400;
+    }
+
+}
+
+.go-map {
+    grid-area: map;
+    align-self: start;
+}
+
+.map {
+    width: 600px;
+    height: 500px;
+
+}
+
+.go-btns {
+    grid-area: btn;
+    justify-self: center;
+    align-self: center;
+}
+
+.go-btn {
+    grid-column: 1 / -1;
+    width: fit-content;
+    justify-self: center;
+
+    padding: 15px 20px;
+
+    background: rgb(233, 233, 233);
+    border: 2px solid black;
+    
+    position: relative;
+    top: 0px;
+    right: 0px;
+    transition: .2s ease;
+
+    a {
+        text-decoration: none;
+        color: black;
+        font-size: 1.6rem;
+        font-weight: 500;
+    }
+
+    &:hover {
+        background: #FEB3CE;
+        top: -3px;
+        right: -3px;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.65);
+    }
+
+    &:active {
+        background: rgb(233, 233, 233);
+        box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.5);
+        top: 2px;
+        right: 3px;
+    }
+}
+
+
+.go-est {
+    grid-area: est;
+    justify-self: center;
+
+    p {
+        font-size: 1.8rem;
+        font-weight: 300;
+    }
+}
+
+.go-info {
+    grid-area: info;
+    max-width: 600px;
+    align-self: start;
+
+    p {
+        font-size: 1.4rem;
+        font-weight: 300;
+    }
+}
+
+
+
+
+.go-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+}
+
+.go-title {
+    justify-self: center;
+    align-self: start;
+
+    h2 {
+        font-size: 6.5rem;
+        line-height: 6.5rem;
+        font-weight: 400;
+    }
+}
+
+.map {
+    // border: 2px solid;
+    // border-radius: 10px;
+    // padding: 3px;
+
+    // background-image: radial-gradient(circle at 100% 100%, transparent -2px, #FFD3A3 -2px, #FFD3A3 3px, transparent 3px), linear-gradient(to right, #FFD3A3, #FFB8B8), radial-gradient(circle at 0% 100%, transparent -2px, #FFB8B8 -2px, #FFB8B8 3px, transparent 3px), linear-gradient(to bottom, #FFB8B8, #00bfa5), radial-gradient(circle at 0% 0%, transparent -2px, #00bfa5 -2px, #00bfa5 3px, transparent 3px), linear-gradient(to left, #00bfa5, #FFED8E), radial-gradient(circle at 100% 0%, transparent -2px, #FFED8E -2px, #FFED8E 3px, transparent 3px), linear-gradient(to top, #FFED9E, #FFD3A3); background-size:  3px 3px, calc(100% - 6px) 5px, 3px 3px, 5px calc(100% - 6px); 
+    // background-position: top left,top center,top right,center right, bottom right,bottom center,bottom left,center left;
+    // background-repeat: no-repeat;
+}
+
+.go-colorLine {
+    position: absolute;
+    margin-left: -55rem;
+    margin-top: -0.45rem;
+    z-index: -1;
+    
+    -webkit-position: absolute;
+    -webkit-margin-left: -15rem;
+}
+
+// .-webkit-go-colorLine {    
+//     -webkit-position: absolute;
+//     -webkit-margin-left: -15rem;
+// }
+
+.go-colorLine-2 {
+    display: none;
+}
+
+.go-to-penis-header {
+    font-size: 64px;
+    line-height: 65px;
+}
+
+#traingle {
+    margin-left: 5rem;
+}
+
+
+.ymaps {
+
+    }
+
+.ymaps-2-1-79-map {
+    border-radius: 10px;
+    z-index: 1;
+    overflow: hidden;
+}
+.ymaps-2-1-79-events-pane {
+    border-radius: 10px;
+    z-index: 1
+}
+.ymaps-2-1-79-i-ua_js_yes {
+    border-radius: 10px;
+    z-index: 1
+}
+.ymaps-2-1-79-map-bg {
+    border-radius: 10px;
+    z-index: 1
+}
+.ymaps-2-1-79-islets_map-lang-ru {
+    border-radius: 10px;
+    z-index: 1
+}
+
+
+// media
+
+
+@media screen and (max-width: 1300px) {
+    .map {
+        width: 470px;
+        height: 400px;
+    }
+
+    .go-info {
+        max-width: 470px;
+    }
+
+}
+@media screen and (max-width: 1000px) {
+    .go-text {
+        h2 {
+            font-size: 4.5rem;
+            line-height: 4.5rem;
+            font-weight: 400;
+        }
+    }
+
+    .go-colorLine {
+        position: absolute;
+        margin-left: -39.3rem;
+        margin-top: -1.55rem;
+        z-index: -1;
+    }
+    
+    .map {
+        width: 400px;
+        height: 330px;
+    }
+
+    .go-info {
+        max-width: 400px;
+    }
+
+}
+
+@media screen and (max-width: 750px) {
+
+    main {
+        overflow-x: hidden;
+    }
+
+    .new-grid {
+        grid-template-areas: "text text"
+                             "map map"
+                             "info info"
+                             "btn btn"
+                             "est est";
+
+        grid-template-columns: repeat(2, 1fr);
+    
+        padding-bottom: 10rem;
+    }
+
+    .go-text {
+        h2 {
+            font-size: 4.5rem;
+            line-height: 4.5rem;
+            margin-left: 7rem;
+        }
+    
+    }
+
+    .go-colorLine {
+        position: absolute;
+        margin-left: -39.3rem;
+        margin-top: -1.55rem;
+        z-index: -1;
+    }
+
+    .go-map {
+        grid-area: map;
+        align-self: center;
+        justify-self: center;
+
+        margin-left: -7rem;
+    }
+    
+    .map {
+        width: 400px;
+        height: 330px;
+    }
+
+    .go-info {
+        justify-self: center;
+        max-width: 400px;
+        margin-left: -7rem;
+        margin-bottom: 2rem;
+    }
+
+    .go-colorLine {
+        overflow: hidden;
+        scroll-behavior: none;
+    }
+
+    .go-colorLine-2 {
+        display: block;
+        position: absolute;
+
+        margin-left: -65rem;
+        margin-top: 13.45rem;
+        z-index: -1;
+    }
+
+    
+}
+
+@media screen and (max-width: 450px) {
+    .go-text {
+        h2 {
+            font-size: 4.5rem;
+            line-height: 4.5rem;
+            margin-left: 0rem;
+        }
+    
+    }
+
+    .go-map {
+        margin-left: 2rem;
+    }
+    
+    .map {
+        width: 300px;
+        height: 330px;
+    }
+
+    .go-info {
+        justify-self: center;
+        max-width: 300px;
+        margin-left: 2.5rem;
+
+        p {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+    }
+
+    .go-btns {
+        display: grid;
+    }
+
+    .go-btn {
+        width: 300px;
+        margin-bottom: 1rem;
+    }
+}
+
+
+// Safari
+
+@media not all and (min-resolution:.001dpcm) { 
+    @supports (-webkit-appearance:none) and (display:flow-root)  {
+        body { 
+            // color: red;
+        } 
+
+        .go-colorLine {
+            margin-left: -4.4rem;
+            margin-top: -7rem;
+        }
+
+        @media screen and (max-width: 1000px) {
+            .go-colorLine {
+                margin-left: -4.6rem;
+                margin-top: -6rem;
+            }
+        }
+    }
+}
