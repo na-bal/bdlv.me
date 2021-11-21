@@ -38,3 +38,17 @@
     }
 }
 ```
+
+
+## Git 
+
+Conventional Commits: 
+- "[RSSchool convention (rus)](https://docs.rs.school/#/git-convention?id=Требования-к-именам-коммитов)"
+- "[Global conventional](https://www.conventionalcommits.org/en/v1.0.0/)"
+
+List of commands:
+``` terminal 
+git add .
+git commit -m " " 
+git push origin main 
+```
