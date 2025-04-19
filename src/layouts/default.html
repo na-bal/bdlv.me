@@ -11,6 +11,10 @@
 
     {{> footer }}
 
+
     <script src="assets/js/app.js"></script>
+        {{#each pageScripts}}
+    <script src="{{this}}"></script>
+        {{/each}}
 </body>
 </html>

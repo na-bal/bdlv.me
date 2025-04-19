@@ -1,21 +1,21 @@
+@use "vars";
+@use "blocks/header";
+@use "blocks/footer";
+@use "blocks/article";
+@use "blocks/titles";
+@use "blocks/hello-world";
+@use "blocks/latest-updates";
+@use "blocks/projects";
+@use "blocks/my-sex-tape";
+@use "blocks/go-to-penis";
+@use "blocks/wallpaper-room";
+@use "vendors/termynal";
+
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap');
 
-@import "vars";
-@import "./blocks/header";
-@import "./blocks/footer";
-@import "./blocks/article.scss";
-@import "./blocks/titles.scss";
-@import "./blocks/hello-world.scss";
-@import "./blocks/termynal.scss";
-@import "./blocks/projects.scss";
-@import "./blocks/my-sex-tape.scss";
-@import "./blocks/go-to-penis.scss";
-@import "./blocks/wallpaper-room.scss";
 
-
-
-@import "./vendors/termynal.scss";
+$link-color: #0645AD;
 
 
 html {

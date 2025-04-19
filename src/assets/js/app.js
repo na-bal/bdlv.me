@@ -1,6 +1,3 @@
-// import {Termynal} from './latest-updates/termynal';
-// let termynal = new Termynal;
-
 ymaps.ready(init);
 
 const myPos = {

@@ -1,9 +1,11 @@
 import gulp from 'gulp';
+import * as glob from 'glob';
+import * as nodePath from 'path';
 import plumber from 'gulp-plumber';
 import notify from 'gulp-notify';
+import * as dartSass from 'sass';
 import gulpSass from 'gulp-sass';
-import * as sassCompiler from 'sass';
-const sass = gulpSass(sassCompiler);
+const sass = gulpSass(dartSass);
 import postcss from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
 import prettier from 'gulp-prettier';
@@ -17,6 +19,13 @@ import image from 'gulp-image';
 import del from 'del';
 import browserSyncLib from 'browser-sync';
 
+// Ensure required dependencies are installed:
+// npm install --save-dev babel-loader @babel/core @babel/preset-env
+// npm install --save @gltf-transform/core @gltf-transform/extensions @gltf-transform/functions draco3dgltf
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = nodePath.dirname(__filename);
+
 // Destructure gulp methods after default import
 const { src, dest, series, parallel, watch } = gulp;
 const browserSync = browserSyncLib.create();
@@ -24,7 +33,7 @@ const browserSync = browserSyncLib.create();
 // Paths
 const srcPath = 'src/';
 const distPath = 'dist/';
-const path = {
+const paths = {
   build: {
     html:   distPath,
     js:     `${distPath}assets/js/`,
@@ -34,7 +43,7 @@ const path = {
   },
   src: {
     html:   `${srcPath}*.html`,
-    js:     `${srcPath}assets/js/*.js`,
+    js:     `${srcPath}assets/js/**/*.js`,
     css:    `${srcPath}assets/scss/**/*.scss`,
     images: `${srcPath}assets/images/**/*.{jpg,png,svg,gif,ico,webp,webmanifest,xml,json}`,
     fonts:  `${srcPath}assets/fonts/**/*.{eot,woff,woff2,ttf,svg}`
@@ -50,17 +59,18 @@ const path = {
 };
 
 // Serve
-function serve() {
+function serve(done) {
   browserSync.init({
-    server: { baseDir: path.build.html },
+    server: { baseDir: paths.build.html },
     browser: 'Firefox Developer Edition'
   });
+  done();
 }
 
 // HTML
 function html() {
   panini.refresh();
-  return src(path.src.html, { base: srcPath })
+  return src(paths.src.html, { base: srcPath })
     .pipe(plumber())
     .pipe(panini({
       root:    srcPath,
@@ -69,13 +79,13 @@ function html() {
       helpers:`${srcPath}helpers/`,
       data:    `${srcPath}data/`
     }))
-    .pipe(dest(path.build.html))
+    .pipe(dest(paths.build.html))
     .pipe(browserSync.reload({ stream: true }));
 }
 
 // CSS
 function css() {
-  return src(path.src.css, { base: `${srcPath}assets/scss/` })
+  return src(`${srcPath}assets/scss/style.scss`, { base: `${srcPath}assets/scss/` })
     .pipe(plumber({ errorHandler(err) {
       notify.onError({ title: 'SCSS Error', message: '<%= error.message %>' })(err);
       this.emit('end');
@@ -83,85 +93,162 @@ function css() {
     .pipe(sass({ includePaths: ['./node_modules/'] }))
     .pipe(postcss([ autoprefixer({ cascade: true }) ]))
     .pipe(prettier({ parser: 'css', tabWidth: 2 }))
-    .pipe(dest(path.build.css))
+    .pipe(dest(paths.build.css))
     .pipe(cleanCSS({ level: { 1: { specialComments: 0 } } }))
     .pipe(stripComments())
     .pipe(rename({ suffix: '.min', extname: '.css' }))
-    .pipe(dest(path.build.css))
+    .pipe(dest(paths.build.css))
     .pipe(browserSync.reload({ stream: true }));
 }
 
 // CSS Watch
 function cssWatch() {
-  return src(path.src.css, { base: `${srcPath}assets/scss/` })
+  return src(`${srcPath}assets/scss/style.scss`, { base: `${srcPath}assets/scss/` })
     .pipe(plumber({ errorHandler(err) {
       notify.onError({ title: 'SCSS Error', message: '<%= error.message %>' })(err);
       this.emit('end');
     }}))
     .pipe(sass({ includePaths: ['./node_modules/'] }))
     .pipe(rename({ suffix: '.min', extname: '.css' }))
-    .pipe(dest(path.build.css))
+    .pipe(dest(paths.build.css))
     .pipe(browserSync.reload({ stream: true }));
+}
+
+// getJsEntries
+function getJsEntries() {
+  const files = glob.sync(nodePath.join(srcPath, 'assets/js/**/*.js'))
+    .filter(file => !file.endsWith('.min.js'));
+  return files.reduce((entries, file) => {
+    // получаем «путь/до/файла» без расширения
+    const name = nodePath
+      .relative(nodePath.join(srcPath, 'assets/js'), file)
+      .replace(/\.js$/, '');
+    entries[name] = nodePath.resolve(file);
+    return entries;
+  }, {});
 }
 
 // JS
 function js() {
-  return src(path.src.js, { base: `${srcPath}assets/js/` })
-    .pipe(plumber({ errorHandler(err) {
-      notify.onError({ title: 'JS Error', message: '<%= error.message %>' })(err);
-      this.emit('end');
-    }}))
-    .pipe(webpackStream({ mode: 'production', output: { filename: 'app.js' } }, webpack))
-    .pipe(dest(path.build.js))
+  const entries = getJsEntries();
+  return webpackStream({
+    mode: 'production',
+    entry: entries,
+    module: {
+      rules: [
+        {
+          test: /\.m?js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: { presets: ['@babel/preset-env'] }
+          }
+        }
+      ]
+    },
+    resolve: {
+      extensions: ['.js'],
+      modules: [nodePath.resolve(__dirname, 'node_modules'), 'node_modules']
+    },
+    externals: {
+      '@gltf-transform/core': 'commonjs @gltf-transform/core',
+      '@gltf-transform/extensions': 'commonjs @gltf-transform/extensions',
+      '@gltf-transform/functions': 'commonjs @gltf-transform/functions',
+      'draco3dgltf': 'commonjs draco3dgltf'
+    },
+    output: { filename: '[name].min.js' },
+    performance: {
+      hints: "warning"
+    }
+  }, webpack)
+    .pipe(dest(paths.build.js))
     .pipe(browserSync.reload({ stream: true }));
 }
 
 // JS Watch
 function jsWatch() {
-  return src(path.src.js, { base: `${srcPath}assets/js/` })
-    .pipe(plumber({ errorHandler(err) {
-      notify.onError({ title: 'JS Error', message: '<%= error.message %>' })(err);
-      this.emit('end');
-    }}))
-    .pipe(webpackStream({ mode: 'development', output: { filename: 'app.js' } }, webpack))
-    .pipe(dest(path.build.js))
+  const entries = getJsEntries();
+  return webpackStream({
+    mode: 'development',
+    entry: entries,
+    module: {
+      rules: [
+        {
+          test: /\.m?js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: { presets: ['@babel/preset-env'] }
+          }
+        }
+      ]
+    },
+    resolve: {
+      extensions: ['.js'],
+      modules: [nodePath.resolve(__dirname, 'node_modules'), 'node_modules']
+    },
+    externals: {
+      '@gltf-transform/core': 'commonjs @gltf-transform/core',
+      '@gltf-transform/extensions': 'commonjs @gltf-transform/extensions',
+      '@gltf-transform/functions': 'commonjs @gltf-transform/functions',
+      'draco3dgltf': 'commonjs draco3dgltf'
+    },
+    output: { filename: '[name].min.js' },
+    performance: {
+      hints: false
+    },
+    devtool: 'inline-source-map'
+  }, webpack)
+    .pipe(dest(paths.build.js))
+    .pipe(browserSync.reload({ stream: true }));
+}
+
+// Copy vendor minified JS without bundling
+function copyJsVendor() {
+  return src(`${srcPath}assets/js/**/*.min.js`, { base: `${srcPath}assets/js/` })
+    .pipe(dest(paths.build.js))
     .pipe(browserSync.reload({ stream: true }));
 }
 
 // Images
 function images() {
-  return src(path.src.images)
+  return src(paths.src.images)
     .pipe(image({ concurrent: 5 }))
-    .pipe(dest(path.build.images))
+    .pipe(dest(paths.build.images))
     .pipe(browserSync.reload({ stream: true }));
 }
 
 // Fonts
 function fonts() {
-  return src(path.src.fonts)
-    .pipe(dest(path.build.fonts))
+  return src(paths.src.fonts)
+    .pipe(dest(paths.build.fonts))
     .pipe(browserSync.reload({ stream: true }));
 }
 
 // Clean
 function clean() {
-  return del(path.clean);
+  return del(paths.clean);
 }
 
 // Watch Files
-function watchFiles() {
-  watch(path.watch.html, html);
-  watch(path.watch.css, cssWatch);
-  watch(path.watch.js, jsWatch);
-  watch(path.watch.images, images);
-  watch(path.watch.fonts, fonts);
+function watchFiles(done) {
+  watch(paths.watch.html, html);
+  watch(paths.watch.css, cssWatch);
+  watch(paths.watch.js, jsWatch);
+  watch(`${srcPath}assets/js/**/*.min.js`, copyJsVendor);
+  watch(paths.watch.images, images);
+  watch(paths.watch.fonts, fonts);
+  done();
 }
 
 // Build & Dev
-const build = series(clean, parallel(html, css, js, images, fonts));
-const dev = parallel(build, watchFiles, serve);
+const build = series(
+  clean,
+  parallel(html, css, js, copyJsVendor, images, fonts)
+);
+const dev = series(build, parallel(serve, watchFiles));
 
 // Exports
-export { html, css, js, images, fonts, clean, build };
+export { html, css, js, copyJsVendor, images, fonts, clean, build };
 export { dev as watch };
 export default dev;

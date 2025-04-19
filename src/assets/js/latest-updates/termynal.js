@@ -197,4 +197,7 @@ if (document.currentScript.hasAttribute('data-termynal-container')) {
 }
 
 
-export {Termynal};
+// Автоматическая инициализация, если на странице есть #termynal
+if (document.querySelector('#termynal')) {
+    new Termynal('#termynal');
+  }
