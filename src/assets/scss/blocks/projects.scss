@@ -11,9 +11,10 @@
     box-sizing: border-box;
     background: #FEB3CE;
     border-radius: 30px;
-    height: 383px;
+    // height: 383px;
     width: 151px;
 
+    padding-bottom: 4rem;
     display: grid;
     grid-gap: 5px;
     grid-template-rows: repeat(auto-fill, 56px);
