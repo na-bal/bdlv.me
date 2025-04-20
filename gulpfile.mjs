@@ -218,6 +218,12 @@ function images() {
     .pipe(browserSync.reload({ stream: true }));
 }
 
+// Favicon
+function favicon() {
+  return src('src/assets/images/favicon.*')
+    .pipe(dest('dist/'));
+}
+
 // Fonts
 function fonts() {
   return src(paths.src.fonts)
@@ -244,11 +250,11 @@ function watchFiles(done) {
 // Build & Dev
 const build = series(
   clean,
-  parallel(html, css, js, copyJsVendor, images, fonts)
+  parallel(html, css, js, copyJsVendor, images, favicon, fonts)
 );
 const dev = series(build, parallel(serve, watchFiles));
 
 // Exports
-export { html, css, js, copyJsVendor, images, fonts, clean, build };
+export { html, css, js, copyJsVendor, images, favicon, fonts, clean, build };
 export { dev as watch };
 export default dev;

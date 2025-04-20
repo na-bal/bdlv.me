@@ -1,87 +1,108 @@
 ymaps.ready(init);
-
-const myPos = {
-    latitude: null,
-    longitude: null
-},
-    newPos = {
-    latitude: null,
-    longitude: null
-}
-function init(){
-
-    var geolocation = ymaps.geolocation,
-        myMap = new ymaps.Map('map', {
-            center: [55.753215, 37.622504],
-            zoom: 11,
-            controls:[]
-        }, {
-            searchControlProvider: 'yandex#search'
-        });
-
-geolocation.get({
-    provider: 'yandex',
-    // mapStateAutoApply: true
-}).then(function (result) {
-    result.geoObjects.options.set('preset', 'islands#redDotIcon');
-    result.geoObjects.get(0).properties.set({
-        balloonContentBody: 'Мое местоположение'
-    });
-    myMap.geoObjects.add(result.geoObjects);
-
-    myPos.latitude = result.geoObjects.position[0];
-    myPos.longitude = result.geoObjects.position[1];
-    const userAddress = result.geoObjects.get(0).properties.get('text');
-    // console.log(result);
-    // console.log(userAddress);
-
-    newPos.latitude = ((Math.random() < 0.5) ? -1 : 1) * Math.random() * 0.1 + myPos.latitude;
-    newPos.longitude = ((Math.random() < 0.5) ? -1 : 1) * Math.random() * 0.1 + myPos.longitude;
-
-    let placemark = new ymaps.Placemark([newPos.latitude, newPos.longitude], {
-        balloonContentBody: [
-            '<address>',
-            '<strong>"Вот сюда" - это вот тут!</strong>',
-            '<br/>',
-            `Координаты: ${newPos.latitude.toFixed(3)}, ${newPos.longitude.toFixed(3)}`,
-            '<br/>',
-            `Адрес: ${userAddress}`,
-            // 'Подробнее: <a href="https://company.yandex.ru/">https://company.yandex.ru</a>',
-            // '<br/>',
-            // '<img src="http://mis.mixmarket.biz/r/200/65735/149827303.jpg"/>',
-            '</address>'
-        ].join(''),
-        hintContent: '<strong> Cюда! </strong>'
-    }, {
-        preset: "islands#blueDotIcon",
-        iconColor: '#000000',
-    });
-
-    myMap.geoObjects.add(placemark);
-    myMap.setCenter([newPos.latitude, newPos.longitude]);
-    myMap.setZoom(14, {duration: 1000});
+window.addEventListener('error', function(event) {
+    console.error('Глобальная ошибка скрипта:', event.message, 'в', event.filename, 'на строке', event.lineno);
 });
 
-// geolocation.get({
-//     provider: 'browser',
-//     mapStateAutoApply: true
-// }).then(function (result) {
-//     // Синим цветом пометим положение, полученное через браузер.
-//     // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
-//     result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
-//     myMap.geoObjects.add(result.geoObjects);
-// });
-
+let randomCoords = {
+    latitude: null,
+    longitude: null
 }
+
+// Функция генерации случайной точки в радиусе radius метров от центра
+function getRandomPoint(center, radius) {
+    var r = radius / 111320; // приближённо переводим метры в градусы
+    var y0 = center[0];
+    var x0 = center[1];
+    var u = Math.random();
+    var v = Math.random();
+    var w = r * Math.sqrt(u);
+    var t = 2 * Math.PI * v;
+    var x = w * Math.cos(t);
+    var y = w * Math.sin(t);
+    var newLat = y + y0;
+    var newLon = x / Math.cos(y0 * Math.PI / 180) + x0;
+    return [newLat, newLon];
+}
+
+// Общая функция инициализации карты, меток и маршрута
+function renderMap(centerCoords, iconPreset) {
+    var myMap = new ymaps.Map('map', {
+        center: centerCoords,
+        zoom: 12,
+        controls: []
+    }, {
+        searchControlProvider: 'yandex#search'
+    });
+
+    var ipPlacemark = new ymaps.Placemark(centerCoords, {
+        iconContent: iconPreset.text
+    }, {
+        preset: iconPreset.preset
+    });
+    myMap.geoObjects.add(ipPlacemark);
+
+    // Генерируем случайные координаты и сохраняем их в глобальный объект
+    var generatedCoords = getRandomPoint(centerCoords, 10000);
+    randomCoords.latitude = generatedCoords[0];
+    randomCoords.longitude = generatedCoords[1];
+
+    var randomPlacemark = new ymaps.Placemark(generatedCoords, {
+        iconContent: 'Иди сюда'
+    }, {
+        preset: iconPreset.randomPreset
+    });
+    myMap.geoObjects.add(randomPlacemark);
+
+    ymaps.route([centerCoords, generatedCoords]).then(function(route) {
+        route.options.set('wayPointVisible', false);
+        route.getPaths().options.set({
+            strokeColor: '#6EF9C2',
+            opacity: 0.7,
+            strokeWidth: 4
+        });
+        myMap.geoObjects.add(route);
+    });
+}
+
+// Новый упрощённый init
+function init() {
+    var geolocation = ymaps.geolocation;
+    geolocation.get({ provider: ['yandex', 'browser'], mapStateAutoApply: true })
+        .then(function(result) {
+            var coords = result.geoObjects.get(0).geometry.getCoordinates();
+            renderMap(coords, {
+                text: 'Ты примерно здесь',
+                preset: 'islands#redStretchyIcon',
+                randomPreset: 'islands#darkGreenStretchyIcon'
+            });
+        })
+        .catch(function(error) {
+            console.warn('Yandex-сервис не доступен, пробуем geolocation браузера...');
+            return geolocation.get({ provider: 'browser', mapStateAutoApply: true });
+        })
+        .then(function(result) {
+            if (result) {
+                var coords = result.geoObjects.get(0).geometry.getCoordinates();
+                renderMap(coords, {
+                    text: 'Ты примерно здесь',
+                    preset: 'islands#redStretchyIcon',
+                    randomPreset: 'islands#darkOrangeStretchyIcon'
+                });
+            }
+        })
+        .catch(function(error) {
+            console.error('Ошибка при получении геолокации или загрузке скрипта:', error);
+        });
+}
+
 
 const coordinates = document.querySelector('#getCoordinates');
 const sharing = document.querySelector('#share');
 
 coordinates.addEventListener('click', () => {
-alert(`Координаты: ${newPos.latitude.toFixed(3)}, ${newPos.longitude.toFixed(3)}`);
+alert(`Координаты: ${randomCoords.latitude.toFixed(3)}, ${randomCoords.longitude.toFixed(3)}`);
 });
 
 sharing.addEventListener('click', () => {
 alert(`Да ну просто отправь ссылку друзьям!`);
 });
-

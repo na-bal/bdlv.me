@@ -1,4 +1,5 @@
 node_modules/
-tips.md
 dist/
 .DS_Store
+tips.md
+todo.md
