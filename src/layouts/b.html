@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" style="margin: 0; padding: 0; height: 100%;">
+<head>
+    {{> head }}
+</head>
+<body style="margin: 0; padding: 0; height: 100%;">
+    {{> body }}
+
+    <script src="assets/js/app.js"></script>
+        {{#each pageScripts}}
+    <script src="{{this}}"></script>
+        {{/each}}
+</body>
+
+<!-- Понравилось как сделал Ильяхов, сделал себе похожую штуку. -->
+<!-- Спасибо Максиму Ильяхову glvrd.ru 🥐 -->
+</html>

@@ -1,5 +1,23 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
+
+# macOS
 .DS_Store
+**/.DS_Store
+
+# Personal notes
 tips.md
 todo.md
+
+# AI assistant files
+claude.md
+CLAUDE.md
+.claude/
+ai/
+
+# Backup/temp folders
+**/blocks 2/
+**/*\ 2/
