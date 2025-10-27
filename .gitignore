@@ -8,7 +8,8 @@ dist/
 .DS_Store
 **/.DS_Store
 
-# Personal notes
+# Personal notes and documentation
+dev-notes/
 tips.md
 todo.md
 
