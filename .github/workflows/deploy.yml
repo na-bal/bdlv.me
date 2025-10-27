@@ -1,0 +1,54 @@
+name: Deploy to bdlv.me
+
+# Когда запускать workflow
+on:
+  push:
+    branches:
+      - main  # Только при push в main ветку
+
+# Задачи которые нужно выполнить
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest  # На каком сервере GitHub запускать
+
+    steps:
+      # Шаг 1: Скачать код из репозитория
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Шаг 2: Установить Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # Версия Node.js
+          cache: 'npm'  # Кэшировать node_modules для ускорения
+
+      # Шаг 3: Установить зависимости
+      - name: Install dependencies
+        run: npm install
+
+      # Шаг 4: Собрать проект (gulp build)
+      - name: Build project
+        run: npx gulp build
+
+      # Шаг 5: Подготовить SSH ключ
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      # Шаг 6: Залить файлы на хостинг через rsync
+      - name: Deploy to server
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}" \
+            dist/ \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/domains/bdlv.me/public_html/
+
+      # Шаг 7: Удалить SSH ключ (безопасность)
+      - name: Cleanup
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
