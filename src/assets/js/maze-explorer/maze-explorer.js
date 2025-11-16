@@ -89,48 +89,52 @@ class MazeExplorer {
             this.keys[e.key] = false;
         });
 
-        // Mobile touch controls
+        // Mobile touch controls - find buttons after DOM is ready
         const dpadButtons = document.querySelectorAll('.dpad-btn');
 
-        dpadButtons.forEach(button => {
-            const key = button.getAttribute('data-key');
+        if (dpadButtons.length > 0) {
+            dpadButtons.forEach(button => {
+                const key = button.getAttribute('data-key');
 
-            // Touch events
-            button.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.keys[key] = true;
+                // Touch events with passive: false for iOS
+                button.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.keys[key] = true;
+                }, { passive: false });
+
+                button.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.keys[key] = false;
+                }, { passive: false });
+
+                button.addEventListener('touchcancel', (e) => {
+                    e.preventDefault();
+                    this.keys[key] = false;
+                }, { passive: false });
+
+                // Mouse events for testing on desktop
+                button.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    this.keys[key] = true;
+                });
+
+                button.addEventListener('mouseup', (e) => {
+                    e.preventDefault();
+                    this.keys[key] = false;
+                });
+
+                button.addEventListener('mouseleave', (e) => {
+                    this.keys[key] = false;
+                });
             });
+        }
 
-            button.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                this.keys[key] = false;
-            });
-
-            button.addEventListener('touchcancel', (e) => {
-                e.preventDefault();
-                this.keys[key] = false;
-            });
-
-            // Mouse events for testing on desktop
-            button.addEventListener('mousedown', (e) => {
-                e.preventDefault();
-                this.keys[key] = true;
-            });
-
-            button.addEventListener('mouseup', (e) => {
-                e.preventDefault();
-                this.keys[key] = false;
-            });
-
-            button.addEventListener('mouseleave', (e) => {
-                this.keys[key] = false;
-            });
-        });
-
-        // Prevent default touch behavior on canvas
-        this.canvas.addEventListener('touchstart', (e) => e.preventDefault());
-        this.canvas.addEventListener('touchmove', (e) => e.preventDefault());
-        this.canvas.addEventListener('touchend', (e) => e.preventDefault());
+        // Prevent default touch behavior on canvas with passive: false for iOS
+        this.canvas.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+        this.canvas.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+        this.canvas.addEventListener('touchend', (e) => e.preventDefault(), { passive: false });
     }
 
     handleResize() {
