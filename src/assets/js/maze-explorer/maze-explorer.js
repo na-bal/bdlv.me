@@ -76,6 +76,7 @@ class MazeExplorer {
     }
 
     setupControls() {
+        // Keyboard controls
         window.addEventListener('keydown', (e) => {
             this.keys[e.key] = true;
             // Prevent arrow keys from scrolling
@@ -87,6 +88,49 @@ class MazeExplorer {
         window.addEventListener('keyup', (e) => {
             this.keys[e.key] = false;
         });
+
+        // Mobile touch controls
+        const dpadButtons = document.querySelectorAll('.dpad-btn');
+
+        dpadButtons.forEach(button => {
+            const key = button.getAttribute('data-key');
+
+            // Touch events
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.keys[key] = true;
+            });
+
+            button.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                this.keys[key] = false;
+            });
+
+            button.addEventListener('touchcancel', (e) => {
+                e.preventDefault();
+                this.keys[key] = false;
+            });
+
+            // Mouse events for testing on desktop
+            button.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                this.keys[key] = true;
+            });
+
+            button.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                this.keys[key] = false;
+            });
+
+            button.addEventListener('mouseleave', (e) => {
+                this.keys[key] = false;
+            });
+        });
+
+        // Prevent default touch behavior on canvas
+        this.canvas.addEventListener('touchstart', (e) => e.preventDefault());
+        this.canvas.addEventListener('touchmove', (e) => e.preventDefault());
+        this.canvas.addEventListener('touchend', (e) => e.preventDefault());
     }
 
     handleResize() {

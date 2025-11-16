@@ -8,6 +8,9 @@
     padding: 0;
     overflow: hidden;
     background: #000;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
 
     #gameCanvas {
         display: block;
@@ -40,6 +43,79 @@
                     color: #fff;
                 }
             }
+        }
+
+        &.desktop-only {
+            @media (max-width: 768px) {
+                display: none;
+            }
+        }
+    }
+
+    // Mobile touch controls
+    .mobile-controls {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+
+        @media (max-width: 768px) {
+            display: block;
+        }
+
+        .mobile-dpad {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+
+            .dpad-row {
+                display: flex;
+                gap: 8px;
+            }
+
+            .dpad-btn {
+                width: 60px;
+                height: 60px;
+                background: rgba(255, 255, 255, 0.15);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 12px;
+                color: #fff;
+                font-size: 24px;
+                font-weight: bold;
+                cursor: pointer;
+                touch-action: none;
+                user-select: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.1s ease;
+                backdrop-filter: blur(10px);
+
+                &:active {
+                    background: rgba(0, 255, 0, 0.3);
+                    border-color: rgba(0, 255, 0, 0.6);
+                    transform: scale(0.95);
+                }
+
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    // Additional mobile controls on left side
+    .mobile-joystick {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 1000;
+
+        @media (max-width: 768px) {
+            display: block;
         }
     }
 }
