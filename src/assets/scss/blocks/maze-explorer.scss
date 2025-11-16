@@ -1,0 +1,45 @@
+.maze-game {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #000;
+
+    #gameCanvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: none;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+    }
+
+    .game-controls {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 15px 20px;
+        border-radius: 8px;
+        color: #fff;
+        font-family: monospace;
+        font-size: 14px;
+        z-index: 1000;
+
+        .controls-info {
+            p {
+                margin: 5px 0;
+                color: #0f0;
+
+                &:first-child {
+                    font-weight: bold;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
