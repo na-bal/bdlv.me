@@ -1,0 +1,29 @@
+---
+layout: b
+title: BDLV.ME | Maze Explorer
+pageScripts:
+    - assets/js/maze-explorer/maze-explorer.min.js
+---
+
+<div class="maze-game">
+    <canvas id="gameCanvas"></canvas>
+
+    <div class="game-controls desktop-only">
+        <div class="controls-info">
+            <p>Use arrow keys to move</p>
+            <p>Look around with ← →</p>
+        </div>
+    </div>
+
+    <!-- Mobile touch controls -->
+    <div class="mobile-controls">
+        <div class="mobile-dpad">
+            <button class="dpad-btn dpad-up" data-key="ArrowUp">↑</button>
+            <div class="dpad-row">
+                <button class="dpad-btn dpad-left" data-key="ArrowLeft">←</button>
+                <button class="dpad-btn dpad-down" data-key="ArrowDown">↓</button>
+                <button class="dpad-btn dpad-right" data-key="ArrowRight">→</button>
+            </div>
+        </div>
+    </div>
+</div>
