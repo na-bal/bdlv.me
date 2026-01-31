@@ -231,6 +231,12 @@ function fonts() {
     .pipe(browserSync.reload({ stream: true }));
 }
 
+// Musli (Sparkle appcast and updates)
+function musli() {
+  return src(`${srcPath}musli/**/*`)
+    .pipe(dest(`${distPath}musli/`));
+}
+
 // Clean
 function clean() {
   return del(paths.clean);
@@ -250,11 +256,11 @@ function watchFiles(done) {
 // Build & Dev
 const build = series(
   clean,
-  parallel(html, css, js, copyJsVendor, images, favicon, fonts)
+  parallel(html, css, js, copyJsVendor, images, favicon, fonts, musli)
 );
 const dev = series(build, parallel(serve, watchFiles));
 
 // Exports
-export { html, css, js, copyJsVendor, images, favicon, fonts, clean, build };
+export { html, css, js, copyJsVendor, images, favicon, fonts, musli, clean, build };
 export { dev as watch };
 export default dev;

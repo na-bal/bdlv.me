@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Musli Updates</title>
+    <link>https://bdlv.me/musli/appcast.xml</link>
+    <description>Обновления приложения Musli</description>
+    <language>ru</language>
+
+    <!-- Последняя версия должна быть первой -->
+    <item>
+      <title>Версия 1.0.0</title>
+      <description><![CDATA[
+        <h2>Первый релиз</h2>
+        <ul>
+          <li>Запись встреч (микрофон + системный звук)</li>
+          <li>Автодетект Zoom, Meet, Teams</li>
+          <li>Транскрибация с диаризацией</li>
+        </ul>
+      ]]></description>
+      <pubDate>Fri, 31 Jan 2025 12:00:00 +0300</pubDate>
+      <sparkle:version>1</sparkle:version>
+      <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-1.0.0.zip"
+        sparkle:edSignature="LQgxOottnaq4ZmCmpDjgAuRFXnwR2zYjLM1R17CWw8047M7BBUQN46Ymt7STS79YY9Xefgaf7yRXnhoaGR+xBQ=="
+        length="2853581"
+        type="application/octet-stream"/>
+    </item>
+
+  </channel>
+</rss>
