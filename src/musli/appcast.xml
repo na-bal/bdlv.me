@@ -8,7 +8,32 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.3</title>
+      <sparkle:version>3</sparkle:version>
+      <sparkle:shortVersionString>0.0.3</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Что нового</h2>
+        <ul>
+          <li><b>Читабельные транскрипты</b> — текст разбивается на абзацы</li>
+          <li><b>Чище текст</b> — удаляются слова-паразиты</li>
+          <li><b>Копирование</b> — можно выделить и скопировать текст</li>
+          <li><b>Перегенерация</b> — можно удалить транскрипт и создать заново</li>
+        </ul>
+      ]]></description>
+      <pubDate>Fri, 31 Jan 2026 17:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.3.dmg"
+        sparkle:edSignature="LqMLt7KoMzZKY9sq2N+3lCJmdNwYt++Zm/Og3nnGDCe+D6Mf/dAkxyGMyu7I12HzKpM9JdU0xOoByZZkeQa2DQ=="
+        length="2823362"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Версия 0.0.2</title>
+      <sparkle:version>2</sparkle:version>
+      <sparkle:shortVersionString>0.0.2</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
       <description><![CDATA[
         <h2>Что нового в 0.0.2</h2>
         <ul>
@@ -19,9 +44,6 @@
         </ul>
       ]]></description>
       <pubDate>Fri, 31 Jan 2025 16:30:00 +0300</pubDate>
-      <sparkle:version>2</sparkle:version>
-      <sparkle:shortVersionString>0.0.2</sparkle:shortVersionString>
-      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
       <enclosure
         url="https://bdlv.me/musli/Musli-0.0.2.zip"
         sparkle:edSignature="yKPy6KSryqlQv6ZXx1nMjdE3WLrP6en+7P+fPkhrusHGu1Kx7oS77Dnvdcp1s8jLaEN+Xt0dYqzWm4tofA7zDQ=="
