@@ -8,6 +8,29 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.4</title>
+      <sparkle:version>4</sparkle:version>
+      <sparkle:shortVersionString>0.0.4</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Что нового</h2>
+        <ul>
+          <li><b>Настройки из toolbar</b> — кнопка ⚙️ рядом с тегами и участниками</li>
+          <li><b>Разрешения в настройках</b> — статус и запрос микрофона, системного звука, Accessibility</li>
+          <li><b>Напоминание о длительной записи</b> — попап каждые 30 мин после 2 часов</li>
+          <li><b>Autocomplete</b> — вся строка кликабельна, а не только текст</li>
+          <li><b>Стабильность</b> — нет ошибки при двух записях подряд в одну минуту</li>
+        </ul>
+      ]]></description>
+      <pubDate>Thu, 13 Feb 2026 23:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.4.dmg"
+        sparkle:edSignature="4Un5//Rd7HsdCTwrI8kroGzO/hRNJ4rxE8sylTbtKPVSY1EFSNg7WOTNyY71Y1tTIRwl5paDWx6wnOgqMThzAg=="
+        length="3769140"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.3</title>
       <sparkle:version>3</sparkle:version>
       <sparkle:shortVersionString>0.0.3</sparkle:shortVersionString>
