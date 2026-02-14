@@ -8,6 +8,28 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.6</title>
+      <sparkle:version>6</sparkle:version>
+      <sparkle:shortVersionString>0.0.6</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Что нового</h2>
+        <ul>
+          <li><b>AI-промпты для транскрипта</b> — получите саммари встречи за секунду: нажмите кнопку, вставьте в ChatGPT или Claude</li>
+          <li><b>5 готовых промптов</b> — подробное саммари, краткое саммари, список задач, визуальная карта встречи (Mermaid), свой промпт</li>
+          <li><b>Имена спикеров в промпте</b> — если назначили имена, AI будет писать "Иван предложил..." вместо "SPEAKER_00"</li>
+          <li><b>Сворачиваемый транскрипт</b> — текст транскрипта свёрнут по умолчанию, чтобы быстрее добраться до кнопок</li>
+        </ul>
+      ]]></description>
+      <pubDate>Fri, 14 Feb 2026 23:30:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.6.dmg"
+        sparkle:edSignature="RXUt9eGKSJZUv6I/k85ebwVjv3Bf5IimzBBDnM+cY6JuzNmIH9Sv8R9g1aZyRWppbTGHIrRS2rBSwu54BO2YBw=="
+        length="3821867"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.5</title>
       <sparkle:version>5</sparkle:version>
       <sparkle:shortVersionString>0.0.5</sparkle:shortVersionString>
