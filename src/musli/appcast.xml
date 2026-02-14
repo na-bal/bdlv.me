@@ -8,6 +8,28 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.5</title>
+      <sparkle:version>5</sparkle:version>
+      <sparkle:shortVersionString>0.0.5</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Что нового</h2>
+        <ul>
+          <li><b>Удаление встречи по правому клику</b> — контекстное меню в списке встреч</li>
+          <li><b>Улучшенная диаризация</b> — меньше фрагментации спикеров</li>
+          <li><b>Стабильность</b> — защита от крашей при повторном нажатии горячей клавиши</li>
+          <li><b>Версионированная схема БД</b> — обновления не ломают данные</li>
+        </ul>
+      ]]></description>
+      <pubDate>Fri, 14 Feb 2026 23:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.5.dmg"
+        sparkle:edSignature="kbue3FBzSEcwoozaY2Re6mFr8/w7CZTXnQGEtsfETqtmGXCHVAlyo1ZQtEVd4NGUTy6uiR5WQ+8ovEIERQXPDA=="
+        length="3782188"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.4</title>
       <sparkle:version>4</sparkle:version>
       <sparkle:shortVersionString>0.0.4</sparkle:shortVersionString>
