@@ -8,6 +8,28 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.7</title>
+      <sparkle:version>7</sparkle:version>
+      <sparkle:shortVersionString>0.0.7</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Что нового</h2>
+        <ul>
+          <li><b>Надёжная запись при смене наушников</b> — если снять/надеть Bluetooth-наушники во время записи, микрофон автоматически переключится и продолжит запись</li>
+          <li><b>Нет краша при смене устройства</b> — подключение/отключение наушников между записями больше не ломает приложение</li>
+          <li><b>Корректный статус модели</b> — при повторных запусках не показывает "Скачивание 1 ГБ"</li>
+          <li><b>Стабильность БД</b> — встречи не пропадают после перезапуска</li>
+        </ul>
+      ]]></description>
+      <pubDate>Wed, 19 Feb 2026 01:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.7.dmg"
+        sparkle:edSignature="u/ACW2dJN4abW5OrsP2Dstxf3axHnkmxzgwBSao0ahOX3HseWioI+BHsSfaRKdHM62VyshNLRARdegxQti+ZAA=="
+        length="3850656"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.6</title>
       <sparkle:version>6</sparkle:version>
       <sparkle:shortVersionString>0.0.6</sparkle:shortVersionString>
