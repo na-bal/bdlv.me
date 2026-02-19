@@ -8,6 +8,28 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.8</title>
+      <sparkle:version>8</sparkle:version>
+      <sparkle:shortVersionString>0.0.8</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Что нового</h2>
+        <ul>
+          <li><b>Нет краша после транскрибации</b> — приложение не вылетает при переключении окон после длинной транскрибации</li>
+          <li><b>Встречи больше не пропадают</b> — база данных не удаляется после сбоя, вместо этого автоматически восстанавливается</li>
+          <li><b>Автобэкап базы данных</b> — при каждом запуске создаётся резервная копия (хранится 3 последних)</li>
+          <li><b>6 уровней защиты данных</b> — от мягкого восстановления до крайнего сброса, повреждённые файлы сохраняются</li>
+        </ul>
+      ]]></description>
+      <pubDate>Thu, 20 Feb 2026 01:30:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.8.dmg"
+        sparkle:edSignature="nGu9PqDBuXtLtHH2WKBN2cYSg/xPFXaV1nynZl85HdVdgcpGz6/LSoBBvQXtzXRhvcRVOUhBA0vdMcn9FwGgBA=="
+        length="3877744"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.7</title>
       <sparkle:version>7</sparkle:version>
       <sparkle:shortVersionString>0.0.7</sparkle:shortVersionString>
