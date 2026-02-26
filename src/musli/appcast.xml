@@ -8,6 +8,28 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.9</title>
+      <sparkle:version>9</sparkle:version>
+      <sparkle:shortVersionString>0.0.9</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Что нового</h2>
+        <ul>
+          <li><b>Импорт аудиофайлов</b> — добавляйте записи с диктофона или восстанавливайте встречи после сбоя: кнопка в toolbar или перетащите файлы в окно</li>
+          <li><b>БД в безопасном месте</b> — база данных перенесена в отдельную папку, старые данные мигрируются автоматически</li>
+          <li><b>Бэкапы не затираются</b> — битые копии больше не вытесняют рабочие бэкапы через ротацию</li>
+          <li><b>Разрешения обновляются</b> — статус Accessibility в настройках теперь обновляется при возврате из Системных настроек</li>
+        </ul>
+      ]]></description>
+      <pubDate>Thu, 27 Feb 2026 01:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.9.dmg"
+        sparkle:edSignature="dsW1kdzjLQASFIRma4+pif4LA8puwUOGHHylql+k/gxKqaEUib+c7qNxEsq35Lwx4P34I9EleT/vuO+nr+FKCw=="
+        length="3924430"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.8</title>
       <sparkle:version>8</sparkle:version>
       <sparkle:shortVersionString>0.0.8</sparkle:shortVersionString>
