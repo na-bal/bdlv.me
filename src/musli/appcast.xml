@@ -8,6 +8,30 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.12</title>
+      <sparkle:version>12</sparkle:version>
+      <sparkle:shortVersionString>0.0.12</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Добавлено</h2>
+        <ul>
+          <li><b>Импорт видеозаписей встреч</b> — Zoom, Meet и другие приложения сохраняют записи как видео. Раньше приходилось вручную извлекать аудио перед импортом. Теперь просто перетащите MP4 или MOV в окно Musli — аудиодорожка извлечётся автоматически. Работает и через кнопку импорта, и через drag & drop.</li>
+        </ul>
+        <h2>Исправлено</h2>
+        <ul>
+          <li><b>Экспорт логов теперь содержит историю событий</b> — раньше при экспорте диагностики файл приходил почти пустым — только информация о системе, без логов работы приложения. Теперь все события записываются в файл, и диагностический отчёт содержит полную картину. Если что-то пойдёт не так — отправьте отчёт, и я смогу разобраться.</li>
+          <li><b>Улучшена диагностика транскрибации</b> — у некоторых пользователей транскрибация перестала работать после обновления. Пока ищем корневую причину — добавлена детальная диагностика, чтобы быстрее найти и исправить проблему. Если транскрибация не работает — экспортируйте логи и отправьте мне.</li>
+        </ul>
+      ]]></description>
+      <pubDate>Sun, 23 Mar 2026 22:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.12.dmg"
+        sparkle:edSignature="Qqvw6pubv2VUt9z1Mg490dxMUGO+xpUhJHG9WbUHYuu3jTQMcQTVaJDdfNLVkR2S0tRMweOKZc7QsR/GmunGDw=="
+        length="9759885"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.11</title>
       <sparkle:version>11</sparkle:version>
       <sparkle:shortVersionString>0.0.11</sparkle:shortVersionString>
