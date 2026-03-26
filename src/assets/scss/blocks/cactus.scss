@@ -1,63 +1,15 @@
-.cactus-title {
-    grid-column: 1 / -1;
+// Cactus-specific overrides — everything else uses standard article styles
 
-    p {
-        font-family: 'Roboto Slab', serif;
-        font-size: 4.8rem;
-        font-weight: 300;
-        line-height: 150%;
-    }
-
-    mark {
-        background-color: #FEB3CE;
-    }
-
-    margin-bottom: -35px;
-}
-
-.cactus-subtitle {
-    grid-column: 1 / -1;
-    margin-top: 50px;
-    margin-bottom: 20px;
-
-    p {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.6rem;
-        font-weight: 300;
-        color: #666;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-    }
-}
-
-.cactus-chapter {
-    grid-column: 3 / 8;
+// Bigger spacing between chapters
+.cactus-spacing .article-section {
     margin-top: 80px;
-    margin-bottom: -10px;
-
-    h2 {
-        font-family: 'Roboto Slab', serif;
-        font-size: 2.0rem;
-        font-weight: 300;
-        color: #000;
-        line-height: 140%;
-    }
 
     &:first-of-type {
         margin-top: 40px;
     }
 }
 
-.cactus-text {
-    grid-column: 3 / 8;
-
-    p {
-        font-size: 1.9rem;
-        line-height: 2.8rem;
-        margin-bottom: 1.4rem;
-    }
-}
-
+// Chapter 10: narrower column for breathing room
 .cactus-text--short {
     grid-column: 4 / 7;
     margin-top: 80px;
@@ -70,17 +22,7 @@
     }
 }
 
-.cactus-text--breath {
-    grid-column: 3 / 8;
-    margin-top: 80px;
-    margin-bottom: 80px;
-
-    p {
-        font-size: 1.9rem;
-        line-height: 2.8rem;
-    }
-}
-
+// Final chapter: lots of whitespace after
 .cactus-end {
     grid-column: 3 / 8;
     margin-top: 80px;
@@ -95,64 +37,39 @@
 // media
 
 @media screen and (max-width: 1300px) {
-    .cactus-chapter,
-    .cactus-text {
-        grid-column: 3 / 9;
-    }
-
     .cactus-text--short {
         grid-column: 3 / 8;
     }
 
-    .cactus-text--breath,
     .cactus-end {
         grid-column: 3 / 9;
     }
 }
 
 @media screen and (max-width: 1000px) {
-    .cactus-chapter,
-    .cactus-text {
-        grid-column: 2 / 9;
-    }
-
     .cactus-text--short {
         grid-column: 2 / 8;
     }
 
-    .cactus-text--breath,
     .cactus-end {
         grid-column: 2 / 9;
     }
 }
 
 @media screen and (max-width: 750px) {
-    .cactus-chapter,
-    .cactus-text {
-        grid-column: 1 / 10;
-    }
-
     .cactus-text--short {
         grid-column: 1 / 9;
     }
 
-    .cactus-text--breath,
     .cactus-end {
         grid-column: 1 / 10;
     }
 }
 
 @media screen and (max-width: 450px) {
-    .cactus-chapter,
-    .cactus-text,
     .cactus-text--short,
-    .cactus-text--breath,
     .cactus-end {
         grid-column: 1 / -1;
-    }
-
-    .cactus-title p {
-        font-size: 3.2rem;
     }
 
     .cactus-text--short {
