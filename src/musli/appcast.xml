@@ -31,6 +31,24 @@
         <ul>
           <li><b>Транскрибация больше не замораживает интерфейс</b> — раньше при нажатии «Транскрибировать» приложение зависало на несколько секунд с радужным спиннером. Теперь вся тяжёлая работа идёт в фоне, а вы видите плавный прогресс без единой задержки.</li>
         </ul>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <h3 style="margin-bottom: 8px;">За кулисами</h3>
+        <table style="font-size: 12px; color: #999; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 2px 12px 2px 0;"><b>83</b> коммита</td>
+            <td style="padding: 2px 12px 2px 0;"><b>30</b> файлов</td>
+            <td style="padding: 2px 12px 2px 0;"><b>13</b> компонентов</td>
+          </tr>
+          <tr>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #6abf69;">+4428</b> строк</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #e07a5f;">−1163</b> строк</td>
+            <td style="padding: 2px 12px 2px 0;"><b>1</b> бессонная неделя</td>
+          </tr>
+        </table>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <p style="font-style: italic; color: #aaa; font-size: 12px; line-height: 1.5;">
+          Хотелось, чтобы Musli наконец стал симпатичным — не просто функциональным, а приятным. Цвета, анимации, hover-эффекты, единый стиль — всё с нуля. Честно? Есть подозрение, что местами может быть слишком ярко. Поэтому тестируйте и не стесняйтесь говорить «вырвиглаз» — это самый полезный фидбек, который сейчас можно дать. Это самое большое обновление Musli за всё время.
+        </p>
       ]]></description>
       <pubDate>Fri, 28 Mar 2026 23:00:00 +0300</pubDate>
       <enclosure
