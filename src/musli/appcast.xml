@@ -8,6 +8,46 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.16</title>
+      <sparkle:version>16</sparkle:version>
+      <sparkle:shortVersionString>0.0.16</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Добавлено</h2>
+        <ul>
+          <li><b>Назначение спикера в транскрипте</b> — теперь можно кликнуть на имя спикера (SPEAKER_00, SPEAKER_01...) и выбрать участника из списка. Все сегменты этого спикера обновятся разом — больше не нужно гадать, кто что сказал.</li>
+          <li><b>«За кулисами» в релиз-нотах</b> — в разделе «О приложении» под каждым релизом теперь видна статистика (файлы, строки кода) и комментарий от разработчика. Раньше показывались только буллеты.</li>
+        </ul>
+        <h2>Исправлено</h2>
+        <ul>
+          <li><b>Попап подхватывает тёмную тему</b> — раньше попап в меню-баре оставался светлым, даже если в настройках стояла тёмная тема. Теперь переключается вместе со всем приложением.</li>
+          <li><b>Ссылки в попапе реагируют на наведение</b> — кнопки «Встречи» и «Открыть →» теперь подчёркиваются при наведении курсора. Раньше они выглядели как обычный текст.</li>
+          <li><b>Транскрипт виден сразу после завершения</b> — раньше после транскрибации нужно было выйти из встречи и зайти обратно, чтобы увидеть текст. Теперь он появляется сразу.</li>
+          <li><b>Советы не повторяются после перезапуска</b> — история показанных подсказок сохраняется между запусками. Раньше после перезапуска приложение забывало, что уже показывало.</li>
+        </ul>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <h3 style="margin-bottom: 8px;">За кулисами</h3>
+        <table style="font-size: 12px; color: #999; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 2px 12px 2px 0;"><b>10</b> файлов</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #6abf69;">+149</b> строк</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #e07a5f;">−24</b> строк</td>
+          </tr>
+        </table>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <p style="font-style: italic; color: #aaa; font-size: 12px; line-height: 1.5;">
+          Простой и спокойный релиз — доправил мелкие баги после редизайна и сделал ещё чуть симпатичнее. Ничего революционного, просто полировка. Иногда самые приятные обновления — те, где всё начинает работать так, как должно было с самого начала.
+        </p>
+      ]]></description>
+      <pubDate>Wed, 02 Apr 2026 01:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.16.dmg"
+        sparkle:edSignature="lwV1EQYS0kqOxykbEq6yKLo7eKATumvvWGvz9VtNvJWbS2AiDCUs/74TXMrtWHLKb4nOhKo3XPTFF8wpPtAEBg=="
+        length="10219933"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.15</title>
       <sparkle:version>15</sparkle:version>
       <sparkle:shortVersionString>0.0.15</sparkle:shortVersionString>
