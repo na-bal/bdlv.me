@@ -8,6 +8,48 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.19</title>
+      <sparkle:version>19</sparkle:version>
+      <sparkle:shortVersionString>0.0.19</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Добавлено</h2>
+        <ul>
+          <li><b>Спикеры назначаются сами</b> — раньше в длинной встрече приходилось вручную выбирать, кто из участников какой SPEAKER_00. Теперь Мюсли делают это за вас. Если к встрече добавлен один участник помимо вас — все его сегменты подписываются его именем. Если два и более участников помимо вас — остаётся нейтральный «Собеседник»: для саммари от нейронок это не проблема, им на вход уходят все имена, и они справляются. Меню выбора спикера убрали из ряда транскрипта — стало и быстрее, и чище.</li>
+          <li><b>Советы подхватили новые фичи</b> — 5 свежих подсказок в ротации: автодетект встреч, синхронизация с Apple Заметками, HTML-транскрипт в папку, переключение на встроенный микрофон и журнал уведомлений.</li>
+          <li><b>Синхронизация с Apple Заметками включена у новых пользователей</b> — установили только что? Первый транскрипт сразу окажется в Заметках и откроется на iPhone. Существующих пользователей не трогаем — настройка там же, в Настройки → Синхронизация.</li>
+        </ul>
+        <h2>Исправлено</h2>
+        <ul>
+          <li><b>Массовый импорт не падает на одинаковых именах</b> — перетащите десяток <code>recording.m4a</code> из разных папок — все импортируются, получив суффиксы <code>_1</code>, <code>_2</code>, <code>_3</code>. Раньше сохранялся только первый.</li>
+          <li><b>Баннер «потерянные аудиофайлы» больше не штабелируется</b> — один и тот же файл не попадает в список повторно после каждого запуска. Считаем по содержимому, а не по пути.</li>
+          <li><b>Длинные транскрипты открываются моментально</b> — встречи с 1000+ сегментов больше не фризят UI на минуты и не раздувают память до 400 МБ. Раньше для каждого ряда строился отдельный NSMenu — теперь всё это ушло.</li>
+        </ul>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <h3 style="margin-bottom: 8px;">За кулисами</h3>
+        <table style="font-size: 12px; color: #999; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 2px 12px 2px 0;"><b>5</b> коммитов</td>
+            <td style="padding: 2px 12px 2px 0;"><b>24</b> файлов</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #6abf69;">+1096</b> строк</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #e07a5f;">−146</b> строк</td>
+          </tr>
+        </table>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <p style="font-style: italic; color: #aaa; font-size: 12px; line-height: 1.5;">
+          Главная цель этого релиза — быстро залатать баги, которые я поймал сразу после большого 0.0.18. Бета уже совсем рядом — я готовлюсь её выпустить и, возможно, буду приходить к вам лично, спрашивать про опыт использования. А пока — всем хорошего настроения.<br><br>
+          (⊃｡•́‿•̀｡)⊃━✿✿✿✿✿✿
+        </p>
+      ]]></description>
+      <pubDate>Tue, 21 Apr 2026 00:39:52 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.19.dmg"
+        sparkle:edSignature="5zBg/zvZZuN7PQxR1t/YuZlIdjphb+RU9+8WD6Eiut8RTMAjwFxL6K5F1VhRfGJ6XW4JoWD9ZqrGqwBeyNEnBw=="
+        length="7195323"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.18</title>
       <sparkle:version>18</sparkle:version>
       <sparkle:shortVersionString>0.0.18</sparkle:shortVersionString>
