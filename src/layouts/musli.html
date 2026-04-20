@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../assets/css/style.min.css">
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="index, follow">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="{{ description }}">
+
+    {{> metrika }}
+
+    <title>{{ title }}</title>
+</head>
+<body>
+
+    <header>
+        <nav class="main-nav">
+            <div class="logo"> <a href="../index.html">BDLV.me</a> </div>
+            <div class="nav-item"> <a href="../projects.html">Проекты</a> </div>
+        </nav>
+    </header>
+
+    {{> body }}
+
+    <footer>
+        <div class="footer-info">
+            <div class="footer-shadow"></div>
+            <div class="footer-item">🦆 2021-2026</div>
+            <div class="footer-item">
+                <a href="mailto:bdlv@bdlv.me?subject=Hey, Beauty">bdlv@bdlv.me</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/app.js"></script>
+    {{#each pageScripts}}
+    <script src="{{this}}"></script>
+    {{/each}}
+</body>
+</html>

@@ -42,7 +42,7 @@ const paths = {
     fonts:  `${distPath}assets/fonts/`
   },
   src: {
-    html:   `${srcPath}*.html`,
+    html:   [`${srcPath}*.html`, `${srcPath}musli/*.html`],
     js:     `${srcPath}assets/js/**/*.js`,
     css:    `${srcPath}assets/scss/**/*.scss`,
     images: `${srcPath}assets/images/**/*.{jpg,png,svg,gif,ico,webp,webmanifest,xml,json}`,
@@ -231,9 +231,9 @@ function fonts() {
     .pipe(browserSync.reload({ stream: true }));
 }
 
-// Musli (Sparkle appcast and updates)
+// Musli (Sparkle appcast, DMGs and other static assets — html обрабатывает panini)
 function musli() {
-  return src(`${srcPath}musli/**/*`)
+  return src([`${srcPath}musli/**/*`, `!${srcPath}musli/**/*.html`])
     .pipe(dest(`${distPath}musli/`));
 }
 
