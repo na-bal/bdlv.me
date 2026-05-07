@@ -8,6 +8,45 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.20</title>
+      <sparkle:version>20</sparkle:version>
+      <sparkle:shortVersionString>0.0.20</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Добавлено</h2>
+        <ul>
+          <li><b>Транскрипт стал документом</b> — раньше транскрипт был списком карточек: одна реплика — один блок с цветной точкой и линией. Теперь это нормальный документ macOS: текст течёт, выделение мышью работает через несколько реплик подряд, копирование сохраняет разметку. На длинных встречах читать стало кратно удобнее.</li>
+          <li><b>Превью вместо стены текста</b> — в карточке встречи транскрипт теперь показывается компактным фрагментом с мягким растворением снизу. Полная версия раскрывается одним кликом. Раньше длинный транскрипт выталкивал всё под ним далеко вниз — карточка встречи перестала быть обозримой. Теперь снова легко дотянуться до промптов и кнопок без большого скролла.</li>
+        </ul>
+        <h2>Исправлено</h2>
+        <ul>
+          <li><b>Длинные транскрипты больше не подвешивают приложение</b> — открытие встречи с 150+ сегментов могло положить UI на минуты, иногда приходилось перезапускать. Это происходило из-за того, как SwiftUI считал layout для структурного списка карточек. Теперь транскрипт рендерится через родной AppKit-движок документов (тот же, что в Mail и Notes), и открывается мгновенно — независимо от длины записи.</li>
+        </ul>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <h3 style="margin-bottom: 8px;">За кулисами</h3>
+        <table style="font-size: 12px; color: #999; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 2px 12px 2px 0;"><b>5</b> коммитов</td>
+            <td style="padding: 2px 12px 2px 0;"><b>15</b> файлов</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #6abf69;">+1517</b> строк</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #e07a5f;">−162</b> строки</td>
+          </tr>
+        </table>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <p style="font-style: italic; color: #aaa; font-size: 12px; line-height: 1.5;">
+          Этот релиз был про одну конкретную вещь — починить зависание на длинных транскриптах. Меня самого иногда вешало на встречах в 150+ реплик, и так дальше было нельзя. По пути транскрипт переехал на родной macOS-движок документов, и заодно стал выглядеть и вести себя взрослее.<br><br>
+          Параллельно сажусь за лендинг Musli и буду активно звать людей на бету. Если у вас в окружении есть кто-то, кому это может зайти — кидайте контакты, буду рад знакомству.
+        </p>
+      ]]></description>
+      <pubDate>Fri, 08 May 2026 00:21:30 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/musli/Musli-0.0.20.dmg"
+        sparkle:edSignature="JWHozRBk+JlEuF/Ug5tQ3nO73y1N8PPpO+tSJXm3vtVU1aZ+z4G+vKz9UBUARuhSwlb+i5dEWTiGrWkJR+LjDw=="
+        length="7211566"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.19</title>
       <sparkle:version>19</sparkle:version>
       <sparkle:shortVersionString>0.0.19</sparkle:shortVersionString>
