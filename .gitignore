@@ -4,9 +4,23 @@ node_modules/
 # Build output
 dist/
 
+# Astro generated types
+.astro/
+
+# Playwright
+playwright-report/
+test-results/
+
+# Env
+.env
+.env.*
+
 # macOS
 .DS_Store
 **/.DS_Store
+
+# JetBrains
+.idea/
 
 # Personal notes and documentation
 dev-notes/
@@ -22,10 +36,3 @@ ai/
 # Backup/temp folders
 **/blocks 2/
 **/*\ 2/
-
-# Astro (during migration; see ARCHITECTURE.md раздел 13)
-astro/node_modules/
-astro/dist/
-astro/.astro/
-astro/playwright-report/
-astro/test-results/

@@ -17,26 +17,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Шаг 2: Установить Node.js
+      # Шаг 2: Установить Node.js (Astro 6 требует ≥ 22.12)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'  # Версия Node.js
-          cache: 'npm'  # Кэшировать node_modules для ускорения
+          node-version: '22'
+          cache: 'npm'
 
-      # Шаг 3: Установить системные библиотеки для оптимизации изображений
-      - name: Install native image libraries
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pngquant libimagequant-dev
-
-      # Шаг 4: Установить зависимости
+      # Шаг 3: Установить зависимости
       - name: Install dependencies
         run: npm install
 
-      # Шаг 4: Собрать проект (gulp build)
+      # Шаг 4: Собрать проект (astro build → dist/)
       - name: Build project
-        run: npx gulp build
+        run: npm run build
 
       # Шаг 5: Подготовить SSH ключ
       - name: Setup SSH key
