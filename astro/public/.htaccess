@@ -1,0 +1,115 @@
+# bdlv.me — Apache config
+# Файл лежит в astro/public/.htaccess, Astro копирует его как есть в dist/.htaccess.
+# Деплой rsync кладёт это в корень сайта.
+
+# ============================================================================
+# 1. HTTPS и канонический хост
+# ============================================================================
+
+RewriteEngine On
+
+# Force HTTPS. На случай прямого захода по http:// (Cloudflare/хостинг могут
+# делать то же выше — дублируем для надёжности).
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# www.bdlv.me → bdlv.me (канонический домен).
+RewriteCond %{HTTP_HOST} ^www\.bdlv\.me$ [NC]
+RewriteRule ^ https://bdlv.me%{REQUEST_URI} [R=301,L]
+
+# ============================================================================
+# 2. Sparkle constraint — appcast.xml ОБЯЗАН отдавать 200 OK навсегда.
+#    Это правило ДО всех /musli/-правил, чтобы оно сработало первым.
+# ============================================================================
+
+RewriteRule ^musli/appcast\.xml$ - [L]
+
+# ============================================================================
+# 3. Старые DMG-URL /musli/Musli-*.dmg → 410 Gone.
+#    Установленные Sparkle-клиенты читают новые URL из appcast, к этим не ходят.
+#    Если где-то в интернете есть прямая ссылка на старый URL — отдаём 410.
+# ============================================================================
+
+RewriteRule ^musli/Musli-[\d.]+\.(dmg|zip)$ - [G,L]
+
+# ============================================================================
+# 4. /musli/ (старый лендинг) и любые остальные /musli/* → 301 на /products/musli/.
+# ============================================================================
+
+RewriteRule ^musli/?$ /products/musli/ [R=301,L]
+RewriteRule ^musli/(.+)$ /products/musli/$1 [R=301,L]
+
+# ============================================================================
+# 5. Старые URL Gulp-сайта → 410 Gone.
+#    410 (а не 404) сигнализирует поисковикам «удалено навсегда» — быстрее
+#    выпадает из индекса.
+# ============================================================================
+
+RewriteRule ^index\.html$              - [G,L]
+RewriteRule ^projects\.html$           - [G,L]
+RewriteRule ^b\.html$                  - [G,L]
+RewriteRule ^cactus\.html$             - [G,L]
+RewriteRule ^cactus-process\.html$     - [G,L]
+RewriteRule ^go-to-penis\.html$        - [G,L]
+RewriteRule ^latest-updates\.html$     - [G,L]
+RewriteRule ^maze-explorer\.html$      - [G,L]
+RewriteRule ^my-sex-tape\.html$        - [G,L]
+RewriteRule ^my-sex-tape-process\.html$ - [G,L]
+RewriteRule ^pantone-colors\.html$     - [G,L]
+RewriteRule ^pantone-colors-process\.html$ - [G,L]
+RewriteRule ^wallpaper-room\.html$     - [G,L]
+
+# ============================================================================
+# 6. Cache-Control
+#    Хэшированные ассеты Astro (_astro/) — long-cache, immutable.
+#    Бинарники (DMG, шрифты, картинки) — длинный кэш.
+#    HTML — короткий кэш (контент может меняться).
+#    XML (sitemap, appcast) — короткий кэш (Sparkle проверяет регулярно).
+# ============================================================================
+
+<IfModule mod_headers.c>
+    # Хэшированные ассеты Astro: имя содержит хэш, безопасный immutable.
+    <FilesMatch "^.+\.(?:js|css)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # Картинки и шрифты — длинный кэш.
+    <FilesMatch "\.(?:png|jpg|jpeg|gif|svg|webp|avif|ico|woff|woff2|ttf|eot)$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+
+    # DMG — длинный кэш (файл с конкретной версией не меняется).
+    <FilesMatch "\.dmg$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+
+    # HTML — короткий кэш, валидировать каждый раз.
+    <FilesMatch "\.html$">
+        Header set Cache-Control "public, max-age=300, must-revalidate"
+    </FilesMatch>
+
+    # XML — 5 минут (sitemap + appcast).
+    <FilesMatch "\.xml$">
+        Header set Cache-Control "public, max-age=300"
+    </FilesMatch>
+
+    # robots.txt — короткий кэш.
+    <FilesMatch "^robots\.txt$">
+        Header set Cache-Control "public, max-age=300"
+    </FilesMatch>
+</IfModule>
+
+# ============================================================================
+# 7. Сжатие.
+# ============================================================================
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json text/xml application/xml image/svg+xml
+</IfModule>
+
+# ============================================================================
+# 8. Default index.
+# ============================================================================
+
+DirectoryIndex index.html
