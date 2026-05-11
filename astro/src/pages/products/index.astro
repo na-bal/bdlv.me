@@ -1,0 +1,125 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+---
+
+<PageLayout
+  title="Продукты — BDLV.me"
+  description="Каталог рабочих продуктов: macOS-приложения и другие штуки, которые я делаю."
+  ogImage="/blobbo.svg"
+>
+  <h1 class="products-title">Продукты</h1>
+
+  <div class="products-grid">
+    <a class="product-card" href="/products/musli/">
+      <div class="product-card__icon">
+        <img
+          src="/products/musli/images/icon.png"
+          srcset="/products/musli/images/icon.png 1x, /products/musli/images/icon@2x.png 2x"
+          width="128"
+          height="128"
+          alt="Иконка Musli"
+          loading="eager"
+        />
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__name">Musli</div>
+        <p class="product-card__desc">
+          macOS-приложение для записи и транскрибации встреч локально, без облака.
+          Поддерживает Zoom, Google Meet и любые другие.
+        </p>
+      </div>
+      <div class="product-card__cta" aria-hidden="true">Открыть&nbsp;→</div>
+    </a>
+  </div>
+</PageLayout>
+
+<style>
+  .products-title {
+    font-family: var(--font-body);
+    font-size: 4rem;
+    font-weight: 400;
+    margin: 0 0 3rem;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-gap: 2rem;
+    padding-bottom: 6rem;
+  }
+
+  .product-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    grid-gap: 3rem;
+    padding: 2.5rem 3rem;
+    border: 2px solid var(--color-text, #000);
+    border-radius: 18px;
+    background: var(--color-bg, #fff);
+    text-decoration: none;
+    color: var(--color-text, #000);
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .product-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-text, #000);
+  }
+
+  .product-card:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 var(--color-text, #000);
+  }
+
+  .product-card__icon img {
+    display: block;
+    width: 96px;
+    height: 96px;
+    border-radius: 18px;
+  }
+
+  .product-card__name {
+    font-family: var(--font-body);
+    font-size: 2.6rem;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+
+  .product-card__desc {
+    font-family: var(--font-body);
+    font-size: 1.6rem;
+    line-height: 1.45;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .product-card__cta {
+    font-family: var(--font-body);
+    font-size: 1.6rem;
+    white-space: nowrap;
+    padding-left: 1rem;
+  }
+
+  @media screen and (max-width: 750px) {
+    .product-card {
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      grid-gap: 1.5rem 2rem;
+      padding: 2rem;
+    }
+
+    .product-card__icon img {
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+    }
+
+    .product-card__cta {
+      grid-column: 1 / -1;
+      text-align: right;
+      padding-left: 0;
+    }
+  }
+</style>
