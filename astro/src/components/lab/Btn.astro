@@ -1,0 +1,65 @@
+---
+interface Props {
+  href: string;
+  /** Внешняя ссылка — добавит target=_blank rel=noopener. */
+  external?: boolean;
+  /** Атрибут download для прямой загрузки файла. */
+  download?: string;
+  /** Дополнительный нижний отступ (article-btn--end). */
+  end?: boolean;
+}
+
+const { href, external = false, download, end = false } = Astro.props;
+const target = external ? "_blank" : undefined;
+const rel = external ? "noopener noreferrer" : undefined;
+---
+
+<div class:list={["article-btn", { "article-btn--end": end }]}>
+  <a href={href} target={target} rel={rel} download={download}>
+    <slot />
+  </a>
+</div>
+
+<style>
+  .article-btn {
+    grid-column: 1 / -1;
+    width: fit-content;
+    justify-self: center;
+
+    padding: 1.5rem 2rem;
+
+    background: var(--color-surface-muted);
+    border: 2px solid var(--color-border);
+
+    position: relative;
+    top: 0;
+    right: 0;
+    transition: 0.2s ease;
+  }
+
+  .article-btn--end {
+    margin-top: 7rem;
+    margin-bottom: 5rem;
+  }
+
+  .article-btn a {
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .article-btn:hover {
+    background: var(--color-accent-pink);
+    top: -3px;
+    right: -3px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.65);
+  }
+
+  .article-btn:active {
+    background: var(--color-surface-muted);
+    box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.5);
+    top: 2px;
+    right: 3px;
+  }
+</style>

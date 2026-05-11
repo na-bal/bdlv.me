@@ -1,0 +1,118 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import LabTabs from "../../../components/lab/LabTabs.astro";
+import Article from "../../../components/lab/Article.astro";
+import Section from "../../../components/lab/Section.astro";
+import Text from "../../../components/lab/Text.astro";
+
+const COVER = "/lab/cactus/images/cover.svg";
+---
+
+<PageLayout
+  title="Кактус в зефире — Процесс — BDLV.me"
+  description="Как делалась модернистская новелла «Кактус в зефире» совместно с Claude: пайплайн, голос, foundation, ревизия."
+  ogImage={COVER}
+  ogType="article"
+  fluid
+>
+  <div class="title-block">
+    <div class="mst-title">
+      <h1><mark>«Кактус в&nbsp;зефире»</mark></h1>
+    </div>
+
+    <LabTabs
+      tabs={[
+        { label: "Текст", href: "/lab/cactus/" },
+        { label: "Процесс", href: "/lab/cactus/process/" },
+      ]}
+    />
+  </div>
+
+  <Article>
+    <Section title="Что это." />
+    <Text>
+      <p>Модернистская новелла в&nbsp;15&nbsp;главах, написанная совместно с&nbsp;Claude (Opus&nbsp;4.6). Поэтическая проза в&nbsp;традиции Роберта Вальзера и&nbsp;Андрея Белого. Текст, который ищет себя&nbsp;&mdash; кактус в&nbsp;зефире: колючее, живое, настоящее внутри мягкого, сладкого, бесформенного.</p>
+    </Text>
+
+    <Section title="Как разрабатывалось." />
+    <Text>
+      <p>Пайплайн на&nbsp;основе методологии <a href="https://github.com/NousResearch/autonovel">NousResearch/autonovel</a>&nbsp;&mdash; системы автономной генерации романов. Оригинал заточен под сюжетное фэнтези; мы&nbsp;адаптировали его под модернистскую прозу.</p>
+    </Text>
+
+    <Section title="1. Скилл." />
+    <Text>
+      <p>Создали скилл <code>/autonovel</code> для Claude Code, который содержит всю методологию: фазы, промпты, антислоп-списки, систему оценки. Адаптировали под два режима: сюжетный и&nbsp;модернистский. Для русского языка собрали отдельные списки AI-штампов&nbsp;&mdash; «хрупкая тишина», «зыбкий свет», «волна эмоций накрыла» и&nbsp;т.д.</p>
+    </Text>
+
+    <Section title="2. Seed." />
+    <Text>
+      <p>Отправная точка&nbsp;&mdash; два ранних фрагмента автора. Из&nbsp;них извлекли голос: деепричастные каскады, грамматические сдвиги рода, фразы обрывающиеся предлогом, «оно» как размытый субъект. На&nbsp;основе фрагментов сформулировали seed: образные кластеры (дорога, океан, камень, кактус/зефир, свет/тьма), центральное движение (поиск без цели), тему (можно&nbsp;ли найти себя, если ты&nbsp;&mdash; процесс поиска).</p>
+    </Text>
+
+    <Section title="3. Голос." />
+    <Text>
+      <p>Написали 3&nbsp;пробных пассажа в&nbsp;разных регистрах одного голоса. Автор выбрал: лексику из&nbsp;первого (увесистые, угловатые слова), логику из&nbsp;третьего (цепочки-лестницы, вальзеровская ирония), убрал нежность, убрал поучательность. Синтез утверждён, зафиксирован как эталон в&nbsp;voice.md с&nbsp;тремя антиэталонами (конвенциональная проза, AI-«поэтическая» проза, поучающая проза).</p>
+    </Text>
+
+    <Section title="4. Foundation." />
+    <Text>
+      <p>Вместо мира/персонажей/аутлайна (как в&nbsp;оригинальном autonovel) построили:</p>
+      <p>&mdash;&nbsp;voice.md&nbsp;&mdash; голос (ритмическая подпись, синтаксический отпечаток, грамматические свободы, запреты)</p>
+      <p>&mdash;&nbsp;images.md&nbsp;&mdash; карта образов (5&nbsp;кластеров с&nbsp;трансформациями, перекрёстками, запрещёнными клише)</p>
+      <p>&mdash;&nbsp;spiral.md&nbsp;&mdash; спиральная структура (15&nbsp;глав, 3&nbsp;витка: внешнее&nbsp;&rarr; размывание&nbsp;&rarr; растворение)</p>
+      <p>&mdash;&nbsp;canon.md&nbsp;&mdash; якоря (установленные образы, грамматические правила, рефрены)</p>
+    </Text>
+
+    <Section title="5. Драфтинг." />
+    <Text>
+      <p>15&nbsp;глав написаны подряд. Каждая&nbsp;&mdash; по&nbsp;своей записи в&nbsp;spiral.md: доминантный кластер, движение (подступ, растворение, кристаллизация), тональный регистр, длина (от&nbsp;одного абзаца до&nbsp;3&nbsp;страниц), способ концовки (обрыв, растворение, укол).</p>
+    </Text>
+    <Text tight>
+      <p>Самооценка по&nbsp;5&nbsp;критериям: верность голосу, плотность образов, спиральное движение, ритмическая целостность, оригинальность. Порог прохождения&nbsp;&mdash; 6.0/10.</p>
+    </Text>
+
+    <Section title="6. Review." />
+    <Text>
+      <p>Двойная рецензия: литературный критик (в&nbsp;традиции Вальтера Беньямина) + профессор модернистской литературы. Выявлено 3&nbsp;мажорных дефекта:</p>
+      <p>&mdash;&nbsp;Конструкция-паразит «слово с&nbsp;берега» повторялась 6&nbsp;раз, стала тиком</p>
+      <p>&mdash;&nbsp;Каталожные фрагменты в&nbsp;главах 7, 11, 14&nbsp;&mdash; списки вместо прозы</p>
+      <p>&mdash;&nbsp;Триадная симметрия забывания в&nbsp;главе 9&nbsp;&mdash; предсказуемый параллелизм</p>
+    </Text>
+
+    <Section title="7. Ревизия." />
+    <Text>
+      <p>Один хирургический цикл. «Слово с&nbsp;берега» оставлено 2&nbsp;из&nbsp;6&nbsp;раз&nbsp;&mdash; первое (определение) и&nbsp;последнее («последнее слово с&nbsp;берега»&nbsp;&mdash; рефрен прощается с&nbsp;собой). Каталоги переписаны в&nbsp;петли. Триада в&nbsp;гл.&nbsp;9&nbsp;разбита&nbsp;&mdash; «Вода никогда не&nbsp;была океаном&nbsp;&mdash; это мы&nbsp;её так».</p>
+    </Text>
+    <Text tight>
+      <p>Финальная оценка: 7.8/10. Вердикт рецензента: «Язык рецензии сместился от&nbsp;&ldquo;у&nbsp;текста есть проблемы&rdquo; к&nbsp;&ldquo;это цена выбранной формы&rdquo;. Текст готов.»</p>
+    </Text>
+
+    <Section title="Что осталось." />
+    <Text>
+      <p>Текст&nbsp;&mdash; первый драфт совместной работы. Автор может продолжить редактуру. Скилл <code>/autonovel</code> остаётся как инструмент для будущих текстов&nbsp;&mdash; и&nbsp;сюжетных, и&nbsp;экспериментальных.</p>
+    </Text>
+  </Article>
+</PageLayout>
+
+<style>
+  .title-block {
+    margin-top: var(--space-5);
+  }
+
+  .mst-title {
+    margin-bottom: -3.5rem;
+  }
+
+  .mst-title h1 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .mst-title mark {
+    background-color: var(--color-accent-pink);
+    color: inherit;
+  }
+</style>

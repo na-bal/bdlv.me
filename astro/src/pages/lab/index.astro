@@ -1,0 +1,161 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+
+interface MetaModule {
+  meta: {
+    title: string;
+    description: string;
+    date: Date;
+    cover?: string;
+    type?: string;
+    category: "stickers" | "services" | "texture" | "unsorted";
+    tags?: string[];
+    hasProcess?: boolean;
+    processLinkLabel?: string;
+    pinned?: boolean;
+    draft?: boolean;
+  };
+}
+
+const metaModules = import.meta.glob<MetaModule>("./*/_meta.ts", {
+  eager: true,
+});
+
+interface Experiment extends MetaModule["meta"] {
+  slug: string;
+  url: string;
+}
+
+const experiments: Experiment[] = Object.entries(metaModules)
+  .map(([path, mod]) => {
+    const slug = path.replace(/^\.\//, "").replace(/\/_meta\.ts$/, "");
+    return { slug, url: `/lab/${slug}/`, ...mod.meta };
+  })
+  .filter((e) => !e.draft)
+  .sort((a, b) => {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+    return b.date.getTime() - a.date.getTime();
+  });
+
+const CATEGORY_LABELS: Record<Experiment["category"], string> = {
+  stickers: "Стикерпаки",
+  services: "Услуги",
+  texture: "Текстура",
+  unsorted: "Ансортед",
+};
+
+const CATEGORY_ORDER: Experiment["category"][] = ["stickers", "services", "texture", "unsorted"];
+
+const grouped = CATEGORY_ORDER.map((cat) => ({
+  key: cat,
+  label: CATEGORY_LABELS[cat],
+  items: experiments.filter((e) => e.category === cat),
+})).filter((g) => g.items.length > 0);
+---
+
+<PageLayout
+  title="Лаборатория — BDLV.me"
+  description="Каталог экспериментов: стикерпаки, интерактивные штуки и прочая лабораторная радость."
+  ogImage="/blobbo.svg"
+>
+  <h1 class="lab-title">Лаборатория</h1>
+
+  <div class="proj-nav">
+    {
+      grouped.map((group) => (
+        <div class="proj-nav-item">
+          <div class="proj-nav-title">{group.label}</div>
+          {group.items.map((exp) => (
+            <a class="proj-nav-btn" href={exp.url}>
+              <p>{exp.title}</p>
+            </a>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</PageLayout>
+
+<style>
+  .lab-title {
+    font-family: var(--font-body);
+    font-size: 4rem;
+    font-weight: 400;
+    margin: 0 0 2rem;
+  }
+
+  .proj-nav {
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: repeat(auto-fill, 300px);
+    justify-content: start;
+    margin-top: 3rem;
+    padding-bottom: 6rem;
+  }
+
+  .proj-nav-item {
+    border: 2px solid #000000;
+    box-sizing: border-box;
+    background: #feb3ce;
+    border-radius: 30px;
+    width: 151px;
+
+    padding-bottom: 4rem;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-rows: repeat(auto-fill, 56px);
+  }
+
+  .proj-nav-title {
+    font-family: var(--font-body);
+    padding-top: 10px;
+    padding-left: 12px;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .proj-nav-btn {
+    display: flex;
+    align-items: center;
+    width: 237px;
+    height: 56px;
+    background: rgba(229, 229, 229, 0.9);
+    border: 2px solid #000000;
+    box-sizing: border-box;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+
+    margin-left: 55px;
+    padding-left: 20px;
+
+    text-decoration: underline;
+    color: var(--color-text);
+
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .proj-nav-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .proj-nav-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .proj-nav-btn p {
+    font-family: var(--font-body);
+    font-size: 1.6rem;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 750px) {
+    .proj-nav {
+      justify-content: start;
+      margin-bottom: 10rem;
+    }
+  }
+</style>

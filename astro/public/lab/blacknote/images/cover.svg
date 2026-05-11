@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#000"/>
+  <g font-family="ui-monospace, SF Mono, Menlo, monospace" fill="#fff">
+    <text x="60" y="120" font-size="40" fill="#888">Текст хранится в вашем браузере.</text>
+    <text x="60" y="180" font-size="40" fill="#888">Только у вас. 🦆</text>
+    <text x="60" y="320" font-size="64">мысли вслух —</text>
+    <text x="60" y="400" font-size="64"><tspan fill="#000" style="background-color:#ffb3ce">никто их не</tspan> увидит.</text>
+    <rect x="46" y="358" width="558" height="64" fill="#ffb3ce" opacity="0.95"/>
+    <text x="60" y="400" font-size="64" fill="#000">никто их не</text>
+    <text x="620" y="400" font-size="64" fill="#fff">увидит.</text>
+    <rect x="60" y="490" width="20" height="60" fill="#fff">
+      <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+    </rect>
+    <text x="1140" y="600" font-size="22" fill="#444" text-anchor="end">bdlv.me · BlackNote</text>
+  </g>
+</svg>

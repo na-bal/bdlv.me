@@ -1,0 +1,52 @@
+---
+interface Props {
+  /** Сжать верхний отступ (соответствует утилитам .mt-15/.mt-10/.mt-20). */
+  tight?: boolean;
+}
+
+const { tight = false } = Astro.props;
+---
+
+<div class:list={["article-text", { "article-text--tight": tight }]}>
+  <slot />
+</div>
+
+<style>
+  .article-text {
+    grid-column: 3 / 8;
+  }
+  .article-text--tight {
+    margin-top: -1.5rem;
+  }
+
+  .article-text :global(p),
+  .article-text :global(li) {
+    font-size: var(--font-size-md);
+    line-height: 2.8rem;
+  }
+
+  .article-text :global(a) {
+    color: var(--color-link);
+  }
+
+  @media screen and (max-width: 1300px) {
+    .article-text {
+      grid-column: 3 / 9;
+    }
+  }
+  @media screen and (max-width: 1000px) {
+    .article-text {
+      grid-column: 2 / 9;
+    }
+  }
+  @media screen and (max-width: 750px) {
+    .article-text {
+      grid-column: 1 / 10;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .article-text {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

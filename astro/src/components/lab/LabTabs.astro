@@ -1,0 +1,66 @@
+---
+interface Tab {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  tabs: Tab[];
+  /** Какой таб подсвечен как активный (1-based ИЛИ совпадение по href). */
+  activeHref?: string;
+}
+
+const { tabs, activeHref } = Astro.props;
+const here = Astro.url.pathname;
+
+function isActive(tab: Tab) {
+  if (activeHref) return tab.href === activeHref;
+  return tab.href === here;
+}
+---
+
+<nav class="secondary-nav" aria-label="Навигация эксперимента">
+  {
+    tabs.map((tab) => (
+      <div class="nav-item">
+        <a
+          href={tab.href}
+          class:list={["tab", isActive(tab) ? "tab--active" : "tab--passive"]}
+        >
+          {tab.label}
+        </a>
+      </div>
+    ))
+  }
+</nav>
+
+<style>
+  .secondary-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    padding-left: 2rem;
+    margin: 6rem 0 4rem;
+  }
+
+  .nav-item {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .tab {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .tab--active {
+    border-top: 3px solid var(--color-text);
+    width: fit-content;
+    padding-top: 3px;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .tab--passive:hover {
+    color: var(--color-link-hover);
+    width: fit-content;
+  }
+</style>

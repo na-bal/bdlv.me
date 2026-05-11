@@ -1,0 +1,171 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import LabTabs from "../../../components/lab/LabTabs.astro";
+import Article from "../../../components/lab/Article.astro";
+import Section from "../../../components/lab/Section.astro";
+import Text from "../../../components/lab/Text.astro";
+import Grid from "../../../components/lab/Grid.astro";
+import Img from "../../../components/lab/Img.astro";
+
+const IMG = "/lab/pantone-colors/images";
+const FILE = "/lab/pantone-colors/files";
+
+const stickers = [
+  { name: "love-bird", file: "pantone-colors-love-bird.svg", alt: "Pantone Love Bird" },
+  { name: "lemon-chrome", file: "pantone-colors-lemon-chrome.svg", alt: "Pantone Lemon Chrome" },
+  { name: "bachelor-button", file: "pantone-colors-bachelor-button.svg", alt: "Pantone Bachelor Button" },
+  { name: "surf-the-web", file: "pantone-colors-surf-the-web.svg", alt: "Pantone Surf the Web" },
+  { name: "flamingo", file: "pantone-colors-flamingo.svg", alt: "Pantone Flamingo" },
+  { name: "fairy-tale", file: "pantone-colors-fairy-tale.svg", alt: "Pantone Fairy Tale" },
+];
+
+const palettes = [
+  { num: "1", file: "pantone-colors-palette-1.png", alt: "Палитра 1" },
+  { num: "2", file: "pantone-colors-palette-2.png", alt: "Палитра 2" },
+  { num: "3", file: "pantone-colors-palette-3.png", alt: "Палитра 3" },
+  { num: "CofY", file: "pantone-colors-palette-CofY.png", alt: "Цвета года" },
+];
+
+const aseFiles = [
+  { num: "1", label: "Первая палитра.", download: "bdlv.me - Pantone pallet 1" },
+  { num: "2", label: "Вторая палитра.", download: "bdlv.me - Pantone pallet 2" },
+  { num: "3", label: "Третья палитра.", download: "bdlv.me - Pantone pallet 3" },
+  { num: "CofY", label: "Цвета года.", download: "bdlv.me - Pantone pallet Color of The Year" },
+];
+---
+
+<PageLayout
+  title="Pantone Colors — BDLV.me"
+  description="Стикерпак с цветами Pantone для Telegram. Помогает быстро ссылаться на оттенок в переписке."
+  ogImage={`${IMG}/pantone-colors-love-bird.svg`}
+  ogType="article"
+  fluid
+>
+  <div class="title-block">
+    <div class="title-pantone">
+      <h1>Pantone Colors</h1>
+    </div>
+
+    <LabTabs
+      tabs={[
+        { label: "Описание", href: "/lab/pantone-colors/" },
+        { label: "Процесс", href: "/lab/pantone-colors/process/" },
+      ]}
+    />
+  </div>
+
+  <Article>
+    <Section title="Источник." />
+    <Text>
+      <p>Стикерпак собран из&nbsp;цветов, представленных на&nbsp;сайте Pantone.com</p>
+    </Text>
+
+    <Section title="Добавить стикерпак." />
+    <Text>
+      <p>
+        <a href="https://telegram.me/addstickers/pantone_colors">/pantone_colors</a>
+      </p>
+    </Text>
+
+    <Section title="Идея." />
+    <Text>
+      <p>
+        На&nbsp;сайт лезть лень, а&nbsp;тыкать в&nbsp;цветовое полотно долго +
+        не&nbsp;всегда за&nbsp;компом. Нужен инструмент, который позволит быстро
+        взглянуть на&nbsp;палитру и&nbsp;определиться с&nbsp;цветом.
+      </p>
+    </Text>
+    <Text tight>
+      <p>
+        Также, в&nbsp;переписке неудобно говорить «красный» и&nbsp;даже «тёмно красный»,
+        проще сразу отправить конкретный оттенок.
+      </p>
+    </Text>
+    <Text tight>
+      <p>Было решено сделать стикеры в&nbsp;Телеграм:</p>
+      <ul>
+        <li>всегда под рукой;</li>
+        <li>не&nbsp;занимают лишнее место;</li>
+        <li>уже готовы к&nbsp;отправке;</li>
+        <li>содержат всю необходимую информацию.</li>
+      </ul>
+    </Text>
+
+    <Grid cols={3}>
+      {stickers.map((s) => <Img src={`${IMG}/${s.file}`} alt={s.alt} variant="col3" />)}
+    </Grid>
+
+    <Text tight>
+      <p class="text-end">
+        <a href="https://telegram.me/addstickers/pantone_colors">Добавить стикерпак в&nbsp;Telegram</a>
+      </p>
+    </Text>
+
+    <Section title="Артефакты." />
+    <Text>
+      <p>
+        Все использованные цвета сохранены на&nbsp;память в&nbsp;палитрах
+        на&nbsp;connect.pantone.com. Походу, у&nbsp;пантона нет функции пошерить
+        ссылку на&nbsp;доступ, поэтому держите .ase-файлы.
+      </p>
+    </Text>
+    {
+      aseFiles.map((f) => (
+        <Text tight>
+          <p>
+            <a
+              href={`${FILE}/pantone-colors-palette-${f.num}.ase`}
+              download={f.download}
+            >
+              {f.label}
+            </a>
+          </p>
+        </Text>
+      ))
+    }
+
+    <Grid cols={2}>
+      {palettes.map((p) => <Img src={`${IMG}/${p.file}`} alt={p.alt} variant="col3" />)}
+    </Grid>
+  </Article>
+</PageLayout>
+
+<style>
+  .title-block {
+    /* Группировка плашки и табов: они центрируются как блок,
+       табы остаются выровнены по левому краю плашки. */
+    margin-top: var(--space-5);
+  }
+
+  .title-pantone {
+    padding: 0 10rem;
+    margin-bottom: -3.5rem;
+    background-color: var(--color-accent-yellow);
+    border: 4px solid var(--color-border);
+  }
+
+  .title-pantone h1 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.1;
+    /* Совпадает с дефолтным margin <p> старой версии — задаёт высоту плашки. */
+    margin: 1em 0;
+  }
+
+  .text-end {
+    text-align: right;
+  }
+
+  @media screen and (max-width: 750px) {
+    .title-pantone {
+      padding: 0 4rem;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    .title-pantone {
+      padding: 0 2rem;
+    }
+  }
+</style>

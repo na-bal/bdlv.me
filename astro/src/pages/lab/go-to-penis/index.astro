@@ -1,0 +1,382 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+
+const YMAPS_API_KEY = "74fbe49b-5632-493c-a3b4-bf3f23b5d25b";
+const YMAPS_API_URL = `https://api-maps.yandex.ru/2.1/?apikey=${YMAPS_API_KEY}&lang=ru_RU`;
+---
+
+<PageLayout
+  title="Иди на х🦆й — BDLV.me"
+  description="Интерактивный эксперимент: специально обученная система посылания на хуй или вот сюда. У каждого должен быть выбор куда идти."
+  ogImage="/lab/go-to-penis/cover.svg"
+  ogType="article"
+  fluid
+>
+  <div class="new-grid">
+    <div class="go-text">
+      <h1>
+        Иди на хуй
+        <br />
+        или
+        <br />
+        вооооооот&nbsp;сюда
+        <span class="go-colorLine">
+          <svg
+            class="go-triangle"
+            width="673"
+            height="82"
+            viewBox="0 0 673 82"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M-2.05443e-06 41L672.75 0.296815L672.75 81.7032L-2.05443e-06 41Z"
+              fill="url(#paint0_linear_39_3)"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_39_3"
+                x1="-2.05443e-06"
+                y1="41"
+                x2="897"
+                y2="41"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#2BFFD9" />
+                <stop offset="0.447917" stop-color="#FFED8E" />
+                <stop offset="1" stop-color="#FFB8B8" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+      </h1>
+    </div>
+
+    <div class="go-map">
+      <span class="go-colorLine-2">
+        <svg
+          class="go-triangle"
+          width="673"
+          height="82"
+          viewBox="0 0 673 82"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M-2.05443e-06 41L672.75 0.296815L672.75 81.7032L-2.05443e-06 41Z"
+            fill="url(#paint0_linear_39_4)"
+          />
+          <defs>
+            <linearGradient
+              id="paint0_linear_39_4"
+              x1="-2.05443e-06"
+              y1="41"
+              x2="897"
+              y2="41"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#2BFFD9" />
+              <stop offset="0.447917" stop-color="#FFED8E" />
+              <stop offset="1" stop-color="#FFB8B8" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      <div id="map" class="map"></div>
+    </div>
+
+    <div class="go-btns">
+      <button id="getCoordinates" class="go-btn" type="button">
+        Получить координаты ✈️
+      </button>
+      <button id="share" class="go-btn" type="button">
+        Послать на х🦆й
+      </button>
+    </div>
+
+    <div class="go-est">
+      <p>Посылаем на хуй с 2021г.</p>
+    </div>
+
+    <div class="go-info">
+      <p>
+        Мы разработали и&nbsp;специально обучили систему посылания на&nbsp;хуй
+        или вот сюда: считаем, что у&nbsp;каждого человека должен быть выбор
+        куда идти.
+      </p>
+    </div>
+  </div>
+
+  <!-- Скрипты карты — внутри слота PageLayout, чтобы попасть внутрь
+       <body> в правильном порядке: сначала Yandex API, потом наш init. -->
+  <script is:inline src={YMAPS_API_URL}></script>
+  <script is:inline src="/lab/go-to-penis/go-to-penis-map.js"></script>
+</PageLayout>
+
+<style>
+  .new-grid {
+    width: 100%;
+    display: grid;
+    grid-template-areas:
+      "text text map map"
+      "btn btn map map"
+      "est est info info";
+    grid-template-columns: repeat(4, 1fr);
+    align-content: start;
+  }
+
+  .go-text {
+    grid-area: text;
+    justify-self: center;
+    align-self: start;
+  }
+
+  .go-text h1 {
+    font-family: var(--font-body);
+    font-size: 6.5rem;
+    line-height: 6.5rem;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  .go-map {
+    grid-area: map;
+    align-self: start;
+  }
+
+  .map {
+    width: 600px;
+    height: 500px;
+  }
+
+  .go-btns {
+    grid-area: btn;
+    justify-self: center;
+    align-self: center;
+  }
+
+  .go-btn {
+    grid-column: 1 / -1;
+    width: fit-content;
+    justify-self: center;
+
+    padding: 1.5rem 2rem;
+
+    background: var(--color-surface-muted);
+    border: 2px solid var(--color-border);
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+
+    position: relative;
+    top: 0;
+    right: 0;
+    transition: 0.2s ease;
+    cursor: pointer;
+  }
+
+  .go-btn:hover {
+    background: var(--color-accent-pink);
+    top: -3px;
+    right: -3px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.65);
+  }
+
+  .go-btn:active {
+    background: var(--color-surface-muted);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+    top: 2px;
+    right: 3px;
+  }
+
+  .go-est {
+    grid-area: est;
+    justify-self: center;
+  }
+
+  .go-est p {
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin: 0;
+  }
+
+  .go-info {
+    grid-area: info;
+    max-width: 600px;
+    align-self: start;
+  }
+
+  .go-info p {
+    font-size: 1.4rem;
+    font-weight: 300;
+  }
+
+  /* Стрелка-градиент: точка треугольника попадает в слово «сюда»,
+     широкий хвост уходит вправо. Достигается inline-span с
+     position: absolute и отрицательными margin'ами, как в оригинале. */
+  .go-colorLine {
+    position: absolute;
+    margin-left: -55rem;
+    margin-top: -0.45rem;
+    z-index: -1;
+  }
+
+  .go-colorLine-2 {
+    display: none;
+  }
+
+  /* Дополнительный сдвиг SVG-треугольника вправо: точка треугольника
+     попадает в начало слова, видимая часть градиента уходит вправо
+     от текста. В оригинале это было на #traingle (опечатка в id). */
+  .go-triangle {
+    margin-left: 5rem;
+  }
+
+  /* media */
+  @media screen and (max-width: 1300px) {
+    .map {
+      width: 470px;
+      height: 400px;
+    }
+    .go-info {
+      max-width: 470px;
+    }
+  }
+
+  @media screen and (max-width: 1000px) {
+    .go-text h1 {
+      font-size: 4.5rem;
+      line-height: 4.5rem;
+      font-weight: 400;
+    }
+
+    .go-colorLine {
+      position: absolute;
+      margin-left: -39.3rem;
+      margin-top: -1.55rem;
+      z-index: -1;
+    }
+
+    .map {
+      width: 400px;
+      height: 330px;
+    }
+    .go-info {
+      max-width: 400px;
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    :global(main) {
+      overflow-x: hidden;
+    }
+
+    .new-grid {
+      grid-template-areas:
+        "text text"
+        "map map"
+        "info info"
+        "btn btn"
+        "est est";
+      grid-template-columns: repeat(2, 1fr);
+      padding-bottom: 10rem;
+    }
+
+    .go-text h1 {
+      font-size: 4.5rem;
+      line-height: 4.5rem;
+      margin-left: 7rem;
+    }
+
+    .go-colorLine {
+      position: absolute;
+      margin-left: -39.3rem;
+      margin-top: -1.55rem;
+      z-index: -1;
+      overflow: hidden;
+      scroll-behavior: none;
+    }
+
+    .go-map {
+      align-self: center;
+      justify-self: center;
+      margin-left: -7rem;
+    }
+
+    .map {
+      width: 400px;
+      height: 330px;
+    }
+
+    .go-info {
+      justify-self: center;
+      max-width: 400px;
+      margin-left: -7rem;
+      margin-bottom: 2rem;
+    }
+
+    .go-colorLine-2 {
+      display: block;
+      position: absolute;
+      margin-left: -65rem;
+      margin-top: 13.45rem;
+      z-index: -1;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    .go-text h1 {
+      font-size: 4.5rem;
+      line-height: 4.5rem;
+      margin-left: 0;
+    }
+
+    .go-map {
+      margin-left: 2rem;
+    }
+
+    .map {
+      width: 300px;
+      height: 330px;
+    }
+
+    .go-info {
+      justify-self: center;
+      max-width: 300px;
+      margin-left: 2.5rem;
+    }
+
+    .go-info p {
+      font-size: 1.2rem;
+      font-weight: 300;
+    }
+
+    .go-btns {
+      display: grid;
+    }
+
+    .go-btn {
+      width: 300px;
+      margin-bottom: 1rem;
+    }
+  }
+
+  /* Safari: лёгкая поправка позиции стрелки под -webkit рендеринг */
+  @media not all and (min-resolution: 0.001dpcm) {
+    @supports (-webkit-appearance: none) and (display: flow-root) {
+      .go-colorLine {
+        margin-left: -4.4rem;
+        margin-top: -7rem;
+      }
+      @media screen and (max-width: 1000px) {
+        .go-colorLine {
+          margin-left: -4.6rem;
+          margin-top: -6rem;
+        }
+      }
+    }
+  }
+</style>

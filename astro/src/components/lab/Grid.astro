@@ -1,0 +1,42 @@
+---
+interface Props {
+  /** Число колонок: 2 или 3. На малых экранах сетка ужимается. */
+  cols?: 2 | 3;
+}
+
+const { cols = 3 } = Astro.props;
+---
+
+<div class:list={["article-grid", `article-grid--${cols}`]}>
+  <slot />
+</div>
+
+<style>
+  .article-grid {
+    grid-column: 3 / span 9;
+    display: grid;
+    justify-content: center;
+  }
+  .article-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .article-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 1000px) {
+    .article-grid {
+      grid-column: 2 / span 10;
+    }
+  }
+  @media screen and (max-width: 750px) {
+    .article-grid {
+      grid-column: 1 / -1;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

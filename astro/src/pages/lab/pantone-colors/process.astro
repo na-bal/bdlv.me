@@ -1,0 +1,191 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import LabTabs from "../../../components/lab/LabTabs.astro";
+import Article from "../../../components/lab/Article.astro";
+import Section from "../../../components/lab/Section.astro";
+import Text from "../../../components/lab/Text.astro";
+import Img from "../../../components/lab/Img.astro";
+import Btn from "../../../components/lab/Btn.astro";
+
+const IMG = "/lab/pantone-colors/images";
+---
+
+<PageLayout
+  title="Pantone Colors — процесс — BDLV.me"
+  description="Процесс создания стикерпака с цветами Pantone для Telegram."
+  ogImage={`${IMG}/pantone-colors-love-bird.svg`}
+  ogType="article"
+  fluid
+>
+  <div class="title-block">
+    <div class="title-pantone">
+      <h1>Pantone Colors</h1>
+    </div>
+
+    <LabTabs
+      tabs={[
+        { label: "Описание", href: "/lab/pantone-colors/" },
+        { label: "Процесс", href: "/lab/pantone-colors/process/" },
+      ]}
+    />
+  </div>
+
+  <Article>
+    <Section title="1. Определяемся с формой стикера" />
+    <Text>
+      <p>
+        Используем классическую пантоновскую карточку. Думаем, где
+        расположить информацию о&nbsp;цвете.
+      </p>
+    </Text>
+    <Img
+      src={`${IMG}/pantone-colors-process-1step-1.svg`}
+      alt="Эскиз классической пантоновской карточки"
+      variant="mininlinestart4"
+    />
+
+    <Section title="2. Тестируем" />
+    <Text>
+      <p>
+        Заливаем в&nbsp;Телеграм. Кажется, что по&nbsp;размеру угадали — все
+        надписи видно хорошо. Но&nbsp;почему&nbsp;бы не&nbsp;использовать всё
+        возможное пространство стикера (512px × 512px). Пользователю
+        пойдёт на&nbsp;пользу, сможет лучше рассмотреть цвет.
+      </p>
+    </Text>
+    <Img
+      src={`${IMG}/pantone-colors-process-2step-1.png`}
+      alt="Скриншот тестового стикера в Телеграме"
+      variant="mininlinestart2"
+    />
+
+    <Section title="3. Делаем новую форму" />
+    <Text>
+      <p>
+        Теперь у&nbsp;нас квадрат. Появилось место справа, пробуем втулить
+        цветовые координаты туда и&nbsp;сохранить общую читаемость карточки.
+        Набрасываем варианты.
+      </p>
+    </Text>
+    <Img
+      src={`${IMG}/pantone-colors-process-3step-1.svg`}
+      alt="Варианты квадратной формы стикера"
+      variant="inlinestart"
+    />
+    <Text>
+      <p>
+        По&nbsp;ходу дела понимаем, что нужно убрать лишние графические подсказки:
+        они не&nbsp;помогают, а&nbsp;только добавляют мусора на&nbsp;экран.
+      </p>
+    </Text>
+    <Img
+      src={`${IMG}/pantone-colors-process-3step-2.svg`}
+      alt="Упрощённая форма стикера"
+      variant="inlinestart"
+    />
+
+    <Section title="4. Тестируем новую форму" />
+    <Text>
+      <p>
+        Площадь увеличилась, цвет видно лучше. Но&nbsp;теперь часть информации
+        перекрывает системный бабл Телеграма с&nbsp;временем отправки сообщения.
+      </p>
+    </Text>
+    <Img
+      src={`${IMG}/pantone-colors-process-4step-1.png`}
+      alt="Скриншот теста новой формы"
+      variant="mininlinestart2"
+    />
+
+    <Section title="5. Дорабатываем" />
+    <Text>
+      <p>
+        Меняем блоки текста местами: название уносим вправо, координаты — влево.
+        Увеличиваем размер инфокарты, немного срезаем площадь цвета. Общего вида
+        не&nbsp;портит, значит оставляем. Теперь всё хорошо. Настраиваем вес шрифта
+        и&nbsp;заканчиваем с&nbsp;шаблоном стикера.
+      </p>
+    </Text>
+    <Img
+      src={`${IMG}/pantone-colors-process-5step-1.svg`}
+      alt="Финальный шаблон стикера"
+      variant="mininlinestart4"
+    />
+
+    <Section title="6. Отбираем лучшие цвета на пантоне и закидываем их в шаблоны" />
+    <Text>
+      <p>
+        Внимательно отсматриваем все цвета из&nbsp;коллекции «PANTONE® FHI Cotton TCX».
+        Почему именно она? Куча цветов (3000+) и&nbsp;у&nbsp;каждого есть название.
+        Название цвета для пользователя — дополнительный крючок в&nbsp;памяти.
+      </p>
+    </Text>
+    <Text tight>
+      <p>По&nbsp;ходу дела добавляем в&nbsp;стикерпак цвета года.</p>
+    </Text>
+    <Img
+      src={`${IMG}/pantone-colors-process-6step-1.svg`}
+      alt="Отбор цветов из коллекции Pantone"
+      variant="inlinestart"
+    />
+    <Img
+      src={`${IMG}/pantone-colors-process-6step-2.svg`}
+      alt="Цвета года Pantone"
+      variant="inlinestart"
+    />
+
+    <Section title="7. Готово" />
+    <Text>
+      <p>
+        Загружаем [очень нудно и&nbsp;по&nbsp;одному стикеру]. Итого 109&nbsp;карточек.
+        Можно пользоваться!
+      </p>
+    </Text>
+    <Img
+      src={`${IMG}/pantone-colors-process-7step-1.png`}
+      alt="Готовый стикерпак"
+      variant="mininlinestart4"
+    />
+
+    <Btn
+      href="https://telegram.me/addstickers/pantone_colors"
+      external
+      end
+    >
+      Добавить стикерпак в&nbsp;Telegram
+    </Btn>
+  </Article>
+</PageLayout>
+
+<style>
+  .title-block {
+    margin-top: var(--space-5);
+  }
+
+  .title-pantone {
+    padding: 0 10rem;
+    margin-bottom: -3.5rem;
+    background-color: var(--color-accent-yellow);
+    border: 4px solid var(--color-border);
+  }
+
+  .title-pantone h1 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.1;
+    margin: 1em 0;
+  }
+
+  @media screen and (max-width: 750px) {
+    .title-pantone {
+      padding: 0 4rem;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    .title-pantone {
+      padding: 0 2rem;
+    }
+  }
+</style>

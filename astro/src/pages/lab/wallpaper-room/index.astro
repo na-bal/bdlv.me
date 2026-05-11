@@ -1,0 +1,135 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+
+const COVER = "/lab/wallpaper-room/images/cover.png";
+const SPLINE_URL =
+  "https://my.spline.design/-ffcf0a5f0b4c2c1c8b3a672aa7cbf04d/";
+---
+
+<PageLayout
+  title="Комната с обоями — BDLV.me"
+  description="Интерактивная 3D-комната, собранная в Spline. Прогуляйся внутри, посмотри как сочетаются обои."
+  ogImage={COVER}
+  ogType="article"
+  fluid
+>
+  <div class="title-block">
+    <div class="mst-title">
+      <h1><mark>«Комната с&nbsp;обоями»</mark></h1>
+    </div>
+  </div>
+
+  <div class="room-wrap" data-state="loading">
+    <iframe
+      class="room"
+      src={SPLINE_URL}
+      title="3D-комната с обоями"
+      frameborder="0"
+      loading="lazy"></iframe>
+
+    <div class="room-loading" data-testid="wallpaper-loading" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Грузится 3D-комната…<br />может занять до&nbsp;10&nbsp;секунд</p>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      const wrap = document.querySelector(".room-wrap");
+      const iframe = wrap?.querySelector("iframe.room");
+      if (!wrap || !iframe) return;
+      const markLoaded = () => wrap.setAttribute("data-state", "loaded");
+      iframe.addEventListener("load", markLoaded, { once: true });
+      // Fallback: даже если onload не сработает по любой причине,
+      // через 25с снимаем оверлей чтобы не висеть бесконечно.
+      setTimeout(markLoaded, 25000);
+    })();
+  </script>
+</PageLayout>
+
+<style>
+  .title-block {
+    margin-top: var(--space-5);
+    margin-bottom: 2rem;
+  }
+
+  .mst-title {
+    margin-bottom: -3.5rem;
+  }
+
+  .mst-title h1 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .mst-title mark {
+    background-color: var(--color-accent-pink);
+    color: inherit;
+  }
+
+  .room-wrap {
+    position: relative;
+    width: 100vw;
+    /* Сцена зеркалит старый сайт: 90vh / 100vw. Wrapper выходит за пределы
+       контентной колонки, поэтому компенсируем margin влево. */
+    margin-left: calc(50% - 50vw);
+  }
+
+  .room {
+    display: block;
+    width: 100vw;
+    height: 90vh;
+    border: 0;
+  }
+
+  .room-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    background: var(--color-bg, #fff);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    line-height: 1.4;
+    text-align: center;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .room-loading p {
+    margin: 0;
+    max-width: 36rem;
+  }
+
+  .room-wrap[data-state="loaded"] .room-loading {
+    opacity: 0;
+  }
+
+  .spinner {
+    width: 4.8rem;
+    height: 4.8rem;
+    border: 4px solid var(--color-border, #000);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spinner {
+      animation: none;
+    }
+  }
+</style>

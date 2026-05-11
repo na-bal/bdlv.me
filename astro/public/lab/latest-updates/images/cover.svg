@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0e0e10"/>
+  <!-- chrome bar -->
+  <rect width="1200" height="56" fill="#1a1a1f"/>
+  <circle cx="36" cy="28" r="9" fill="#ff5f57"/>
+  <circle cx="64" cy="28" r="9" fill="#febc2e"/>
+  <circle cx="92" cy="28" r="9" fill="#28c840"/>
+  <text x="600" y="34" text-anchor="middle"
+    font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="18" fill="#888">
+    bdlv@me — zsh
+  </text>
+  <!-- terminal content -->
+  <g font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="28" fill="#ffb000">
+    <text x="60" y="140">$ pip install BDLV 2.0</text>
+    <text x="60" y="190" fill="#7a7a7a">[████████████████████] 100%</text>
+    <text x="60" y="240" fill="#cfcfcf">Сайт переехал на новые рельсы. Снова.</text>
+    <text x="60" y="320">$ BDLV 2.0 [09.05.2026]</text>
+    <text x="60" y="370" fill="#cfcfcf">&gt;&gt;&gt; Полностью переписан движок: Gulp → Astro</text>
+    <text x="60" y="420" fill="#cfcfcf">&gt;&gt;&gt; Дизайн-система — общие токены</text>
+    <text x="60" y="470" fill="#cfcfcf">&gt;&gt;&gt; Каждая страница покрыта e2e-спекой</text>
+    <text x="60" y="540">$ <tspan fill="#ffb000">▋</tspan></text>
+  </g>
+</svg>

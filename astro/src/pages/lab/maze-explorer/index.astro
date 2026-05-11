@@ -1,0 +1,141 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+
+const COVER = "/lab/maze-explorer/images/cover.svg";
+---
+
+<PageLayout
+  title="Лабиринт — BDLV.me"
+  description="Doom-style лабиринт с настоящими постерами на стенах. Подойди ближе — рассмотри картинку."
+  ogImage={COVER}
+  ogType="article"
+  fluid
+>
+  <h1 class="visually-hidden">Лабиринт</h1>
+
+  <div class="maze-game">
+    <canvas id="gameCanvas"></canvas>
+
+    <div class="game-controls desktop-only" aria-hidden="true">
+      <p>Стрелки <kbd>↑</kbd> <kbd>↓</kbd> — движение</p>
+      <p><kbd>←</kbd> <kbd>→</kbd> — поворот</p>
+    </div>
+
+    <div class="mobile-controls">
+      <div class="mobile-dpad">
+        <button class="dpad-btn dpad-up" data-key="ArrowUp" aria-label="Вперёд">↑</button>
+        <div class="dpad-row">
+          <button class="dpad-btn dpad-left" data-key="ArrowLeft" aria-label="Влево">←</button>
+          <button class="dpad-btn dpad-down" data-key="ArrowDown" aria-label="Назад">↓</button>
+          <button class="dpad-btn dpad-right" data-key="ArrowRight" aria-label="Вправо">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline src="/lab/maze-explorer/maze-explorer.js"></script>
+</PageLayout>
+
+<style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .maze-game {
+    position: relative;
+    width: 100vw;
+    height: 90vh;
+    /* Выходим из контентной колонки на полную ширину окна. */
+    margin-left: calc(50% - 50vw);
+    background: #000;
+    overflow: hidden;
+  }
+
+  #gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    image-rendering: pixelated;
+  }
+
+  .game-controls {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    line-height: 1.6;
+    pointer-events: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  }
+
+  .game-controls p {
+    margin: 0;
+  }
+
+  .game-controls kbd {
+    display: inline-block;
+    padding: 0.1em 0.4em;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    font-family: ui-monospace, monospace;
+    font-size: 0.95em;
+  }
+
+  .mobile-controls {
+    display: none;
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.5rem;
+  }
+
+  .mobile-dpad {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: center;
+  }
+
+  .dpad-row {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .dpad-btn {
+    width: 5.4rem;
+    height: 5.4rem;
+    background: rgba(255, 255, 255, 0.18);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 0.8rem;
+    color: #fff;
+    font-size: 2.4rem;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .dpad-btn:active {
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  @media (max-width: 750px) {
+    .desktop-only {
+      display: none;
+    }
+    .mobile-controls {
+      display: block;
+    }
+  }
+</style>

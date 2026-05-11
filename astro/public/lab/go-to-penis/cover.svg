@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <g transform="translate(120, 200)">
+    <text x="0" y="60" font-family="Roboto Slab, serif" font-size="84" font-weight="500" fill="#0c0c0c">Иди на хуй</text>
+    <text x="0" y="160" font-family="Roboto Slab, serif" font-size="84" font-weight="500" fill="#0c0c0c">или</text>
+    <text x="0" y="260" font-family="Roboto Slab, serif" font-size="84" font-weight="500" fill="#0c0c0c">вооооооот сюда</text>
+    <path d="M620 240 L1080 200 L1080 280 Z" fill="url(#triangleGradient)"/>
+  </g>
+  <defs>
+    <linearGradient id="triangleGradient" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2BFFD9"/>
+      <stop offset="0.45" stop-color="#FFED8E"/>
+      <stop offset="1" stop-color="#FFB8B8"/>
+    </linearGradient>
+  </defs>
+</svg>

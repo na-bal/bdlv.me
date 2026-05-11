@@ -1,0 +1,22 @@
+---
+// Контейнер контентной зоны эксперимента/процесса. 12-колоночный grid,
+// внутри которого живут Section/Text/Grid/Img.
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<article class:list={["article-main", className]}>
+  <slot />
+</article>
+
+<style>
+  .article-main {
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(12, 1fr);
+    margin-bottom: var(--space-8);
+  }
+</style>

@@ -1,0 +1,198 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import LabTabs from "../../../components/lab/LabTabs.astro";
+import Article from "../../../components/lab/Article.astro";
+import Section from "../../../components/lab/Section.astro";
+import Text from "../../../components/lab/Text.astro";
+import Img from "../../../components/lab/Img.astro";
+import Btn from "../../../components/lab/Btn.astro";
+
+const IMG = "/lab/my-sex-tape/images";
+---
+
+<PageLayout
+  title="My Sex Tape — процесс — BDLV.me"
+  description="Процесс создания стикерпака My Sex Tape для Telegram."
+  ogImage={`${IMG}/my-sex-tape-long.png`}
+  ogType="article"
+  fluid
+>
+  <div class="title-block">
+    <div class="mst-title">
+      <h1><mark>«Название для порно» // My sex tape</mark></h1>
+    </div>
+
+    <LabTabs
+      tabs={[
+        { label: "Описание", href: "/lab/my-sex-tape/" },
+        { label: "Процесс", href: "/lab/my-sex-tape/process/" },
+      ]}
+    />
+  </div>
+
+  <Article>
+    <Section title="1. Подбираем текст для стикеров" />
+    <Img
+      src={`${IMG}/my-sex-tape-process-1step-1.png`}
+      alt="Подбор текста — этап 1"
+      variant="inline1"
+    />
+    <Img
+      src={`${IMG}/my-sex-tape-process-1step-2.png`}
+      alt="Подбор текста — этап 2"
+      variant="inline2"
+    />
+
+    <Section title="2. Ищем нужную форму стикера" />
+    <Img
+      src={`${IMG}/my-sex-tape-process-2step-1.png`}
+      alt="Поиск формы стикера"
+      variant="inline"
+    />
+
+    <Section title="3. Отбираем лучшие варианты" />
+    <Text>
+      <p>
+        Текст для нас в&nbsp;приоритете, поэтому делаем варианты, которые легко читаются
+        и&nbsp;не&nbsp;отвлекают. Уходим от&nbsp;сложных форм. Проверяем нужны&nbsp;ли картинки.
+        Тестируем в&nbsp;Телеграме.
+      </p>
+    </Text>
+    <Img
+      src={`${IMG}/my-sex-tape-process-3step-1.png`}
+      alt="Варианты — попытка 1"
+      variant="inline"
+    />
+    <Img
+      src={`${IMG}/my-sex-tape-process-3step-2.png`}
+      alt="Варианты — попытка 2"
+      variant="inline"
+    />
+
+    <Section title="4. Останавливаемся и оформляем тексты" />
+    <Text>
+      <p>
+        Берём вариант, который быстро бросается в&nbsp;глаза, делает акцент на&nbsp;тексте,
+        не&nbsp;надоедает однообразностью (меняется и&nbsp;форма и&nbsp;текст).
+      </p>
+    </Text>
+    <Text tight>
+      <p>
+        Работаем с&nbsp;цветами. Думаем каждый цвет сделать отдельной категорией, но&nbsp;отказываемся
+        от&nbsp;идеи.
+      </p>
+    </Text>
+    <div class="mst-span-9">
+      <figure>
+        <img
+          src={`${IMG}/my-sex-tape-process-4step-1.png`}
+          alt="Цветовые варианты"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    </div>
+
+    <Section title="5. Тестируем в Телеграме" />
+    <Text>
+      <p>
+        Картинки получились низкого качества. Красный, фиолетовый и&nbsp;все тёмные цвета
+        не&nbsp;читаются. Миниатюры тоже неразличимы.
+      </p>
+    </Text>
+    <Img
+      src={`${IMG}/my-sex-tape-process-5step-1.png`}
+      alt="Тест в Телеграме — экран 1"
+      variant="mininline1"
+    />
+    <Img
+      src={`${IMG}/my-sex-tape-process-5step-2.png`}
+      alt="Тест в Телеграме — экран 2"
+      variant="mininline2"
+    />
+
+    <Section title="6. Переделываем" />
+    <Text>
+      <p>Увеличиваем размер текста. Увеличиваем контраст текста и&nbsp;фона.</p>
+    </Text>
+    <div class="mst-span-9">
+      <figure>
+        <img
+          src={`${IMG}/my-sex-tape-process-6step-1.png`}
+          alt="Финальная цветовая раскладка"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    </div>
+
+    <Section title="7. Готово" />
+    <Text>
+      <p>Загружаем по&nbsp;одному стикеру [очень нудно]. Можно пользоваться!</p>
+    </Text>
+    <Img
+      src={`${IMG}/my-sex-tape-process-7step-1.png`}
+      alt="Готовый стикерпак"
+      variant="inline1"
+    />
+
+    <Btn
+      href="https://t.me/addstickers/porno_caption"
+      external
+      end
+    >
+      Добавить стикерпак в&nbsp;Telegram
+    </Btn>
+  </Article>
+</PageLayout>
+
+<style>
+  .title-block {
+    margin-top: var(--space-5);
+  }
+
+  .mst-title {
+    margin-bottom: -3.5rem;
+  }
+
+  .mst-title h1 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .mst-title mark {
+    background-color: var(--color-accent-pink);
+    color: inherit;
+  }
+
+  /* span-9 из старого .span-9: широкая картинка от колонки 3 на 9 ячеек */
+  .mst-span-9 {
+    grid-column: 3 / span 9;
+  }
+
+  .mst-span-9 figure {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .mst-span-9 img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .mst-span-9 {
+      grid-column: 2 / span 10;
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    .mst-span-9 {
+      grid-column: 1 / -1;
+    }
+  }
+</style>
