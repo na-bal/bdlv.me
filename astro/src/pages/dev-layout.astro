@@ -1,0 +1,52 @@
+---
+// DEV-only: визуальная проверка layouts с шапкой и подвалом.
+// Удалить при switch-коммите в Phase 2.
+import PageLayout from "../layouts/PageLayout.astro";
+---
+
+<PageLayout
+  title="Dev: layout с шапкой — bdlv.me"
+  description="Технический лендинг для проверки PageLayout"
+  noindex
+>
+  <h1>Dev page — PageLayout</h1>
+  <p>
+    На этой странице должны быть видны: <strong>шапка</strong> с логотипом
+    <code>BDLV.me</code> и меню (Лаборатория / Продукты), <strong>подвал</strong>
+    внизу с уточкой и годами, а сам контент — в центрированном контейнере
+    с боковыми отступами.
+  </p>
+  <p>
+    Меню ведёт на <a href="/lab/">/lab/</a> и <a href="/products/">/products/</a>.
+    Эти страницы пока не существуют — нормальное 404 ожидается.
+  </p>
+
+  <h2>Длинный текст для проверки колонки</h2>
+  <p>
+    Съешь же ещё этих мягких французских булок, да выпей чаю. The quick brown
+    fox jumps over the lazy dog. Lorem ipsum dolor sit amet, consectetur
+    adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+    laboris nisi ut aliquip ex ea commodo consequat.
+  </p>
+</PageLayout>
+
+<style>
+  h1 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-3xl);
+    margin-top: var(--space-4);
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-xl);
+    margin-top: var(--space-6);
+  }
+  p {
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-loose);
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+</style>

@@ -1,0 +1,110 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+
+const SITE_URL = "https://bdlv.me";
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Александр Беделев",
+  url: SITE_URL,
+  // TODO: добавить реальные ссылки на соцсети (Telegram и т.д.) когда будут готовы.
+  sameAs: [],
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "BDLV.me",
+  url: SITE_URL,
+  inLanguage: "ru",
+  description:
+    "Авторская площадка Александра Беделева. Эксперименты в лаборатории и небольшие продукты.",
+  author: {
+    "@type": "Person",
+    name: "Александр Беделев",
+  },
+};
+---
+
+<PageLayout
+  title="BDLV.me"
+  description="Авторская площадка Александра Беделева. Эксперименты в лаборатории и небольшие продукты."
+  ogImage="/blobbo.svg"
+  fluid
+>
+  <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
+
+  <section class="hello">
+    <img class="hello-image" src="/blobbo.svg" alt="Иллюстрация bdlv.me" width="654" height="506" />
+
+    <div class="hello-text">
+      <p>
+        Это незабываемый сайт! Классно, что ты&nbsp;сюда попал. Я&nbsp;пока не&nbsp;знаю, зачем он&nbsp;нужен. Но&nbsp;переходи в&nbsp;Лабораторию, там всё.
+      </p>
+
+      <a class="hello-cta" href="/lab/">Перейти в&nbsp;Лабораторию</a>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .hello {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: var(--space-5);
+    padding-top: var(--space-4);
+  }
+
+  .hello-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .hello-text {
+    max-width: 70rem;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-5);
+    text-align: center;
+  }
+
+  .hello-text p {
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-height-normal);
+    margin: 0;
+  }
+
+  .hello-cta {
+    display: inline-block;
+    padding: 1.5rem 2rem;
+    background: var(--color-surface-muted);
+    border: 2px solid var(--color-border);
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+
+  .hello-cta:hover {
+    background: var(--color-accent-pink);
+    color: var(--color-text);
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.45);
+  }
+
+  .hello-cta:active {
+    transform: translate(2px, 3px);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.4);
+  }
+
+  @media screen and (max-width: 750px) {
+    .hello-text p {
+      font-size: var(--font-size-xl);
+    }
+  }
+</style>

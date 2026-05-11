@@ -1,0 +1,23 @@
+---
+const startYear = 2021;
+const currentYear = new Date().getFullYear();
+const range = currentYear > startYear ? `${startYear}–${currentYear}` : `${startYear}`;
+---
+
+<footer class="site-footer">
+  <span class="duck" aria-hidden="true">🦆</span>
+  <span class="years">{range}</span>
+</footer>
+
+<style>
+  .site-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-4);
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-regular);
+  }
+</style>

@@ -1,0 +1,103 @@
+/* Дизайн-токены сайта. Глобальные «подсказки», не правила (см. ARCHITECTURE.md раздел 10).
+   Используются header/footer/nav/`/products/`/`/notes/`. /lab/* свободно их игнорируют. */
+
+:root {
+  /* ── Палитра ───────────────────────────────────────────── */
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-border: #000000;
+
+  --color-link: #0645AD;
+  --color-link-hover: #f41224;
+
+  --color-accent-pink: #FEB3CE;
+  --color-accent-yellow: #FFC300;
+
+  --color-surface-muted: rgb(233, 233, 233);
+
+  /* ── Типографика ───────────────────────────────────────── */
+  --font-body: "Roboto", system-ui, -apple-system, "Segoe UI",
+               "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans",
+               sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+               "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "Roboto Slab", Georgia, "Times New Roman", serif;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Размеры в rem (1rem = 10px при font-size: 62.5% на html).
+     Крупные размеры — fluid через clamp(min, preferred, max) — плавно растут
+     от мобилки к десктопу. Мелкие — фиксированные. */
+  --font-size-sm: 1.4rem;
+  --font-size-base: 1.6rem;                                       /* body */
+  --font-size-md: 1.9rem;                                         /* article text */
+  --font-size-lg: 2.0rem;                                         /* nav-item */
+  --font-size-xl: clamp(2.0rem, 1.4rem + 1.2vw, 2.4rem);          /* h2 */
+  --font-size-2xl: clamp(2.6rem, 1.6rem + 2vw, 3.4rem);           /* logo */
+  --font-size-3xl: clamp(2.6rem, 1.6rem + 2vw, 3.5rem);           /* hello-info */
+  --font-size-4xl: clamp(3.0rem, 1.6rem + 2.8vw, 4.8rem);         /* mst-title / pantone */
+
+  --line-height-tight: 1.15;
+  --line-height-normal: 1.5;
+  --line-height-loose: 1.75;
+
+  /* ── Spacing scale (rem) ───────────────────────────────── */
+  --space-0: 0;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4rem;
+  --space-7: clamp(3rem, 2rem + 1.5vw, 5rem);
+  --space-8: clamp(4rem, 2.5rem + 2vw, 7rem);
+  --space-9: clamp(5rem, 3rem + 3vw, 10rem);
+
+  /* ── Базовые правила ───────────────────────────────────── */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* 1rem = 10px */
+  font-size: 62.5%;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  margin: 0;
+}
+
+a {
+  color: var(--color-link);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+/* Розовое выделение текста — фирменный жест сайта. Применяется ко всему
+   контенту по умолчанию; /lab/* эксперименты могут переопределить локально
+   (например, blacknote использует чуть более яркий розовый поверх чёрного). */
+::selection {
+  background: var(--color-accent-pink);
+  color: #000;
+  text-shadow: none;
+}
+::-moz-selection {
+  background: var(--color-accent-pink);
+  color: #000;
+  text-shadow: none;
+}
+
+/* Брейкпоинты для справки (используются прямо в media-запросах компонентов):
+   1300px, 1000px, 750px, 450px. */

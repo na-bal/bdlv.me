@@ -1,0 +1,42 @@
+---
+// DEV-only: проверка RootLayout с showHeader=false (Phase 3 готовность).
+// Удалить при switch-коммите в Phase 2.
+import RootLayout from "../layouts/RootLayout.astro";
+---
+
+<RootLayout
+  title="Dev: layout без шапки — bdlv.me"
+  description="Проверка опционального заголовка"
+  noindex
+  showHeader={false}
+>
+  <main class="dev-no-header">
+    <h1>Dev page — RootLayout без шапки</h1>
+    <p>
+      На этой странице <strong>не должно быть шапки сверху</strong>. Подвал
+      остаётся. Это та же конфигурация, которая будет использоваться для
+      продуктовой зоны Musli в Phase 3, если автор выберет асимметрию без шапки.
+    </p>
+    <p>
+      <a href="/dev-layout/">Сравни со страницей с шапкой</a>.
+    </p>
+  </main>
+</RootLayout>
+
+<style>
+  .dev-no-header {
+    flex: 1 0 auto;
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: var(--space-7) var(--space-4);
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: var(--font-size-3xl);
+  }
+  p {
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-loose);
+  }
+</style>

@@ -1,0 +1,10 @@
+/* Self-hosted fonts via @fontsource (font-display: swap is the package default).
+   Open Sans intentionally not loaded — see ARCHITECTURE.md раздел 11. */
+
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+@import "@fontsource/roboto/700.css";
+
+@import "@fontsource/roboto-slab/400.css";
+@import "@fontsource/roboto-slab/500.css";
+@import "@fontsource/roboto-slab/700.css";

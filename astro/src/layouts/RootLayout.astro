@@ -1,0 +1,84 @@
+---
+import "../styles/fonts.css";
+import "../styles/tokens.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  /** OpenGraph type. Дефолт 'website'. Для /lab/<slug>/ — 'article'. */
+  ogType?: "website" | "article" | "profile";
+  /** Phase 3: продуктовая зона может рендериться без шапки. */
+  showHeader?: boolean;
+  /** Phase 3: продуктовая зона может рендериться без подвала. */
+  showFooter?: boolean;
+  /** robots: noindex для dev/служебных страниц. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "",
+  ogImage,
+  ogType = "website",
+  showHeader = true,
+  showFooter = true,
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toString();
+const ogImageAbs = ogImage
+  ? new URL(ogImage, Astro.site ?? Astro.url).toString()
+  : undefined;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    {
+      noindex ? (
+        <meta name="robots" content="noindex" />
+      ) : (
+        <meta name="robots" content="index, follow" />
+      )
+    }
+    <link rel="canonical" href={canonical} />
+    <meta name="author" content="Александр Беделев" />
+
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    {ogImageAbs && <meta property="og:image" content={ogImageAbs} />}
+
+    <meta name="twitter:card" content={ogImageAbs ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    {ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
+  </head>
+  <body>
+    {showHeader && <Header />}
+    <slot />
+    {showFooter && <Footer />}
+  </body>
+</html>
+
+<style is:global>
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  body > :global(*) {
+    flex-shrink: 0;
+  }
+</style>

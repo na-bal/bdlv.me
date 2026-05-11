@@ -1,0 +1,40 @@
+---
+import Nav from "./Nav.astro";
+---
+
+<header class="site-header">
+  <a class="site-logo" href="/">BDLV.me</a>
+  <Nav />
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    padding: var(--space-2) 0 var(--space-5);
+    background: var(--color-bg);
+  }
+
+  .site-logo {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .site-logo:hover {
+    color: var(--color-link-hover);
+  }
+
+  @media screen and (max-width: 750px) {
+    .site-header {
+      padding: var(--space-2) 0 var(--space-4);
+    }
+    .site-logo {
+      font-size: var(--font-size-xl);
+    }
+  }
+</style>
