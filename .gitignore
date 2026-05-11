@@ -22,3 +22,10 @@ ai/
 # Backup/temp folders
 **/blocks 2/
 **/*\ 2/
+
+# Astro (during migration; see ARCHITECTURE.md раздел 13)
+astro/node_modules/
+astro/dist/
+astro/.astro/
+astro/playwright-report/
+astro/test-results/
