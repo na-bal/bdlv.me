@@ -5,19 +5,84 @@ const range = currentYear > startYear ? `${startYear}–${currentYear}` : `${sta
 ---
 
 <footer class="site-footer">
-  <span class="duck" aria-hidden="true">🦆</span>
-  <span class="years">{range}</span>
+  <div class="footer-row">
+    <span class="duck" aria-hidden="true">🦆</span>
+    <span class="years">{range}</span>
+  </div>
+  <div class="footer-row">
+    <a class="footer-email" href="mailto:bdlv@bdlv.me?subject=Hey, Beauty">bdlv@bdlv.me</a>
+  </div>
 </footer>
 
 <style>
+  /* Sticky bottom: footer пин к низу viewport, выше него — белый page-stack
+     (см. RootLayout). Z-index 0 vs page-stack z-1 → page-stack «наезжает»
+     сверху, и при скролле снизу постепенно показывается радужный градиент. */
   .site-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 0;
+
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-2);
-    padding: var(--space-5) var(--space-4);
-    color: var(--color-text);
+    gap: var(--space-1);
+
+    min-height: 18vh;
+    padding: var(--space-6) var(--space-4);
+    color: #fff;
+    text-align: center;
+
+    /* Анимированный радужный градиент. Идея — Manuel Pinto, codepen.io/P1N2O */
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: footer-gradient 28s ease infinite;
+
+    /* Лёгкая внутренняя тень по краям — будто градиент «поднарисован» в углубление,
+       а не наклеен сверху. Делает радугу спокойнее и добавляет глубины. */
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.18);
+  }
+
+  .footer-row {
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-regular);
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-1);
+  }
+
+  .footer-email {
+    color: #E8417B;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+
+  .footer-email:hover,
+  .footer-email:focus-visible {
+    color: #ffffff;
+  }
+
+  @keyframes footer-gradient {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-footer {
+      animation: none;
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    .site-footer {
+      min-height: 16vh;
+      padding: var(--space-5) var(--space-4);
+    }
+    .footer-row {
+      font-size: var(--font-size-sm);
+    }
   }
 </style>

@@ -98,9 +98,9 @@ const COVER = "/lab/blacknote/images/cover.svg";
 </RootLayout>
 
 <style is:global>
-  /* Полный fullscreen, без отступов от RootLayout. RootLayout по умолчанию
-     задаёт `body { display: flex; flex-direction: column }` — нам это окей,
-     `main.black-note` сам растягивается на оставшуюся высоту через flex-grow. */
+  /* Полный fullscreen, без отступов от RootLayout. RootLayout оборачивает
+     слот в `.page-stack { min-height: 100vh }`; `main.black-note` имеет
+     свой `min-height: 100vh`, чёрный фон перекрывает белый page-stack. */
   html,
   body {
     margin: 0;
@@ -140,9 +140,8 @@ const COVER = "/lab/blacknote/images/cover.svg";
   }
 
   .black-note {
-    /* Растягиваемся на всю высоту окна. RootLayout задаёт body как flex-column
-       без header/footer — этот main забирает всё доступное место. */
-    flex: 1 1 auto;
+    /* Растягиваемся на всю высоту окна. RootLayout оборачивает в page-stack
+       с min-height: 100vh; здесь дублируем, чтобы main точно заполнил экран. */
     min-height: 100vh;
 
     margin: 0;

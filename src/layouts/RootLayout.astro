@@ -66,8 +66,11 @@ const ogImageAbs = ogImage
     {ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
   </head>
   <body>
-    {showHeader && <Header />}
-    <slot />
+    {showFooter && <div class="rubber-end" aria-hidden="true">Конец</div>}
+    <div class:list={["page-stack", { "page-stack--has-footer": showFooter }]}>
+      {showHeader && <Header />}
+      <slot />
+    </div>
     {showFooter && <Footer />}
   </body>
 </html>
@@ -75,10 +78,56 @@ const ogImageAbs = ogImage
 <style is:global>
   body {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    margin: 0;
   }
-  body > :global(*) {
-    flex-shrink: 0;
+
+  html {
+    background-color: var(--color-bg);
+  }
+
+  /* Пасхалка в rubber-band. Логика:
+     - .rubber-end — `position: fixed; bottom: 0` → прибит к низу viewport.
+     - Z-index 0 + DOM-порядок ДО footer: footer (тоже z:0, но позже в DOM)
+       перекрывает его в обычном режиме.
+     - Page-stack (z:1) перекрывает его в средней части экрана.
+     - При оттяжке вниз: page-stack и sticky-footer уезжают вверх вместе
+       с контентом, fixed-элемент остаётся прибитым к низу viewport → виден.
+     - При оттяжке вверх: footer остаётся внизу (sticky bottom:0), перекрывает. */
+  .rubber-end {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+
+    padding: 1.6rem 0 2.4rem;
+    text-align: center;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 3.2rem;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.4);
+
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Белый «лист» с контентом наезжает сверху на радужный sticky-футер.
+     Тень кастуется с нижнего края page-stack вниз — это и создаёт эффект
+     многослойного наложения. z-index: 1 поверх footer (z-index: 0). */
+  .page-stack {
+    position: relative;
+    z-index: 1;
+    background: var(--color-bg);
+    min-height: 100vh;
+  }
+
+  /* Двухслойная тень: контактная (ближе, плотнее) + атмосферная (дальше, мягче).
+     Имитирует реальное освещение — близкий лист даёт чёткую тень,
+     рассеянный свет — мягкую дымку дальше. */
+  .page-stack--has-footer {
+    box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.35),
+      0 32px 56px rgba(0, 0, 0, 0.16);
   }
 </style>
