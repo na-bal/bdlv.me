@@ -46,7 +46,10 @@ RewriteRule ^musli/(.+)$ /products/musli/$1 [R=301,L]
 #    выпадает из индекса.
 # ============================================================================
 
-RewriteRule ^index\.html$              - [G,L]
+# index.html НЕ в списке 410: на проде server-stack нормализует `/` в
+# `/index.html` до RewriteEngine, и правило перехватывает главную страницу.
+# Пусть `/index.html` отдаёт ту же главную что и `/` — canonical-тег в HTML
+# указывает на `/`, дубликат для SEO через него разрулится.
 RewriteRule ^projects\.html$           - [G,L]
 RewriteRule ^b\.html$                  - [G,L]
 RewriteRule ^cactus\.html$             - [G,L]

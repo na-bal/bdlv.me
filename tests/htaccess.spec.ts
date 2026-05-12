@@ -8,8 +8,10 @@ import { resolve } from "node:path";
 
 const DIST_HTACCESS = resolve(process.cwd(), "dist", ".htaccess");
 
+// index.html намеренно ИСКЛЮЧЕНО: на проде server-stack нормализует `/` в
+// `/index.html` до RewriteEngine, поэтому правило ловило главную → 410.
+// canonical в HTML разруливает дубликат `/index.html` vs `/` для SEO.
 const GONE_HTML_FILES = [
-  "index.html",
   "projects.html",
   "b.html",
   "cactus.html",
@@ -74,7 +76,7 @@ test.describe(".htaccess — Apache config", () => {
     expect(text).toContain("RewriteRule ^musli/(.+)$ /products/musli/$1 [R=301,L]");
   });
 
-  test("all 13 legacy HTML URLs are 410 Gone", () => {
+  test("all legacy HTML URLs (except index.html) are 410 Gone", () => {
     const text = readFileSync(DIST_HTACCESS, "utf8");
     const lines = text.split("\n");
     for (const file of GONE_HTML_FILES) {
