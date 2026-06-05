@@ -8,6 +8,45 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.0.22</title>
+      <sparkle:version>22</sparkle:version>
+      <sparkle:shortVersionString>0.0.22</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h2>Добавлено</h2>
+        <ul>
+          <li><b>Musli сам спасает встречу, если запись сломалась</b> — если посреди встречи запись вдруг перестала работать (другая программа удалила временный файл или микрофон перехватило другое приложение), Musli теперь замечает это за секунды, сохраняет уже записанную часть отдельной записью и автоматически запускает новую. Поверх даже полноэкранного Zoom выскакивает заметный попап: что именно случилось и что делать, с кнопкой «Сообщить разработчикам» (диагностика уже вложена). Раньше сломанная запись пропадала молча — и вы узнавали об этом только в конце.</li>
+        </ul>
+        <h2>Исправлено</h2>
+        <ul>
+          <li><b>Запись больше не пропадает в ноль</b> — был тяжёлый, но очень редкий баг: временные файлы записи лежали в системной папке, которую macOS и другие программы могут чистить прямо во время работы. Если их удаляли посреди встречи, звук продолжал «писаться» в пустоту, а на стопе получался ноль байт — без ошибки, без предупреждения. Именно так однажды потерялась целая встреча. Теперь Musli пишет в свою защищённую папку, куда никто посторонний не лезет, и следит за файлами вживую.</li>
+          <li><b>Пустая запись не оседает в списке молчком</b> — если запись по какой-то причине вышла пустой (звук вообще не писался), Musli честно скажет об этом на стопе и спросит — оставить или удалить. Раньше пустая встреча просто молча появлялась в списке.</li>
+        </ul>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <h3 style="margin-bottom: 8px;">За кулисами</h3>
+        <table style="font-size: 12px; color: #999; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 2px 12px 2px 0;"><b>31</b> файл</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #6abf69;">+2164</b> строки</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #e07a5f;">−34</b> строки</td>
+          </tr>
+        </table>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <p style="font-style: italic; color: #aaa; font-size: 12px; line-height: 1.5;">
+          Главная цель этого релиза — выбить один бесячий, но очень редкий баг: запись могла молча уйти в ноль, и ты узнавал об этом только в конце встречи.<br><br>
+          Для меня сохранность записи — приоритет номер один. Самое моё большое стремление: чтобы, если с записью что-то не так, ты всегда об этом знал сразу, а не постфактум.<br><br>
+          Поэтому очень прошу: если у вас когда-нибудь что-то случится с записями — в первую очередь напишите мне. Разберёмся.
+        </p>
+      ]]></description>
+      <pubDate>Sat, 06 Jun 2026 02:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/products/musli/Musli-0.0.22.dmg"
+        sparkle:edSignature="uiHYHp62LFYoBEakqZ0JL9OP3AHKxgn8jo8En9qqhW4MDED/QD/OEC+cKU4AIjNlpxM6Vyg/vt9XeOhJ+OMrCg=="
+        length="7401155"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.0.21</title>
       <sparkle:version>21</sparkle:version>
       <sparkle:shortVersionString>0.0.21</sparkle:shortVersionString>
