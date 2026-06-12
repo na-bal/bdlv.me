@@ -5,8 +5,8 @@ const SITE = "https://bdlv.me";
 
 // Версии, для которых физически лежат DMG в astro/public/products/musli/.
 // Менять при изменении ретеншена в task 016.
-const SHIPPED_DMG_VERSIONS = ["0.0.20", "0.0.21", "0.0.22"];
-const LATEST_VERSION = "0.0.22";
+const SHIPPED_DMG_VERSIONS = ["0.0.21", "0.0.22", "0.0.23"];
+const LATEST_VERSION = "0.0.23";
 
 test.describe("appcast.xml — Sparkle feed", () => {
   test("/musli/appcast.xml responds 200 with valid Sparkle XML", async ({
