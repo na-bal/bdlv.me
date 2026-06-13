@@ -233,7 +233,7 @@ body.hide-done .checklist li.is-done{display:none}
 /* ——— Адаптив под телефон ——— */
 @media (max-width:560px){
   html,body{overflow-x:hidden}
-  body{display:block;padding:20px 12px 150px}
+  body{display:block;padding:20px 12px 32px}
   .sheet{max-width:100%;min-width:0;overflow-x:clip}
   .sheet > *{padding-left:16px;padding-right:16px}
   .card__head{flex-wrap:wrap;gap:2px}
@@ -248,7 +248,8 @@ body.hide-done .checklist li.is-done{display:none}
   .section__label .hint{flex-basis:100%}
   .matrix{table-layout:fixed;font-size:12px}
   .matrix th,.matrix td{word-break:break-word;padding:6px 6px}
-  .actions{left:8px;right:8px;transform:none;justify-content:center;flex-wrap:wrap}
+  /* на телефоне панель действий (печать/Notion/скрыть) не нужна — прячем, на десктопе остаётся */
+  .actions,.toast{display:none}
 }
 
 /* ——— Печать: чистый бланк ——— */
