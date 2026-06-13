@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MealPrep — Сборка (как это есть) 13.06</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mealprep.css">
+</head>
+<body>
+<div class="sheet">
+
+  <header class="blank__head">
+    <div class="kicker">Заготовка · как смешивать и есть · неделя 2</div>
+    <h1 class="title">Сборка <span class="u">13.06</span> — тарелки недели</h1>
+    <div class="stamp">Тарелка</div>
+    <div class="meta">
+      <div class="cell"><span class="k">Тарелок</span><span class="v">7</span></div>
+      <div class="cell"><span class="k">Порция</span><span class="v">1 чел / ~400 г</span></div>
+      <div class="cell"><span class="k">Профилей</span><span class="v">5 (3 новых)</span></div>
+      <div class="cell"><span class="k">База</span><span class="v">свинина + банк-курица</span></div>
+    </div>
+  </header>
+
+  <nav class="nav topnav" aria-label="Разделы">
+    <a class="home" href="index.html">Главная</a>
+    <a href="plan-2026-06-12.html">План</a>
+    <a href="runbook-2026-06-13.html">Готовка</a>
+    <a href="sborka-2026-06-13.html" aria-current="page">Сборка</a>
+    <a href="index.html#recipes">Рецепты</a>
+  </nav>
+
+  <div class="lead">
+    <div class="lead__k">Формула тарелки — 5 слоёв</div>
+    <p><b>База</b> (рис 150–180 г) · <b>белок</b> (свинина ~150 г / курица ~150 г) ·
+      <b>овощи</b> (100–150 г) · <b>соус</b> (2–3 ст.л. — связка и кислотный финиш) ·
+      <b>хруст</b> (сырой лук/огурец/зелень или кунжут сверху в конце).</p>
+    <p>Два правила «вкусно, а не просто еда»: на тарелке и <b>мягкое, и хрустящее</b>;
+      к <b>тёплой</b> базе — <b>прохладный кислый акцент</b> (ткемали / лимон / йогурт-соус).
+      По шеф-ревью: в «сухие» дни (Ср, Сб) обязателен <b>кислый финиш</b>, а сырой хруст
+      распределяем по неделе, не копим в один день.</p>
+  </div>
+
+  <!-- Матрица недели (названия — как в плане) -->
+  <section class="section">
+    <div class="section__label">Неделя кратко <span class="hint">свинина + банк-курица → 7 тарелок</span></div>
+    <table class="matrix">
+      <thead><tr><th>День</th><th>Тарелка</th><th>Что берёшь</th></tr></thead>
+      <tbody>
+        <tr><th>Пн</th><td>Свинина по-грузински<span class="prof">грузинский</span></td><td>свинина А + рис + овощи + ткемали + сырой лук + кинза</td></tr>
+        <tr><th>Вт</th><td>Азиатский боул<span class="prof">азиатский</span></td><td>курица (банк) + рис + овощи + соево-кунжутная заправка</td></tr>
+        <tr><th>Ср</th><td>Свинина в глазури<span class="prof">медово-горчичный</span></td><td>свинина Б + рис + овощи + долька лимона</td></tr>
+        <tr><th>Чт</th><td>Лимон-чеснок боул<span class="prof">лимон-чеснок</span></td><td>курица (банк) + рис + овощи + йогурт-соус + огурец</td></tr>
+        <tr><th>Пт</th><td>Холодный средиземн.<span class="prof">средиземн.</span></td><td>курица холодная + салат + яйцо + йогурт-соус + олив. масло</td></tr>
+        <tr><th>Сб</th><td>Комбо-боул<span class="prof">что осталось</span></td><td>рис + свежая нарезка + яйцо + свинина + ткемали</td></tr>
+        <tr><th>Вс</th><td>Врап<span class="prof">лепёшка</span></td><td>курица/свинина + тортилья + огурец/лук + зелень + соус</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Карточки по тарелкам -->
+  <section class="section">
+    <div class="section__label">Как собрать каждую <span class="hint">порции в граммах</span></div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Пн · Свинина по-грузински</span><span class="card__id">грузинский · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">рис 150–180 г + свинина А (хмели-сунели) ~150 г + овощи 100–150 г</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">ткемали 2–3 ст.л. сбоку (кислый акцент к жирной свинине)</span></div>
+        <div class="card__row"><span class="rk">Хруст</span><span class="rv">сырой красный лук тонко + кинза сверху на разогретое</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис вниз → свинина+овощи секторами → ткемали → лук+кинза</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Вт · Азиатский боул</span><span class="card__id">азиатский · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">курица (банк) ~150 г + рис 150 г + овощи 100 г</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">соево-кунжутная заправка 2–3 ст.л.; <b>заправь курицу тёплой</b>, чтобы впитала (банк-курица пресная)</span></div>
+        <div class="card__row"><span class="rk">Хруст</span><span class="rv">кунжут + зелень (кинза/зелёный лук) в самом конце, не при разогреве — иначе размокнут</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис → курица (полить заправкой горячей) → овощи → кунжут</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Ср · Свинина в глазури</span><span class="card__id">медово-горчичный · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">свинина Б (глазурь) ~150 г + рис 150–180 г + овощи 100–150 г</span></div>
+        <div class="card__row"><span class="rk">Финиш</span><span class="rv"><b>долька лимона выжать на тарелку</b> — кислота гасит сладость глазури (иначе приторно)</span></div>
+        <div class="card__row"><span class="rk">Хруст</span><span class="rv">свежая зелень или огурец сбоку</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис → свинина → овощи → лимон сверху</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Чт · Лимон-чеснок боул</span><span class="card__id">лимон-чеснок · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">курица (банк) ~150 г + рис (2-я партия) 150 г + овощи 100–150 г</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">йогурт-соус 2–3 ст.л. сверху на разогретое</span></div>
+        <div class="card__row"><span class="rk">Хруст</span><span class="rv"><b>свежий огурец кубиком</b> — контраст к тёплому кремовому боулу</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис → курица+овощи → йогурт-соус → огурец</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Пт · Холодный средиземноморский</span><span class="card__id">средиземн. · ХОЛОДНЫЙ</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">курица холодная ~150 г (из морозилки накануне) + яйцо 1–2 + свежий салат</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">йогурт-соус — тут работает особенно, заменяет «горячесть»</span></div>
+        <div class="card__row"><span class="rk">Финиш</span><span class="rv"><b>оливковое масло + соль</b> на салат и яйцо — вытягивают холодную тарелку из «диетической»</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">салат → курица → яйцо половинками → соус → масло+соль</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Сб · Комбо-боул</span><span class="card__id">что осталось · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">рис 150 г + <b>свежая нарезка/салат</b> (вместо печёных овощей — они уже вышли) + яйцо 1–2 + свинина (из морозилки)</span></div>
+        <div class="card__row"><span class="rk">Финиш</span><span class="rv">ткемали тонкой нитью сверху — кислота + лёгкая сладость разом</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис → свинина → нарезка → яйцо → ткемали</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Вс · Врап</span><span class="card__id">лепёшка · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">тортилья + курица или свинина 120–150 г + овощи</span></div>
+        <div class="card__row"><span class="rk">Свежее</span><span class="rv">сырой огурец/лук + зелень внутрь — оболочка даёт хруст, которого нет в боулах</span></div>
+        <div class="card__row"><span class="rk">Сборка</span><span class="rv">начинку ближе к центру, не переполнять; обжарить на сухой сковороде до румяной корочки</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">йогурт-соус или ткемали отдельно для макания, не внутрь (размокнет)</span></div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="section">
+    <div class="nav">
+      <a href="index.html">← На главную</a>
+      <a href="plan-2026-06-12.html">План недели</a>
+      <a href="runbook-2026-06-13.html">Готовка (runbook)</a>
+    </div>
+  </div>
+
+  <div class="foot">MealPrep · сборка · неделя 13.06 · как собирать тарелки из заготовок</div>
+</div>
+
+<div class="actions">
+  <button class="btn" data-act="print">Печать <kbd>P</kbd></button>
+  <button class="btn" data-act="notion">В Notion <kbd>N</kbd></button>
+  <button class="btn" data-act="hide">Скрыть ✓ <kbd>H</kbd></button>
+</div>
+
+<script src="mealprep.js" defer></script>
+</body>
+</html>

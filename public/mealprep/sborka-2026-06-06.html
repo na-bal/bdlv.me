@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MealPrep — Сборка (как это есть) 06.06</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mealprep.css">
+</head>
+<body>
+<div class="sheet">
+
+  <header class="blank__head">
+    <div class="kicker">Заготовка · как смешивать и есть</div>
+    <h1 class="title">Сборка <span class="u">06.06</span> — тарелки недели</h1>
+    <div class="stamp">Тарелка</div>
+    <div class="meta">
+      <div class="cell"><span class="k">Тарелок</span><span class="v">7</span></div>
+      <div class="cell"><span class="k">Порция</span><span class="v">1 чел / ~400 г</span></div>
+      <div class="cell"><span class="k">Профилей</span><span class="v">5</span></div>
+      <div class="cell"><span class="k">База</span><span class="v">из заготовок недели 06.06</span></div>
+    </div>
+  </header>
+
+  <nav class="nav topnav" aria-label="Разделы">
+    <a class="home" href="index.html">Главная</a>
+    <a href="plan-2026-06-01.html">План</a>
+    <a href="runbook-2026-06-06.html">Готовка</a>
+    <a href="sborka-2026-06-06.html" aria-current="page">Сборка</a>
+    <a href="index.html#recipes">Рецепты</a>
+  </nav>
+
+  <div class="lead">
+    <div class="lead__k">Формула тарелки — 5 слоёв</div>
+    <p><b>База</b> (рис 150–180 г) · <b>белок</b> (курица ~150 г / фарш 120–150 г) ·
+      <b>овощи</b> (100–150 г) · <b>соус</b> (2–3 ст.л. — связка и кислотный финиш) ·
+      <b>хруст</b> (1 ст.л. сверху в конце).</p>
+    <p>Два правила «вкусно, а не просто еда»: на тарелке и <b>мягкое, и хрустящее</b>;
+      к <b>тёплой</b> базе — <b>прохладный кислый акцент</b> (йогурт-соус / лимон / свежий овощ).
+      Свежие овощи режем в день и кладём отдельным сектором — не заливать соусом заранее.</p>
+  </div>
+
+  <!-- Матрица недели (названия — как в плане) -->
+  <section class="section">
+    <div class="section__label">Неделя кратко <span class="hint">7 заготовок → 7 тарелок</span></div>
+    <table class="matrix">
+      <thead><tr><th>День</th><th>Тарелка</th><th>Что берёшь</th></tr></thead>
+      <tbody>
+        <tr><th>Пн</th><td>Миска с курицей и рисом<span class="prof">лимон-чеснок</span></td><td>курица + рис + овощи + йогурт-соус</td></tr>
+        <tr><th>Вт</th><td>Миска по-мексикански<span class="prof">мексиканский</span></td><td>фарш-мекс + рис + кукуруза/фасоль + свежий салат</td></tr>
+        <tr><th>Ср</th><td>Курица в карри с рисом<span class="prof">индийский</span></td><td>курица + карри/замена + рис</td></tr>
+        <tr><th>Чт</th><td>Фарш по-итальянски<span class="prof">итальянский</span></td><td>фарш-итал + овощи + рис</td></tr>
+        <tr><th>Пт</th><td>Холодная миска-салат<span class="prof">средиземн.</span></td><td>курица холодная + салат + яйцо + йогурт-соус</td></tr>
+        <tr><th>Сб</th><td>Миска из остатков<span class="prof">что осталось</span></td><td>рис + овощи + яйцо + остаток соуса</td></tr>
+        <tr><th>Вс</th><td>Лепёшка с начинкой<span class="prof">врап / кесадилья</span></td><td>курица или фарш + тортилья + овощи + сыр</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Карточки по тарелкам -->
+  <section class="section">
+    <div class="section__label">Как собрать каждую <span class="hint">порции в граммах</span></div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Пн · Миска с курицей и рисом</span><span class="card__id">лимон-чеснок · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">рис 150–180 г + курица ~150 г (1 бедро) + овощи 100–150 г</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">йогурт-соус 2–3 ст.л. сверху на разогретое</span></div>
+        <div class="card__row"><span class="rk">Хруст</span><span class="rv">семечки/орехи 1 ст.л. + свежая зелень в конце</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис вниз → курица+овощи секторами → соус → хруст</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Вт · Миска по-мексикански</span><span class="card__id">мексиканский · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">рис 150 г + фарш-мекс 120–150 г + кукуруза/фасоль 2–3 ст.л.</span></div>
+        <div class="card__row"><span class="rk">Свежее</span><span class="rv">помидор/огурец режешь в день, отдельным сектором; опц. авокадо</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">йогурт-соус как прохладный контраст (или сметана+лайм)</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис → фарш → фасоль → свежее → соус → сыр</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Ср · Курица в карри с рисом</span><span class="card__id">индийский · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">рис 150–180 г + курица ~150 г + карри/замена 3–4 ст.л.</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">соус тут — основа, им заливаем курицу; разогреть вместе</span></div>
+        <div class="card__row"><span class="rk">Финиш</span><span class="rv">свежая зелень (кинза/укроп) + лимон сверху уже в тарелке</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис вниз → курица → соус сверху горячим → зелень</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Чт · Фарш по-итальянски</span><span class="card__id">итальянский · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">рис 150 г (или паста) + фарш-итал 120–150 г + овощи 100 г</span></div>
+        <div class="card__row"><span class="rk">Финиш</span><span class="rv">сыр сверху на горячее; свежий базилик/зелень если есть</span></div>
+        <div class="card__row"><span class="rk">Контраст</span><span class="rv">соус не обязателен — томатный фарш сам сочный; ложка йогурта по желанию</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис → фарш сверху → овощи сбоку → сыр</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Пт · Холодная миска-салат</span><span class="card__id">средиземн. · ХОЛОДНЫЙ</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">курица холодная ~150 г (из морозилки накануне) + яйцо 1–2 + свежий салат</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">йогурт-соус — тут работает особенно, заменяет «горячесть»</span></div>
+        <div class="card__row"><span class="rk">База</span><span class="rv">можно без риса или холодный рис; лимон сверху</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">салат → курица → яйцо половинками → соус → хруст</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Сб · Миска из остатков</span><span class="card__id">что осталось · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">рис 150 г + овощи 100–150 г + яйцо 1–2 + остаток любого соуса</span></div>
+        <div class="card__row"><span class="rk">Идея</span><span class="rv">«доедание» — собери что осталось, добей соусом и кислотой</span></div>
+        <div class="card__row"><span class="rk">Порядок</span><span class="rv">рис → овощи → яйцо → соус → лимон/зелень</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__title">Вс · Лепёшка с начинкой</span><span class="card__id">врап / кесадилья · тёплый</span></div>
+      <div class="card__body">
+        <div class="card__row"><span class="rk">Берёшь</span><span class="rv">тортилья + курица или фарш 120–150 г + овощи + сыр 30–40 г</span></div>
+        <div class="card__row"><span class="rk">Сборка</span><span class="rv">начинку ближе к центру, не переполнять; обжарить на сухой сковороде до румяной корочки</span></div>
+        <div class="card__row"><span class="rk">Соус</span><span class="rv">йогурт-соус отдельно для макания, не внутрь (размокнет)</span></div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="section">
+    <div class="nav">
+      <a href="index.html">← На главную</a>
+      <a href="plan-2026-06-01.html">План недели</a>
+      <a href="runbook-2026-06-06.html">Готовка (runbook)</a>
+    </div>
+  </div>
+
+  <div class="foot">MealPrep · сборка · неделя 06.06 · как собирать тарелки из заготовок</div>
+</div>
+
+<div class="actions">
+  <button class="btn" data-act="print">Печать <kbd>P</kbd></button>
+  <button class="btn" data-act="notion">В Notion <kbd>N</kbd></button>
+  <button class="btn" data-act="hide">Скрыть ✓ <kbd>H</kbd></button>
+</div>
+
+<script src="mealprep.js" defer></script>
+</body>
+</html>
