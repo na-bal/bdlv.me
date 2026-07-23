@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мальдивы · Kandima (атолл Дхаалу) · июль 2026 · путеводитель</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="trip.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.css">
+<script src="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.js"></script>
+<style>
+  #map{height:440px;border:2px solid var(--border);margin-top:12px}
+  .leaflet-container{font-family:var(--font-mono)}
+  .pin{display:flex;align-items:center;justify-content:center;width:26px;height:26px;color:#fff;border:2px solid var(--border);border-radius:50%;font-size:13px;font-weight:700}
+  .legend{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:8px;line-height:1.9}
+  .legend span{margin-right:16px;white-space:nowrap}
+  .sw{display:inline-block;width:12px;height:12px;border:2px solid var(--border);border-radius:50%;vertical-align:middle;margin-right:5px}
+  .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:12px}
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media(max-width:640px){.cols,.cols2{grid-template-columns:1fr}}
+  .lnk{color:var(--accent);font-family:var(--font-mono);font-size:12px;text-decoration:none}
+  .lnk:hover{text-decoration:underline}
+  .col li .lnk{white-space:nowrap}
+  .col h4{font-family:var(--font-display);font-size:14px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em}
+  .col ul{list-style:none;margin:0;padding:0;font-size:14px}
+  .col li{padding:5px 0;border-bottom:1px dashed var(--muted)}
+  .col .src{font-family:var(--font-mono);font-size:11px;color:var(--muted);display:block;margin-top:2px}
+  .tier{margin:16px 0 0}
+  .tier .lead{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .tier h4{font-family:var(--font-display);font-size:16px;margin:2px 0 6px;text-transform:uppercase;letter-spacing:.02em}
+  .eat{font-size:14.5px;margin:0;padding:8px 0;border-bottom:1px dashed var(--muted)}
+  .eat b{font-weight:600}
+  .eat .m{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+  .eat .lnk{font-family:var(--font-mono);font-size:12px;color:var(--accent);text-decoration:none;margin-left:8px;white-space:nowrap}
+  .eat .lnk:hover{text-decoration:underline}
+  .oneimg{margin-top:12px}
+  .oneimg img{width:100%;max-width:340px;aspect-ratio:4/3;object-fit:cover;border:var(--bw) solid var(--border);display:block}
+  .gallery img{aspect-ratio:4/3}
+  .phrases{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+  .phrases td{border-bottom:1px dashed var(--muted);padding:7px 8px 7px 0;vertical-align:middle}
+  .phrases .dv{font-weight:600;font-size:15px}
+  .phrases .tr{font-family:var(--font-mono);color:var(--muted)}
+  .note{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .place .why{font-size:15px;margin:8px 0}
+  .price{font-family:var(--font-mono);font-size:13px;color:var(--fg)}
+  .tlabel{color:var(--accent);font-weight:600}
+  .pick{color:var(--accent);font-weight:600}
+  .gl{font-family:var(--font-mono);font-weight:700;margin-right:5px}
+  .gl--sea{color:#1f7a6b}
+  .gl--sun{color:#e0a32e}
+  .gl--ok{color:#1f7a6b}
+  .gl--no{color:#d8412f}
+  .gl--care{color:#e0a32e}
+  .rules .col li{padding:7px 0}
+  .crits{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+  @media(max-width:640px){.crits{grid-template-columns:1fr}}
+  .crits .cc{border:var(--bw) solid var(--border);overflow:hidden;display:flex;flex-direction:column}
+  .crits .cc img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;border-bottom:var(--bw) solid var(--border)}
+  .crits .cc .b{padding:11px 13px 13px}
+  .crits .cc h5{font-family:var(--font-display);font-size:15.5px;margin:0 0 5px;letter-spacing:.01em}
+  .crits .cc p{font-size:13.5px;margin:0;line-height:1.5}
+  .crits .tag{font-family:var(--font-mono);font-weight:700;margin-right:6px}
+  .crits .tag--no{color:#d8412f}
+  .crits .tag--care{color:#e0a32e}
+  .crits .tag--ok{color:#1f7a6b}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- 1 · ГЕРОЙ -->
+  <div class="pass">
+    <div class="pass__stub">
+      <div class="kicker">boarding</div>
+      <div class="countdown">до Мальдив<br><b id="cd">—</b><br><span id="cdu">дней</span></div>
+      <div class="stamp">MLE</div>
+    </div>
+    <div class="pass__body">
+      <div class="kicker">путеводитель · Мальдивы · сразу после Дубая</div>
+      <h1 class="title">Мальдивы<br><span class="u">Kandima · атолл Дхаалу</span></h1>
+      <div class="vibe">≈ конец июля 2026 · <b>Kandima Maldives</b> · остров-курорт · темп нулевой · <span class="chip chip--check" style="margin:0">проверить: точные даты и сколько ночей</span></div>
+      <div style="margin-top:10px">
+        <span class="chip chip--accent">океан и дом-риф</span>
+        <span class="chip">всё организует курорт</span>
+        <span class="chip">зелёный сезон → китовые акулы</span>
+        <span class="chip">дресс-код свободный</span>
+      </div>
+      <div class="greeting" style="margin-top:14px">މަރުޙަބާ
+        <span class="greeting__read">маруха́ба — добро пожаловать (дивехи)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ПРИНЦИП -->
+  <div class="place">
+    <div class="kicker">как читать эту страницу</div>
+    <h3>Ничего не надо планировать — почти всё под боком</h3>
+    <div class="why">После насыщенного Дубая Мальдивы — это <b>полная перезагрузка</b>: один остров = один курорт, где еда, снорклинг, спа и экскурсии организованы за тебя, а между делами — только пляж и вода. Эта страница <b>не расписание</b>, а меню: что обычно есть на курортном острове и что стоит застать именно в конце июля. Собери из блоков то, что хочется, остальное — просто лежать.</div>
+    <div class="why" style="margin-top:6px"><b>Про конец июля честно:</b> это «зелёный» сезон (юго-западный муссон) — бывают короткие дожди, но между ними 6–8 часов солнца в день, море тёплое. Взамен дождей — <b>планктонный сезон: время китовых акул и крупной морской жизни</b> (они приплывают кормиться), меньше народу, ниже цены и выше шанс на «море звёзд». Купаться, снорклить и загорать это не мешает.</div>
+    <div class="note">Твой конкретный курорт и точные даты я пока не знаю — метки <span class="chip chip--check" style="margin:0">проверить</span> это отмечают. Сверься со своим курортом: что из активностей ниже он предлагает и что входит в тариф. Не выдумано — просто зависит от острова.</div>
+  </div>
+
+  <!-- КАК УСТРОЕН КУРОРТ -->
+  <div class="place" style="border-left:6px solid var(--border)">
+    <div class="kicker">как это вообще работает</div>
+    <h3>Остров = один курорт</h3>
+    <div class="why"><b>Зачем понимать:</b> на Мальдивах почти каждый курорт занимает <b>отдельный остров целиком</b>. Ты прилетаешь в аэропорт Велана (MLE) у столицы Мале, а дальше курорт сам довозит до своего острова — способ трансфера зависит от того, как далеко остров.</div>
+    <div class="look"><b>Ваш путь — Kandima (атолл Дхаалу, ~170 км к югу от Мале):</b> морем-только не возят (2,5–3 ч по волнам), поэтому через воздух, два варианта:
+      <br>· <b>Внутренний рейс + катер</b> — стандартный путь: ~30–40 мин перелёт Мале → аэропорт Дхаалу (Кудахувадху), потом ~15–20 мин на катере до Kandima. <span class="price">рейс ≈ $100–150 в одну сторону</span>.
+      <br>· <b>Гидросамолёт</b> — ~40 мин прямо к причалу курорта; сам полёт — аттракцион, вид на атоллы сверху.</div>
+    <div class="look"><span class="tlabel">Важно про стыковку:</span> и внутренние рейсы, и гидросамолёты летают <b>только днём</b>. Прилетаете из Дубая в Мале поздно вечером → на остров улетите утром, возможна <b>ночёвка у аэропорта</b> в Мале (часто организует курорт). А обратный вылет домой из Мале лучше брать <b>не раньше 9 утра</b>, чтобы успеть утренний трансфер с острова. Уточните тайминг в брони.</div>
+    <div class="look"><b>Про Kandima по факту:</b> это большой «живой» курорт (270+ вилл, <b>10 ресторанов и баров</b>, 100-метровый бассейн — самый длинный на Мальдивах, дайв-центр, спа, арт-студия) — не крошечный уединённый остров, а активный. Так что вариантов еды много; но <b>тариф питания</b> (BB / HB / FB / AI) всё равно сильно решает бюджет — цены на острове курортные. Алкоголь на курорте есть (лицензия). <span class="chip chip--check" style="margin:0">свериться: что входит в ваш тариф</span></div>
+    <div class="oneimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Water_villas_at_Medhufushi_Island_Resort_in_the_Maldives.jpg/500px-Water_villas_at_Medhufushi_Island_Resort_in_the_Maldives.jpg" alt="Водные виллы на курортном острове, Мальдивы" loading="lazy"></div>
+    <div class="img-src">фото: Wikimedia — <a href="https://commons.wikimedia.org/wiki/File:Water_villas_at_Medhufushi_Island_Resort_in_the_Maldives.jpg" target="_blank" rel="noopener">Water villas, Medhufushi</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Maldives+resort+island+water+villa+seaplane" target="_blank" rel="noopener">смотреть фото →</a>
+      <a class="btn" href="https://maldives-magazine.com/general-info/seaplane-or-speedboat-decoding-maldives-transfers-for-first-time-visitors.htm" target="_blank" rel="noopener">гид по трансферам →</a>
+    </div>
+  </div>
+
+  <!-- 2 · КАРТА -->
+  <div class="place">
+    <div class="kicker">карта · как разбросаны Мальдивы · пинч-зум двумя пальцами</div>
+    <h3>Где что в океане</h3>
+    <div class="why">Мальдивы — это ~1200 островов, растянутых цепочкой атоллов на сотни километров. Всё начинается в <b>Мале</b> (аэропорт-хаб), а дальше курорты разбросаны по атоллам. Ваш курорт <b>Kandima</b> — в атолле <b>Дхаалу, ~170 км к югу</b> от Мале. Красным отмечен он, остальное — «горячие точки» дикой природы для ориентира (обрати внимание: знаменитый мантовый Ханифару — совсем в другом, северном атолле).</div>
+    <div id="map"></div>
+    <div class="legend">
+      <span><span class="sw" style="background:#14110f"></span>Мале · аэропорт-хаб</span>
+      <span><span class="sw" style="background:#d8412f"></span>Kandima · ваш курорт (Дхаалу)</span>
+      <span><span class="sw" style="background:#e0a32e"></span>Дикая природа: манты · китовые акулы</span>
+      <span><span class="sw" style="background:#1f7a6b"></span>«Море звёзд» · дайв-атоллы</span>
+    </div>
+    <div class="note">Координаты атоллов примерные — для ориентира «как далеко и в какую сторону». Точную точку своего курорта и экскурсий уточняй у курорта.</div>
+    <div class="actions">
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Maldives+atolls" target="_blank" rel="noopener">открыть в Google Maps →</a>
+    </div>
+  </div>
+
+  <!-- РАЗДЕЛ: ЧТО ДЕЛАТЬ -->
+  <div class="place" style="background:transparent;border:0;padding:0;margin:18px 0 4px">
+    <div class="kicker">чем заняться (и чем можно не заниматься)</div><h3 style="margin:2px 0">Блоки впечатлений</h3>
+  </div>
+
+  <!-- A · ДОМ-РИФ И СНОРКЛИНГ -->
+  <div class="place" style="border-left:6px solid #1f7a6b">
+    <div class="kicker">вода · дом-риф · бесплатно и рядом · главное на Мальдивах</div>
+    <h3>Дом-риф и снорклинг</h3>
+    <div class="why"><b>Зачем:</b> у большинства островов есть <b>«дом-риф» (house reef)</b> прямо у берега — заходишь с пляжа, и через пару метров лагуна обрывается в коралловый сад. Ласты, маска и трубка обычно бесплатно на пляже. Это то, ради чего сюда едут, и это ничего не стоит.</div>
+    <div class="look"><b>Кого реально видно:</b> стайки ярких рифовых рыб, <b>морские черепахи</b>, скаты, рифовые акулы (безопасные), мурены, иногда рифовые акулы-няньки. Лучший снорклинг — у кромки рифа (reef edge), где мелко переходит в глубину.</div>
+    <div class="look"><span class="tlabel">Ловушка рядом:</span> кораллы острые и живые — не вставать на них ногами (и порежешься, и убиваешь риф). Течение у края рифа бывает сильным: снорклить вдоль берега, не заплывать за кромку без гида. <b>Крем от солнца — reef-safe</b> (без оксибензона), обычный вредит кораллам.</div>
+    <div class="gallery">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Snorkeling_in_the_Indian_Ocean_in_the_Maldives..JPG/500px-Snorkeling_in_the_Indian_Ocean_in_the_Maldives..JPG" alt="Снорклинг над рифом, Мальдивы" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Chelonia_mydas_is_going_for_the_air_edit.jpg/500px-Chelonia_mydas_is_going_for_the_air_edit.jpg" alt="Зелёная морская черепаха" loading="lazy">
+    </div>
+    <div class="img-src">фото: Wikimedia — <a href="https://commons.wikimedia.org/wiki/File:Snorkeling_in_the_Indian_Ocean_in_the_Maldives..JPG" target="_blank" rel="noopener">снорклинг, Мальдивы</a> · <a href="https://commons.wikimedia.org/wiki/File:Chelonia_mydas_is_going_for_the_air_edit.jpg" target="_blank" rel="noopener">черепаха</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Maldives+house+reef+snorkeling+turtle" target="_blank" rel="noopener">смотреть фото →</a>
+      <a class="btn" href="https://maldives-magazine.com/activities/snorkeling.htm" target="_blank" rel="noopener">гид по снорклингу →</a>
+    </div>
+  </div>
+
+  <!-- B · МАНТЫ И КИТОВЫЕ АКУЛЫ -->
+  <div class="place" style="border-left:6px solid #1f7a6b">
+    <div class="kicker">вода · большая морская жизнь · сезонное окно</div>
+    <h3>Китовые акулы и манты в ваш сезон</h3>
+    <div class="why"><b>Зачем:</b> планктонный сезон приманивает самых больших рыб планеты — безобидных фильтраторов. Плыть рядом с 5–8-метровой китовой акулой или мантой — впечатление на всю жизнь.</div>
+    <div class="look"><b>Честно про сезон именно в Дхаалу:</b>
+      <br>· <b>Китовые акулы</b> — приплывают кормиться планктоном как раз во влажный сезон (ваш июль); плюс их стабильно видно в соседнем <b>Южном Ари</b>. Это ваш главный шанс.
+      <br>· <b>Манты</b> — в Дхаалу есть «станции очистки», но их пик тут — <b>сухой сезон (дек–апр)</b>, так что в июле они по удаче. Всемирно знаменитый <b>Ханифару-Бэй</b>, где кормятся сотни мант, — это <b>другой, северный атолл Баа</b>, не сосед Kandima: туда только отдельная дальняя поездка, не день-трип.</div>
+    <div class="look"><span class="tlabel">Как попасть:</span> через дайв-центр Kandima <b>Aquaholics</b> — снорклинг-выходы, «turtle quest», выезды на точки. Оба гиганта под охраной: как держать дистанцию и не трогать — в блоке «Безопасность в воде» ниже.</div>
+    <div class="gallery">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Dharavandhoo_Thila_-_Manata_Black_Pearl.JPG/500px-Dharavandhoo_Thila_-_Manata_Black_Pearl.JPG" alt="Манта в атолле Баа, Мальдивы" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Similan_Dive_Center_-_great_whale_shark.jpg/500px-Similan_Dive_Center_-_great_whale_shark.jpg" alt="Китовая акула" loading="lazy">
+    </div>
+    <div class="img-src">фото: Wikimedia — <a href="https://commons.wikimedia.org/wiki/File:Dharavandhoo_Thila_-_Manata_Black_Pearl.JPG" target="_blank" rel="noopener">манта (атолл Баа)</a> · <a href="https://commons.wikimedia.org/wiki/File:Similan_Dive_Center_-_great_whale_shark.jpg" target="_blank" rel="noopener">китовая акула (илл.)</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Hanifaru+Bay+manta+ray+snorkeling+Maldives" target="_blank" rel="noopener">смотреть фото →</a>
+      <a class="btn" href="https://blog.onevasco.com/july-travel-guide/maldives" target="_blank" rel="noopener">сезон мант в июле →</a>
+    </div>
+  </div>
+
+  <!-- БЕЗОПАСНОСТЬ В ВОДЕ -->
+  <div class="place" style="border-left:6px solid #d8412f">
+    <div class="kicker">безопасность в воде · кого не трогать и как себя вести</div>
+    <h3>Смотри, но не трогай</h3>
+    <div class="note">Главное правило снорклинга — <b>«смотри, не трогай»</b>. Почти вся «опасная» живность не охотится на человека, а <b>защищается</b>, если её тронуть, схватить или прижать ко дну. Акул тут бояться не нужно: незапровоцированных нападений в Мальдивах практически <b>ноль</b>, местные рифовые акулы к людям не агрессивны. Всегда слушай брифинг гида перед заходом в воду.</div>
+    <div class="kicker" style="margin-top:16px">кого не трогать — как выглядит, чем опасно, что делать</div>
+    <div class="crits">
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Pez_piedra_de_arrecife_%28Synanceia_verrucosa%29%2C_Mauricio%2C_2025-09-24%2C_DD_136.jpg/500px-Pez_piedra_de_arrecife_%28Synanceia_verrucosa%29%2C_Mauricio%2C_2025-09-24%2C_DD_136.jpg" alt="Каменная рыба (stonefish)" loading="lazy">
+        <div class="b"><h5><span class="tag tag--no">✕</span>Каменная рыба</h5><p>Самая ядовитая рыба планеты — и почти невидимая: лежит на дне, прикидываясь обломком камня или коралла (на фото она в центре, мордой влево). На спине — 13 шипов с сильнейшим ядом; наступишь — боль описывают как одну из самых мучительных, бывает отёк и общая слабость. Именно из-за неё <b>не вставай ногами на дно и не хватай руками «камни»</b>.</p></div></div>
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Red_lionfish_near_Gilli_Banta_Island.JPG/500px-Red_lionfish_near_Gilli_Banta_Island.JPG" alt="Крылатка (lionfish)" loading="lazy">
+        <div class="b"><h5><span class="tag tag--no">✕</span>Крылатка</h5><p>Эффектная полосатая рыба с веером длинных перистых плавников — часто спокойно висит на месте у рифа, будто позирует. Но в этих лучах-иглах сидит яд: укол вызывает жгучую боль, отёк, иногда тошноту и слабость. Сама не нападает — просто <b>любуйся с дистанции, не трогай и не пытайся «погладить»</b>.</p></div></div>
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Conus_textile_%28textile_cone_snail%29_1_%2824399204286%29.jpg/500px-Conus_textile_%28textile_cone_snail%29_1_%2824399204286%29.jpg" alt="Улитка-конус (cone snail)" loading="lazy">
+        <div class="b"><h5><span class="tag tag--no">✕</span>Улитка-конус</h5><p>Красивая узорчатая ракушка, которую так и хочется поднять с песка на память. Внутри — хищный моллюск с выдвижным ядовитым «гарпуном»; у крупных видов яд опасен вплоть до смертельного, а укол поначалу почти не чувствуется. Правило шире одной ракушки: <b>на рифе вообще ничего не поднимай со дна</b> — красивое сфоткай и оставь на месте.</p></div></div>
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Diadema_setosum_Oman.JPG/500px-Diadema_setosum_Oman.JPG" alt="Морской ёж (Diadema)" loading="lazy">
+        <div class="b"><h5><span class="tag tag--no">✕</span>Морской ёж</h5><p>Чёрные шары с длинными тонкими иглами прячутся в трещинах кораллов и на мелководье. Иглы легко втыкаются в стопу или ладонь, обламываются внутри и болезненно воспаляются — вытащить их потом непросто. Ещё одна причина <b>не опускать ноги на дно и смотреть, куда кладёшь руку</b>.</p></div></div>
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Millepora_alcicornis_%28branching_fire_corals%29_%28San_Salvador_Island%2C_Bahamas%29_1_%2815896254488%29.jpg/500px-Millepora_alcicornis_%28branching_fire_corals%29_%28San_Salvador_Island%2C_Bahamas%29_1_%2815896254488%29.jpg" alt="Огненный коралл (Millepora)" loading="lazy">
+        <div class="b"><h5><span class="tag tag--no">✕</span>Огненный коралл</h5><p>Не настоящий коралл, а его жгучий родственник: на вид безобидные горчично-бежевые веточки или корки на рифе. При касании «жалит» как крапива — кожу жжёт, она краснеет и зудит часами. Плюс любые острые кораллы режут до крови. Вывод один: <b>кораллы не трогаем руками и ластами, не встаём и не опираемся</b> на них.</p></div></div>
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Moray_eel.jpg/500px-Moray_eel.jpg" alt="Мурена (moray eel)" loading="lazy">
+        <div class="b"><h5><span class="tag tag--no">✕</span>Мурена</h5><p>Угорь, что выглядывает из норы в рифе и ритмично открывает пасть — так она просто дышит, а не угрожает. Сама не нападает, но если сунуть руку в расщелину или подкармливать — может цапнуть, и укус рваный, глубокий, легко воспаляется. Правило простое: <b>не заглядывай руками в дыры и щели рифа</b>.</p></div></div>
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Raya_de_arrecife_%28Taeniura_lymma%29%2C_mar_Rojo%2C_Egipto%2C_2023-04-14%2C_DD_64.jpg/500px-Raya_de_arrecife_%28Taeniura_lymma%29%2C_mar_Rojo%2C_Egipto%2C_2023-04-14%2C_DD_64.jpg" alt="Скат-хвостокол (Taeniura lymma)" loading="lazy">
+        <div class="b"><h5><span class="tag tag--no">✕</span>Скат-хвостокол</h5><p>Лежит, наполовину зарывшись в песок на мелководье, — его легко не заметить и наступить. На хвосте — зазубренный ядовитый шип, которым он бьёт с испугу, если на него наступить. Защита простая и надёжная: на мелководье <b>не топай, а «шаркай» подошвами по песку</b> (stingray shuffle) — скат почувствует и уплывёт заранее.</p></div></div>
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Titan_Triggerfish_imported_from_iNaturalist_photo_324702096_on_3_November_2024_%28edit%29.jpg/500px-Titan_Triggerfish_imported_from_iNaturalist_photo_324702096_on_3_November_2024_%28edit%29.jpg" alt="Титановый триггер (titan triggerfish)" loading="lazy">
+        <div class="b"><h5><span class="tag tag--care">▲</span>Титановый триггер</h5><p>Крупная зубастая рыба, которая в сезон гнездования яростно охраняет свою территорию — а тянется она столбом от гнезда на дне до самой поверхности. Может решительно плыть на снорклера и покусывать, пока не выпроводит; укус чувствительный. Ничего личного — <b>не спорь: спокойно отплывай в сторону (вбок, а не вверх)</b>, уступая коридор.</p></div></div>
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Blacktip_reef_shark_%28Carcharhinus_melanopterus%29_Moorea.jpg/500px-Blacktip_reef_shark_%28Carcharhinus_melanopterus%29_Moorea.jpg" alt="Рифовая акула (blacktip)" loading="lazy">
+        <div class="b"><h5><span class="tag tag--ok">✓</span>Рифовая акула</h5><p>Блэктип и уайттип — те акулы, что чаще всего мелькают на рифе. Хорошая новость: к людям они не агрессивны, незапровоцированных нападений на Мальдивах практически нет — это часть подводного шоу, а не угроза. Веди себя спокойно, без резких движений и брызг, <b>не гонись и не загоняй в угол, не трогай</b> — дай спокойно проплыть мимо.</p></div></div>
+
+      <div class="cc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Similan_Dive_Center_-_great_whale_shark.jpg/500px-Similan_Dive_Center_-_great_whale_shark.jpg" alt="Китовая акула" loading="lazy">
+        <div class="b"><h5><span class="tag tag--care">▲</span>Китовая акула и манта</h5><p>Гиганты-фильтраторы, ради которых сюда и плывут, — безобидные, но им нельзя мешать. Держи дистанцию: <b>минимум ~3 м от головы и ~4 м от хвоста</b> китовой акулы, не заходи спереди и не пересекай путь — плыви сбоку и дай подойти самой. Мант <b>не окружай и не трогай</b>: касание стирает защитную слизь на коже. Спокоен — часто сами кружат рядом.</p></div></div>
+
+    </div>
+    <div class="img-src">фото: Wikimedia Commons — Synanceia verrucosa · Pterois · Conus textile · Diadema setosum · Millepora alcicornis · Muraenidae · Taeniura lymma · Titan triggerfish · Carcharhinus melanopterus · Rhincodon typus</div>
+    <div class="look" style="margin-top:14px"><span class="tlabel">Общие правила в воде:</span> не вставай ногами на дно и не хватай «камни» (каменная рыба, ежи); не поднимай ракушки; не суй руки в расщелины; кораллы не трогай и не опирайся на них; крем — <b>reef-safe</b> (без оксибензона). С крупными держись спокойно, фото <b>без вспышки</b>, себя моторными буксирами не тащи. <b>Кормить акул и скатов на Мальдивах запрещено законом.</b> И всегда слушай брифинг гида перед заходом — он покажет местные нюансы.</div>
+    <div class="note" style="margin-top:12px">Если всё же укололся ядовитым шипом (каменная рыба, крылатка, ёж) или сильно порезался о коралл — не геройствуй, сразу в <b>медпункт курорта</b>: на острове он есть, и там знают, что делать.</div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://maldives-magazine.com/diving/dangerous-fish.htm" target="_blank" rel="noopener">опасная живность: детали →</a>
+      <a class="btn" href="https://secretparadise.mv/2024/12/08/how-to-have-a-responsible-shark-encounter-in-the-maldives/" target="_blank" rel="noopener">как вести себя с акулами →</a>
+    </div>
+  </div>
+
+  <!-- ДАЙВИНГ -->
+  <div class="place" style="border-left:6px solid #1f7a6b">
+    <div class="kicker">под воду глубже · дайв-центр Kandima «Aquaholics»</div>
+    <h3>Дайвинг: не только снорклинг</h3>
+    <div class="why"><b>Зачем:</b> снорклинг показывает верхний метр рифа — дайвинг открывает стены, каналы и подводные пинаклы («тилы») с крупной живностью. У Kandima свой <b>PADI-дайв-центр Aquaholics</b>: от пробного погружения для новичков до курсов на сертификат и выходов для опытных. Дхаалу — «южный атолл» с сильными течениями и пелагикой, дайверы его любят.</div>
+    <div class="look"><b>Топ-сайты рядом (атолл Дхаалу):</b>
+      <br>· <b>Vaanee Corner</b> — всего ~8 минут на лодке от Kandima: сильные течения, глубина, акулы и скаты (для продвинутых).
+      <br>· <b>Fushi Kandu</b> — единственная охраняемая морская зона атолла и самый знаменитый сайт: каналы, «тила», плотные косяки рыб.
+      <br>· <b>Kuda Thila</b> — спокойнее: коралловые сады, белопёрые рифовые акулы, черепахи, стаи каранксов.</div>
+    <div class="look"><b>Кого видно:</b> серые и белопёрые рифовые акулы, орляки, барракуды, черепахи (хоксбилл и зелёные — в атолле встречается до 5 из 7 видов черепах мира), в планктонный сезон — китовые акулы.</div>
+    <div class="look"><span class="tlabel">Новичку:</span> не сертифицирован — начни с <b>Discover Scuba (пробный дайв)</b> с инструктором на мелководье; хочешь нырять серьёзно — курс <b>Open Water</b> занимает ~3–4 дня, закладывай время. И важное перед обратным трансфером: <b>после дайвинга не летают ≥18–24 ч</b> (правило DAN) — не планируй погружение впритык к вылету самолётом/гидропланом.</div>
+    <div class="look"><span class="tlabel">Сколько стоит:</span> Kandima свой прайс открыто не публикует, но ориентир по сопоставимому мальдивскому курорту (Kagi, 2025, цены уже с 10% сервис + 17% GST): <b>1 погружение ~$84</b>, пакет 5 дайвов ~$393 (≈$79 за дайв), 10 — ~$734; <b>пробный Discover Scuba ~$219</b>; <b>курс Open Water ~$682</b>. Плюс прокат снаряжения. Общая вилка по Мальдивам: 1 дайв $70–110, Open Water $550–900. Полная сводка доплат — в блоке «Цены» ниже. <span class="chip chip--check" style="margin:0">точный прайс — у Aquaholics</span></div>
+    <div class="oneimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Banana_Reef.jpg/500px-Banana_Reef.jpg" alt="Риф с рыбой, дайвинг на Мальдивах" loading="lazy"></div>
+    <div class="img-src">фото: Wikimedia — <a href="https://commons.wikimedia.org/wiki/File:Banana_Reef.jpg" target="_blank" rel="noopener">Banana Reef (Мальдивы)</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Dhaalu+atoll+diving+Kandima+Maldives+reef" target="_blank" rel="noopener">смотреть фото →</a>
+      <a class="btn" href="https://kandima.com/en/kool-places/aquaholics" target="_blank" rel="noopener">дайв-центр Aquaholics →</a>
+      <a class="btn" href="https://maldives-magazine.com/diving/dhaalu-atoll-diving-guide-resorts-faafu-secrets.html" target="_blank" rel="noopener">дайв-гид по Дхаалу →</a>
+    </div>
+  </div>
+
+  <!-- C · ЭКСКУРСИИ -->
+  <div class="place" style="border-left:6px solid #e0a32e">
+    <div class="kicker">за пределы острова · курорт всё организует · за доп. плату</div>
+    <h3>Экскурсии с курорта</h3>
+    <div class="why"><b>Зачем:</b> когда захочется вылазку с острова — курорт возит на классические мальдивские мини-приключения. Все спокойные, ленивые, «для настроения», обычно за отдельную плату — бронируются на ресепшене.</div>
+    <div class="look"><b>Что бывает:</b>
+      <br>· <b>Пикник на сэндбанке</b> — минут 45 на спидботе до крошечной песчаной косы посреди океана, где кроме вас никого: купаться, снорклить, лежать. Самая «открыточная» вылазка.
+      <br>· <b>Закатный круиз с дельфинами</b> — на традиционной лодке-<b>дони</b> под закат, часто с проходящими стаями дельфинов.
+      <br>· <b>Закатная рыбалка</b> — ~2 часа с местными рыбаками по-простому, на ручную снасть; улов иногда готовят на ужин.
+      <br>· <b>Визит на обитаемый остров</b> — посмотреть, как живут мальдивцы: деревня, чайные, лавки. Про этикет — в культурном слое ниже.</div>
+    <div class="gallery">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Sandbank._Eriyadu%2C_Maldives.jpg/500px-Sandbank._Eriyadu%2C_Maldives.jpg" alt="Песчаная коса (сэндбанк), Мальдивы" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Traditional_Maldivian_Dhoni.jpg/500px-Traditional_Maldivian_Dhoni.jpg" alt="Традиционная мальдивская лодка дони" loading="lazy">
+    </div>
+    <div class="img-src">фото: Wikimedia — <a href="https://commons.wikimedia.org/wiki/File:Sandbank._Eriyadu,_Maldives.jpg" target="_blank" rel="noopener">сэндбанк (Эрияду)</a> · <a href="https://commons.wikimedia.org/wiki/File:Traditional_Maldivian_Dhoni.jpg" target="_blank" rel="noopener">лодка дони</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Maldives+sandbank+picnic+dolphin+dhoni+cruise" target="_blank" rel="noopener">смотреть фото →</a>
+    </div>
+  </div>
+
+  <!-- D · СПА И ВЕЛЛНЕС -->
+  <div class="place" style="border-left:6px solid #1f7a6b">
+    <div class="kicker">перезагрузка · медленно · опция</div>
+    <h3>Спа и веллнес</h3>
+    <div class="why"><b>Зачем:</b> Мальдивы — мировая столица спа. У Kandima — своё <b>esKape Spa</b> (отмеченное наградами): массажи, парные процедуры, ритуалы. На Мальдивах в целом популярны спа-павильоны над лагуной и <b>йога на рассвете</b> над океаном. Идеально ложится на профиль «отдых без ушатывания».</div>
+    <div class="look"><span class="tlabel">Свериться у курорта:</span> что входит в тариф, а что за доплату; часто бывают парные (для двоих) программы и утренняя йога. <span class="chip chip--check" style="margin:0">проверить: программы esKape</span></div>
+    <div class="oneimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Diamonds_Thudufushi_Beach_and_Water_Villas%2C_May_2017_-01.jpg/500px-Diamonds_Thudufushi_Beach_and_Water_Villas%2C_May_2017_-01.jpg" alt="Курортный остров и лагуна, Мальдивы" loading="lazy"></div>
+    <div class="img-src">фото: Wikimedia — <a href="https://commons.wikimedia.org/wiki/File:Diamonds_Thudufushi_Beach_and_Water_Villas,_May_2017_-01.jpg" target="_blank" rel="noopener">Thudufushi, лагуна</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Maldives+overwater+spa+sunrise+yoga" target="_blank" rel="noopener">смотреть фото →</a>
+    </div>
+  </div>
+
+  <!-- РОМАНТИКА / ОСОБЫЙ ВЕЧЕР -->
+  <div class="place" style="border-left:6px solid #e0a32e">
+    <div class="kicker">особый вечер · для двоих · Kandima организует</div>
+    <h3>Романтика и «тот самый» вечер</h3>
+    <div class="why"><b>Зачем:</b> один вечер за поездку стоит сделать особенным — Kandima под это заточен, от ужина вдвоём на пустынной косе до заката с бокалом на традиционной лодке.</div>
+    <div class="look"><b>Что бывает:</b>
+      <br>· <b>«Castaway» — ужин на сэндбанке</b>: вас увозят на крошечную песчаную косу <b>Thilabolhufushi</b> в минутах от Kandima, накрывают стол с личным поваром — только вы двое и океан.
+      <br>· <b>Приватный ужин на пляже или под звёздами</b> у виллы, с украшением цветами.
+      <br>· <b>Закатный круиз</b> — на традиционной дони (часто с дельфинами) или на яхте, с шампанским.
+      <br>· <b>Спа для двоих</b> в esKape и <b>йога на закате</b> вдвоём.</div>
+    <div class="note">Всё это — за доплату и по предварительной брони: скажи на ресепшене за день-два. Если у вас медовый/юбилейный пакет — часто в него уже входит романтический ужин и парное спа, стоит свериться.</div>
+    <div class="gallery">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Kuramathi_Sandbank_001.jpg/500px-Kuramathi_Sandbank_001.jpg" alt="Песчаная коса для ужина вдвоём, Мальдивы" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Park_Hyatt_Hadahaa_Maldives7.jpg/500px-Park_Hyatt_Hadahaa_Maldives7.jpg" alt="Закат над лагуной курорта, Мальдивы" loading="lazy">
+    </div>
+    <div class="img-src">фото: Wikimedia — <a href="https://commons.wikimedia.org/wiki/File:Kuramathi_Sandbank_001.jpg" target="_blank" rel="noopener">сэндбанк</a> · <a href="https://commons.wikimedia.org/wiki/File:Park_Hyatt_Hadahaa_Maldives7.jpg" target="_blank" rel="noopener">лагуна на закате</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Maldives+private+sandbank+dinner+sunset+beach+romantic" target="_blank" rel="noopener">смотреть фото →</a>
+      <a class="btn" href="https://kandima.com/en/dining/destdining" target="_blank" rel="noopener">приватные ужины Kandima →</a>
+    </div>
+  </div>
+
+  <!-- E · ТИХАЯ МАГИЯ -->
+  <div class="place" style="border-left:6px solid #14110f">
+    <div class="kicker">вечер и ночь · бесплатно · просто быть</div>
+    <h3>Тихая магия: звёзды и «море звёзд»</h3>
+    <div class="why"><b>Зачем:</b> лучшее на Мальдивах часто не стоит ничего. Ночью посреди океана нет светового загрязнения — <b>Млечный Путь виден в упор</b>. А если повезёт — под ногами загорится вода.</div>
+    <div class="look"><b>«Море звёзд» (биолюминесценция):</b> планктон-динофлагелляты вспыхивают синим, когда воду тревожат — прибой и следы в песке светятся, будто в воде рассыпали звёзды. Знаменитее всего пляжи атолла Раа (Ваадху), но явление бывает по всем Мальдивам.</div>
+    <div class="look"><span class="tlabel">Как поймать:</span> шанс выше <b>именно в ваш сезон (июнь–октябрь)</b>, в <b>безлунную ночь</b>, вдали от фонарей, чем темнее — тем ярче. Но это дикая природа: <b>гарантий нет</b>, свечение непредсказуемо. Не строй вечер только на нём — считай приятным сюрпризом.</div>
+    <div class="oneimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Bioluminescence_in_San_Diego.jpg/500px-Bioluminescence_in_San_Diego.jpg" alt="Биолюминесценция планктона в прибое (иллюстрация явления)" loading="lazy"></div>
+    <div class="img-src">фото: Wikimedia — <a href="https://commons.wikimedia.org/wiki/File:Bioluminescence_in_San_Diego.jpg" target="_blank" rel="noopener">биолюминесценция (иллюстрация явления, не Мальдивы)</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Maldives+sea+of+stars+bioluminescence+Vaadhoo" target="_blank" rel="noopener">смотреть фото →</a>
+      <a class="btn" href="https://www.tripadvisor.com/Articles-lEuc21FzECgQ-Maldives_sea_of_stars.html" target="_blank" rel="noopener">про «море звёзд» →</a>
+    </div>
+  </div>
+
+  <!-- ЦЕНЫ -->
+  <div class="place" style="border-left:6px solid #e0a32e">
+    <div class="kicker">сколько это стоит · доплаты на острове · ориентир</div>
+    <h3>Цены: что и почём</h3>
+    <div class="why">Отель уже забронирован, поэтому здесь — про <b>доплаты на острове</b>: дайвинг, экскурсии, питание, трансфер. И главная мальдивская подстава в самом низу — налоги и сборы, которые накидываются <b>поверх любого ценника</b>.</div>
+    <div class="note">Kandima полный прайс активностей открыто не публикует (проверял — ни сайт курорта, ни PADI-страница дайв-центра). Поэтому ниже — веб-ориентиры: точные цифры Kandima по трансферу/питанию, прайс сопоставимого курорта (Kagi, 2025) и общие мальдивские вилки. Актуально на июль 2026 — финально сверяйся с ресепшеном / Aquaholics.</div>
+
+    <div class="tier">
+      <div class="lead">дайвинг · ориентир (Kagi 2025 — цены уже с 10% сервис + 17% GST)</div>
+      <div class="eat"><b>1 погружение</b> <span class="m">~$84; пакет 5 дайвов ~$393 (≈$79/дайв), 10 дайвов ~$734 — оптом дешевле</span></div>
+      <div class="eat"><b>Пробное (Discover Scuba)</b> <span class="m">лагунное обучение + погружение ~$219; «Gold» с лодочным дайвом ~$366</span></div>
+      <div class="eat"><b>Курс Open Water</b> <span class="m">(сертификат, +4 дайва) ~$682. Общая вилка по Мальдивам: 1 дайв $70–110, OWD $550–900</span></div>
+    </div>
+
+    <div class="tier">
+      <div class="lead">экскурсии и спа</div>
+      <div class="eat"><b>Сэндбанк + снорклинг</b> <span class="m">~$25–45 с человека (общая мальдивская вилка)</span></div>
+      <div class="eat"><b>Закатный круиз с дельфинами / рыбалка</b> <span class="m">за доп. плату; Kandima точные суммы не публикует — уточнять на месте</span></div>
+      <div class="eat"><b>Ужин «Castaway» на сэндбанке · спа esKape</b> <span class="m">премиальный сегмент, по прайсу курорта — уточнять</span></div>
+    </div>
+
+    <div class="tier">
+      <div class="lead">питание и трансфер · это уже точные цифры Kandima</div>
+      <div class="eat"><b>Тариф питания</b> <span class="m">доплата к номеру, с человека в сутки: Half Board+ ~+$50 · Full Board+ ~+$80 · Premium All-Inclusive ~+$150</span></div>
+      <div class="eat"><b>Трансфер</b> <span class="m">~$675 с человека туда-обратно — что рейс+катер, что гидросамолёт (обычно уже в пакете брони)</span></div>
+    </div>
+
+    <div class="look" style="margin-top:14px"><span class="tlabel">Налоги и сборы — поверх ВСЕГО, что покупаешь на острове:</span> +<b>10% сервис-сбор</b>, +<b>17% GST</b> (турналог, поднят с 1 июля 2025) и <b>зелёный налог $12 с человека за ночь</b>. На практике: любой «чистый» ценник умножай примерно на <b>×1,29</b> и добавляй $12/чел за ночь. Часто это уже включено в пакет — сверяйся заранее, чтобы не удивляться финальному счёту.</div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://holiday.com.mv/maldives-diving-costs/" target="_blank" rel="noopener">цены на дайвинг →</a>
+      <a class="btn" href="https://immaldives.com/travel-guide/costs/tax-and-fees/" target="_blank" rel="noopener">налоги Мальдив →</a>
+      <a class="btn" href="https://kandima.com/en/kool-places/aquaholics" target="_blank" rel="noopener">Aquaholics (прайс уточнить) →</a>
+    </div>
+  </div>
+
+  <!-- КУЛЬТУРНЫЙ СЛОЙ -->
+  <div class="place">
+    <div class="kicker">культурный слой · узнать и проникнуться</div>
+    <h3>Послушать, посмотреть, почитать, попробовать</h3>
+    <div class="note">На курортном острове никаких «правил, чтоб не влететь» — дресс-код свободный, алкоголь есть. Поэтому культурный слой тут не про запреты, а про <b>«узнать и проникнуться»</b>: местная музыка (от боду беру до поп-сцены), кино, книги, еда и пара слов. Голоса честно помечены <b>изнутри</b> (местный автор) / <b>снаружи</b> (иностранец о Мальдивах).</div>
+
+    <div class="tier">
+      <div class="lead">послушать · музыка Мальдив · от традиции к сцене · <span class="pick">★ боду беру</span></div>
+      <div class="eat"><b>Боду беру</b> (bodu beru — «большие барабаны») <span class="m">— сердце и корень: ~20 человек, три барабанщика и запевала, барабаны из ствола кокоса и козьей кожи, ритм разгоняется в транс. Корни восточноафриканские, песни (lava) с африканскими, яванскими и арабскими мотивами. Курорты часто устраивают вечер боду беру — не пропусти вживую.</span> <a class="lnk" href="https://www.youtube.com/results?search_query=bodu+beru+Maldives+performance" target="_blank" rel="noopener">послушать →</a></div>
+      <div class="eat"><b>Zero Degree Atoll</b> <span class="m">— легенда (с 1987): первыми сплавили боду беру и народную поэзию с западными инструментами. Культовый альбом «Dhoni» — лучший «гейтвей» в мальдивский звук.</span> <a class="lnk" href="https://www.youtube.com/results?search_query=Zero+Degree+Atoll+Dhoni" target="_blank" rel="noopener">слушать →</a></div>
+      <div class="eat"><b>Harubee</b> <span class="m">— современный боду-беру-коллектив: взрывной живой ритм, побеждали в Bodu Beru Challenge, гастролировали по миру (были и в России), играли на Nat Geo и BBC. То, что звучит сейчас.</span> <a class="lnk" href="https://www.youtube.com/results?search_query=Harubee+bodu+beru" target="_blank" rel="noopener">слушать →</a></div>
+      <div class="eat"><b>Unoosha</b> <span class="m">— «принцесса мальдивского попа»: если хочется не фолк, а актуальную эстраду на дивехи.</span> <a class="lnk" href="https://www.youtube.com/results?search_query=Unoosha+Maldives+singer" target="_blank" rel="noopener">слушать →</a></div>
+      <div class="eat"><span class="m">Официально о традиции боду беру — Visit Maldives (гипнотические ритмы).</span> <a class="lnk" href="https://visitmaldives.com/en/experience/the-hypnotizing-rhythms-of-boduberu" target="_blank" rel="noopener">о традиции →</a></div>
+    </div>
+
+    <div class="cols2">
+      <div class="col"><h4>Посмотреть · кино</h4><ul>
+        <li>«The Island President» (2011) <span class="src">реж. Джон Шенк (снаружи) — док про президента Мохамеда Нашида и борьбу тонущих Мальдив с климатом: Копенгаген-2009, знаменитое заседание кабмина под водой. Премии Sundance/TIFF, честный и сильный вход в страну.</span> <a class="lnk" href="https://www.google.com/search?q=The+Island+President+2011+documentary+watch" target="_blank" rel="noopener">найти →</a></li>
+        <li>«Fathis Handhuvaru» (1996) <span class="src">изнутри — самый успешный мальдивский фильм (хоррор), классика местного кино. На дивехи, с субтитрами найти сложно, но это «тот самый» национальный хит.</span> <a class="lnk" href="https://www.google.com/search?q=Fathis+Handhuvaru+1996+Maldivian+film" target="_blank" rel="noopener">найти →</a></li>
+        <li><span class="src">Контекст: кино Мальдив — с 1979, стиль мелодрама, премия Gaumee Film Awards; снимают в основном на дивехи для местных.</span></li>
+      </ul></div>
+      <div class="col"><h4>Почитать · книги</h4><ul>
+        <li>«Folk Tales of the Maldives» — Xavier Romero-Frias <span class="src">80 настоящих сказаний из устной традиции (собрал и перевёл, жил на островах 1979–91), NIAS Press 2012: духи, морские чудища, мореходы. Лучший вход в мальдивский миф.</span> <a class="lnk" href="https://www.google.com/search?q=Folk+Tales+of+the+Maldives+Romero-Frias" target="_blank" rel="noopener">найти →</a></li>
+        <li>Ibrahim Waheed «Kalaavehi» — «Radio Man» <span class="src">изнутри — победитель первого конкурса англоязычной прозы Нацбиблиотеки Мальдив (2007), одна из первых художественных книг мальдивца по-английски.</span> <a class="lnk" href="https://www.google.com/search?q=Ibrahim+Waheed+Kalaavehi+Radio+Man+Maldives" target="_blank" rel="noopener">найти →</a></li>
+        <li><span class="src">Ещё голос изнутри: Aminath Neena («Dreams of My Heart»). Художка Мальдив в переводе тонкая — сказки Romero-Frias самый надёжный старт.</span></li>
+      </ul></div>
+    </div>
+
+    <div class="tier">
+      <div class="lead">попробовать · местная кухня (проси у курорта «Maldivian night» / local menu)</div>
+      <div class="eat"><b>Мас хуни (mas huni)</b> <span class="m">— культовый мальдивский завтрак: тёртый тунец с кокосом, луком и чили, с лепёшкой рошди. Простое и идеальное.</span></div>
+      <div class="eat"><b>Гаруди́я (garudhiya)</b> <span class="m">— прозрачный тунцовый бульон с лаймом, чили и луком, с рисом; главное домашнее блюдо островов.</span></div>
+      <div class="eat"><b>Хедика́ (hedhikaa) — «короткая еда»</b> <span class="m">— плато закусок к чаю: гулха (шарики с тунцом), баджия, кимия. Едят между приёмами пищи весь день.</span></div>
+      <div class="oneimg" style="margin-top:10px"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Malefood.jpg/500px-Malefood.jpg" alt="Мальдивская еда: хедика и закуски" loading="lazy"></div>
+      <div class="img-src">фото: Wikimedia — <a href="https://commons.wikimedia.org/wiki/File:Malefood.jpg" target="_blank" rel="noopener">мальдивская еда</a> · <a href="https://en.wikipedia.org/wiki/Maldivian_cuisine" target="_blank" rel="noopener">Maldivian cuisine</a></div>
+    </div>
+
+    <div class="kicker" style="margin-top:16px">пара слов · дивехи (по-английски поймут везде, но за пару слов — улыбнутся)</div>
+    <table class="phrases">
+      <tr><td class="dv">Maruhabaa</td><td class="tr">маруха́ба</td><td>добро пожаловать</td></tr>
+      <tr><td class="dv">Assalaamu alaikum</td><td class="tr">ассала́му але́йкум</td><td>здравствуйте (формально, из арабского)</td></tr>
+      <tr><td class="dv">Kihineh?</td><td class="tr">кихине́?</td><td>как дела?</td></tr>
+      <tr><td class="dv">Rangalhu</td><td class="tr">ра́нгалху</td><td>хорошо / отлично (ответ на «как дела»)</td></tr>
+      <tr><td class="dv">Shukuriyaa</td><td class="tr">шукури́яа</td><td>спасибо</td></tr>
+      <tr><td class="dv">Bodu shukuriyaa</td><td class="tr">бо́ду шукури́яа</td><td>большое спасибо</td></tr>
+      <tr><td class="dv">Ma'aaf kurey</td><td class="tr">маа́ф куре́</td><td>извините</td></tr>
+      <tr><td class="dv">Aan / Noon</td><td class="tr">а́ан / но́он</td><td>да / нет</td></tr>
+      <tr><td class="dv">Meerukoh kaalacchey</td><td class="tr">ми́эрукон каала́ччей</td><td>приятного аппетита (букв. «ешьте вкусно»)</td></tr>
+    </table>
+    <div class="actions" style="margin-top:10px">
+      <a class="btn" href="https://www.youtube.com/results?search_query=basic+Dhivehi+phrases+pronunciation+Maldives" target="_blank" rel="noopener">как звучит дивехи →</a>
+      <a class="btn" href="https://www.omniglot.com/language/phrases/maldivian.php" target="_blank" rel="noopener">больше фраз (Omniglot) →</a>
+    </div>
+    <div class="note">Аудио для дивехи в открытых базах (Forvo) почти нет, поэтому вместо мёртвых кнопок — одно видео с произношением. Транскрипция русскими буквами — костыль «чтобы поняли», не точность.</div>
+    <div class="note" style="margin-top:8px"><b>Фишка (зеркало дубайского карака):</b> на вылазке в обитаемый остров зайди в местную чайную (<i>hotaa</i>) и возьми <b>сай</b> — крепкий сладкий чёрный чай — с тарелкой <b>хедика</b>. Это не аттракцион для туристов, а ежедневный ритуал мальдивцев, «пароль» к тёплому разговору.</div>
+    <div class="look" style="margin-top:12px"><span class="tlabel">Этикет только на обитаемом острове (на курорте всё свободно):</span> в деревне прикрой <b>плечи и колени</b> (мужчинам тоже), купальник — только на огороженном «bikini beach», топлес нельзя нигде, алкоголь на обитаемых островах запрещён. Мальдивцы к уважительным туристам очень мягкие — «заметил — прикрылся».</div>
+  </div>
+
+  <!-- ИСТОЧНИКИ -->
+  <div class="place" style="background:transparent;border:0;padding:0">
+    <div class="kicker">источники проверенных фактов</div>
+    <div class="img-src" style="font-size:12px;line-height:1.7">
+      Активности/дом-риф/снорклинг: <a href="https://maldives-magazine.com/activities/snorkeling.htm" target="_blank" rel="noopener">Maldives Magazine — snorkeling</a>, <a href="https://maldives-magazine.com/activities/best-things-to-do-in-maldives.html" target="_blank" rel="noopener">50 things to do</a> ·
+      Июль/сезон/манты/китовые акулы: <a href="https://blog.onevasco.com/july-travel-guide/maldives" target="_blank" rel="noopener">OneVasco — Maldives in July</a>, <a href="https://maldives-magazine.com/general-info/july-august-weather-2026-guide.html" target="_blank" rel="noopener">июль–август 2026</a>, <a href="https://www.zubludiving.com/articles/zublu-insights/whale-shark-and-manta-rays-seasons-in-the-maldives" target="_blank" rel="noopener">ZuBlu — сезоны</a> ·
+      Трансфер до Kandima (рейс+катер / гидросамолёт): <a href="https://www.maldivesguide.com/resorts/kandima-maldives/getting-to-kandima-maldives/" target="_blank" rel="noopener">Maldives Guide</a>, <a href="https://www.rome2rio.com/s/Male-Airport-MLE/Kandima-Maldives-Kudahuvadhoo" target="_blank" rel="noopener">Rome2Rio</a> ·
+      Курорт Kandima (активности/дайв/спа/рестораны): <a href="https://kandima.com/en/kool-places/aquaholics" target="_blank" rel="noopener">Aquaholics</a>, <a href="https://kandima.com/en/dining/destdining" target="_blank" rel="noopener">приватные ужины</a> ·
+      Дайвинг Дхаалу (сайты): <a href="https://maldives-magazine.com/diving/dhaalu-atoll-diving-guide-resorts-faafu-secrets.html" target="_blank" rel="noopener">Maldives Magazine — Dhaalu</a>, <a href="https://zubludiving.com/resort/kandima-maldives" target="_blank" rel="noopener">ZuBlu — Kandima</a>, флайт-эйфтер-дайв: <a href="https://dan.org/health-medicine/health-resource/health-safety-guidelines/guidelines-for-flying-after-diving/" target="_blank" rel="noopener">DAN</a> ·
+      Цены/налоги: дайвинг — <a href="https://holiday.com.mv/maldives-diving-costs/" target="_blank" rel="noopener">HolidayVibe</a>, прайс сопоставимого курорта <a href="https://kagimaldives.com/wp-content/uploads/2025/12/Kagi-Price-List-2025-SCUBA-DIVING.pdf" target="_blank" rel="noopener">Kagi 2025 (PDF)</a>; трансфер/питание Kandima — <a href="https://luxatolls.com/resorts/kandima-maldives/" target="_blank" rel="noopener">LuxAtolls</a>; налоги (TGST 17% с 01.07.2025, зелёный $12, сервис 10%) — <a href="https://immaldives.com/travel-guide/costs/tax-and-fees/" target="_blank" rel="noopener">IM Maldives</a>, <a href="https://www.crowe.com/mv/insights/tgst-rate-to-increase-from-1-july-2025" target="_blank" rel="noopener">Crowe</a> ·
+      Экскурсии: <a href="https://www.fushifaru.com/things-to-do-in-maldives/excursions.html" target="_blank" rel="noopener">Fushifaru excursions</a>, <a href="https://veligandu.com/experiences/maldives-excursions-and-activities/" target="_blank" rel="noopener">Veligandu</a> ·
+      Спа/веллнес: <a href="https://www.dreamingofmaldives.com/the-best-overwater-spas-in-maldives-for-a-massage-with-lagoon-views/" target="_blank" rel="noopener">overwater spas</a> ·
+      «Море звёзд»/биолюминесценция: <a href="https://www.tripadvisor.com/Articles-lEuc21FzECgQ-Maldives_sea_of_stars.html" target="_blank" rel="noopener">Tripadvisor</a>, <a href="https://www.experiencetravelgroup.com/blog/glow-bioluminescent-beach-maldives-and-sri-lanka" target="_blank" rel="noopener">Experience Travel</a> ·
+      Музыка: боду беру — <a href="https://visitmaldives.com/en/experience/the-hypnotizing-rhythms-of-boduberu" target="_blank" rel="noopener">Visit Maldives</a>; <a href="https://en.wikipedia.org/wiki/Zero_Degree_Atoll" target="_blank" rel="noopener">Zero Degree Atoll</a>, <a href="https://asianitinerary.com/harubee-explosive-bodu-beru-music-from-maldives/" target="_blank" rel="noopener">Harubee</a> ·
+      Кино: <a href="https://en.wikipedia.org/wiki/Cinema_of_Maldives" target="_blank" rel="noopener">Cinema of Maldives</a>, <a href="https://theislandpresident.com/synopsis/" target="_blank" rel="noopener">The Island President</a> ·
+      Книги: <a href="https://en.wikipedia.org/wiki/Maldivian_literature" target="_blank" rel="noopener">Maldivian literature</a>, <a href="https://press.uchicago.edu/ucp/books/book/distributed/F/bo239342648.html" target="_blank" rel="noopener">Folk Tales of the Maldives (Romero-Frias)</a> ·
+      Кухня: <a href="https://en.wikipedia.org/wiki/Maldivian_cuisine" target="_blank" rel="noopener">Maldivian cuisine (Wikipedia)</a>, <a href="https://lonumedhu.com/blog/maldivian-food-need-know-dishes" target="_blank" rel="noopener">Lonumedhu</a> ·
+      Дивехи-фразы: <a href="https://www.omniglot.com/language/phrases/maldivian.php" target="_blank" rel="noopener">Omniglot</a>, <a href="https://www.traveltrademaldives.com/handy-dhivehi-phrases-to-learn-before-your-next-trip-to-maldives/" target="_blank" rel="noopener">Travel Trade Maldives</a> ·
+      Этикет/местные острова: <a href="https://www.maldives.com/articles/rules-and-regulations/how-to-dress-in-the-maldives" target="_blank" rel="noopener">dress code</a>, <a href="https://maldivesatoll.com/guides/cultural-etiquette/" target="_blank" rel="noopener">cultural etiquette</a> ·
+      Фото: Wikimedia Commons
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="cheer">Shukuriyaa — и хорошей поездки!</span>
+    <span class="kicker">✓ проверено · [проверить] — уточнить у своего курорта</span>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // отсчёт до Мальдив (после Дубая: вылет на пляж ≈ 29 июля)
+  try{
+    var t=new Date('2026-07-29T00:00:00'), now=new Date();
+    var d=Math.max(0,Math.ceil((t-now)/86400000));
+    var el=document.getElementById('cd'); if(el) el.textContent=d;
+    var u=document.getElementById('cdu');
+    if(u){var m10=d%10,m100=d%100,w='дней';
+      if(m10===1&&m100!==11)w='день';
+      else if(m10>=2&&m10<=4&&(m100<12||m100>14))w='дня';
+      u.textContent=w;}
+  }catch(e){}
+
+  // карта Мальдив — метки по типу точки (координаты атоллов примерные)
+  var pts=[
+    {n:"Мале · аэропорт Велана (MLE) — хаб прилёта",ll:[4.1918,73.5291],c:"#14110f"},
+    {n:"Kandima · атолл Дхаалу — ВАШ КУРОРТ (~170 км к югу от Мале)",ll:[2.7000,72.9000],c:"#d8412f"},
+    {n:"Ханифару-Бэй (атолл Баа) · знаменитые манты — но это ДРУГОЙ, северный атолл",ll:[5.1725,73.1358],c:"#e0a32e"},
+    {n:"Южный Ари · китовые акулы круглый год",ll:[3.4800,72.8300],c:"#e0a32e"},
+    {n:"Атолл Раа (Ваадху) · «море звёзд» бывает по всем Мальдивам",ll:[5.6000,72.9500],c:"#1f7a6b"},
+    {n:"Атолл Адду · крайний юг — дайвинг",ll:[-0.6300,73.1500],c:"#1f7a6b"}
+  ];
+  function di(color){return L.divIcon({html:'<div class="pin" style="background:'+color+'"></div>',className:'',iconSize:[26,26],iconAnchor:[13,13]});}
+  function buildMap(elId,points){
+    if(typeof L==='undefined'||!document.getElementById(elId)) return;
+    try{
+      var hasGH=!!L.GestureHandling;
+      var opts=hasGH?{gestureHandling:true,gestureHandlingOptions:{text:{touch:"Двумя пальцами, чтобы двигать карту",scroll:"Зум — Ctrl + скролл",scrollMac:"Зум — ⌘ + скролл (или пинч)"},duration:1400}}:{scrollWheelZoom:false};
+      var m=L.map(elId,opts);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(m);
+      var layer=L.layerGroup().addTo(m);
+      var bounds=[];
+      points.forEach(function(p){
+        bounds.push(p.ll);
+        L.marker(p.ll,{icon:di(p.c)}).bindPopup('<b>'+p.n+'</b>').addTo(layer);
+      });
+      try{ m.fitBounds(bounds,{padding:[30,30]}); }catch(e){ m.setView([3.2,73.2],6); }
+    }catch(e){}
+  }
+  buildMap('map',pts);
+})();
+</script>
+
+</body>
+</html>
