@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Дубай · 27–29 июля 2026 · путеводитель</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="trip.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.css">
+<script src="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.js"></script>
+<style>
+  #map{height:460px;border:2px solid var(--border);margin-top:12px}
+  #foodmap{height:430px;border:2px solid var(--border);margin-top:12px}
+  .leaflet-container{font-family:var(--font-mono)}
+  .pin{display:flex;align-items:center;justify-content:center;width:26px;height:26px;color:#fff;border:2px solid var(--border);border-radius:50%;font-size:13px;font-weight:700}
+  .legend{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:8px;line-height:1.9}
+  .legend span{margin-right:16px;white-space:nowrap}
+  .sw{display:inline-block;width:12px;height:12px;border:2px solid var(--border);border-radius:50%;vertical-align:middle;margin-right:5px}
+  .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:12px}
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media(max-width:640px){.cols,.cols2{grid-template-columns:1fr}}
+  .lnk{color:var(--accent);font-family:var(--font-mono);font-size:12px;text-decoration:none}
+  .lnk:hover{text-decoration:underline}
+  .col li .lnk{white-space:nowrap}
+  .col h4{font-family:var(--font-display);font-size:14px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em}
+  .col ul{list-style:none;margin:0;padding:0;font-size:14px}
+  .col li{padding:5px 0;border-bottom:1px dashed var(--muted)}
+  .col .src{font-family:var(--font-mono);font-size:11px;color:var(--muted);display:block;margin-top:2px}
+  .tier{margin:16px 0 0}
+  .tier .lead{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .tier h4{font-family:var(--font-display);font-size:16px;margin:2px 0 6px;text-transform:uppercase;letter-spacing:.02em}
+  .eat{font-size:14.5px;margin:0;padding:8px 0;border-bottom:1px dashed var(--muted)}
+  .eat b{font-weight:600}
+  .eat .m{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+  .eat .lnk{font-family:var(--font-mono);font-size:12px;color:var(--accent);text-decoration:none;margin-left:8px;white-space:nowrap}
+  .eat .lnk:hover{text-decoration:underline}
+  .oneimg{margin-top:12px}
+  .oneimg img{width:100%;max-width:320px;aspect-ratio:4/3;object-fit:cover;border:var(--bw) solid var(--border);display:block}
+  .gallery img{aspect-ratio:4/3}
+  .phrases{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+  .phrases td{border-bottom:1px dashed var(--muted);padding:7px 8px 7px 0;vertical-align:middle}
+  .phrases .ar{font-weight:600;font-size:18px;white-space:nowrap;direction:rtl}
+  .phrases .tr{font-family:var(--font-mono);color:var(--muted)}
+  .note{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .place .why{font-size:15px;margin:8px 0}
+  .price{font-family:var(--font-mono);font-size:13px;color:var(--fg)}
+  .tlabel{color:var(--accent);font-weight:600}
+  .pick{color:var(--accent);font-weight:600}
+  .cmp{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;display:block;overflow-x:auto}
+  .cmp table{width:100%;border-collapse:collapse;min-width:520px}
+  .cmp th,.cmp td{border-bottom:1px solid var(--border);padding:8px 12px 8px 0;text-align:left;vertical-align:top}
+  .cmp th{font-family:var(--font-display);text-transform:uppercase;letter-spacing:.03em;font-size:11px}
+  .cmp td{font-family:var(--font-mono);font-size:12.5px;line-height:1.45}
+  .cmp .a{font-family:var(--font-display);font-weight:600;font-size:13.5px}
+  .cmp .dot{display:inline-block;width:9px;height:9px;border:2px solid var(--border);border-radius:50%;margin-right:6px;vertical-align:middle}
+  .rules .col li{padding:7px 0}
+  .gl{font-family:var(--font-mono);font-weight:700;margin-right:5px}
+  .gl--no{color:#d8412f}
+  .gl--care{color:#e0a32e}
+  .gl--ok{color:#1f7a6b}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- 1 · ГЕРОЙ -->
+  <div class="pass">
+    <div class="pass__stub">
+      <div class="kicker">boarding</div>
+      <div class="countdown">до Дубая<br><b id="cd">—</b><br><span id="cdu">дней</span></div>
+      <div class="stamp">DXB</div>
+    </div>
+    <div class="pass__body">
+      <div class="kicker">путеводитель · Дубай · стыковка перед Мальдивами</div>
+      <h1 class="title">Дубай<br><span class="u">старый город + иконы</span></h1>
+      <div class="vibe">27–29 июля 2026 · пн–ср · 2 дня · вылет из Москвы · дальше — Мальдивы</div>
+      <div style="margin-top:10px">
+        <span class="chip chip--accent">старый город + культура</span>
+        <span class="chip">спокойные хайлайты</span>
+        <span class="chip">днём +40°C → вечерний режим</span>
+        <span class="chip chip--check">цены AED · ₽ ≈ ×21</span>
+      </div>
+      <div class="greeting" style="margin-top:14px">أهلاً وسهلاً
+        <span class="greeting__read">а́хлян ва са́хлян — добро пожаловать</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ПРИНЦИП -->
+  <div class="place">
+    <div class="kicker">как читать эту страницу</div>
+    <h3>Меню, а не расписание</h3>
+    <div class="why">Два неспешных дня — стыковка перед пляжем, поэтому без гонки. Собери свой вечер из блоков ниже: одно погружение в старый город + пара икон + по желанию особый вечер (пустыня или ужин с видом). Главное про конец июля — <b>днём +40°C</b>: с полудня прячемся в кондиционер (моллы, музеи, крытые части базаров), а гулять и есть выходим <b>после заката</b>. Пляжи и вода — это уже Мальдивы, тут их сознательно нет: берегём силы.</div>
+    <div class="note">Метки <span class="chip chip--check" style="margin:0">проверить</span> — то, что стоит уточнить у места перед выходом (цена/статус). Не выдумано — просто пока не подтверждено из первоисточника.</div>
+  </div>
+
+  <!-- 2 · КАРТА -->
+  <div class="place">
+    <div class="kicker">карта · где что · пинч-зум двумя пальцами</div>
+    <h3>Как разбросан город</h3>
+    <div class="why">Дубай длинный: старый город (бухта, базары) — на северо-востоке, небоскрёбы и иконы — в Даунтауне, пляжи и набережные — вдоль моря на юго-западе. Пустыня — ещё ~45 минут на восток за краем карты. Цвет метки = <b>тип места</b> (не география).</div>
+    <div id="map"></div>
+    <div class="legend">
+      <span><span class="sw" style="background:#d8412f"></span>Старый город · культура</span>
+      <span><span class="sw" style="background:#e0a32e"></span>Иконы · арт</span>
+      <span><span class="sw" style="background:#1f7a6b"></span>Прогулки · пляжи</span>
+      <span><span class="sw" style="background:#14110f"></span>Едальни</span>
+    </div>
+    <div class="actions">
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Al+Fahidi+Historical+District+Dubai" target="_blank" rel="noopener">открыть в Google Maps →</a>
+    </div>
+  </div>
+
+  <!-- РАЗДЕЛ: ЧТО ДЕЛАТЬ -->
+  <div class="place" style="background:transparent;border:0;padding:0;margin:18px 0 4px">
+    <div class="kicker">чем занять два вечера</div><h3 style="margin:2px 0">Блоки впечатлений</h3>
+  </div>
+
+  <!-- A · СТАРЫЙ ДУБАЙ -->
+  <div class="place" style="border-left:6px solid #d8412f">
+    <div class="kicker">старый Дубай · ядро вайба · вечер</div>
+    <h3>Бухта, базары, Аль-Фахиди</h3>
+    <div class="why"><b>Зачем:</b> настоящий, доглянцевый Дубай — деревянная лодка-абра через бухту, лабиринт базаров и кварталы с ветровыми башнями XIX века.</div>
+    <div class="look"><b>Смотри:</b> (1) переправа на <b>абре</b> — AED 1 (≈25 ₽) наличными лодочнику · (2) <b>базар золота</b> (350+ лавок, торг уместен) и рядом <b>базар специй</b> · (3) квартал <b>Аль-Фахиди</b> и набережная <b>Аль-Сиф</b> в старом стиле.</div>
+    <div class="look"><span class="tlabel">Ловушка рядом:</span> навязчивые зазывалы в базарах и «специальная цена для друга» — спокойное «لا، شكراً» и идёшь дальше.</div>
+    <div class="gallery">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/The_view_of_Dubai_Creek.jpg/330px-The_view_of_Dubai_Creek.jpg" alt="Бухта Дубай-Крик" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Wind_Tower_House%2C_Al_Seef%2C_Dubai.jpg/330px-Wind_Tower_House%2C_Al_Seef%2C_Dubai.jpg" alt="Дом с ветровой башней, Аль-Сиф" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Dubai_Gold_Souk_on_31_May_2007_Pict_1.jpg/330px-Dubai_Gold_Souk_on_31_May_2007_Pict_1.jpg" alt="Базар золота в Дубае" loading="lazy">
+    </div>
+    <div class="img-src">фото: Wikimedia — <a href="https://en.wikipedia.org/wiki/Dubai_Creek" target="_blank" rel="noopener">Крик</a> · <a href="https://en.wikipedia.org/wiki/Al_Seef" target="_blank" rel="noopener">Аль-Сиф</a> · <a href="https://en.wikipedia.org/wiki/Dubai_Gold_Souk" target="_blank" rel="noopener">Gold Souk</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Al+Fahidi+Dubai+Creek+abra+souk" target="_blank" rel="noopener">смотреть фото →</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Bur+Dubai+Abra+Station" target="_blank" rel="noopener">на карте →</a>
+    </div>
+  </div>
+
+  <!-- A2 · КУЛЬТУРНАЯ ТРАПЕЗА -->
+  <div class="place" style="border-left:6px solid #d8412f">
+    <div class="kicker">старый Дубай · узнать культуру изнутри</div>
+    <h3>Трапеза с эмиратцем + мечеть Джумейра</h3>
+    <div class="why"><b>Зачем:</b> Центр Шейха Мохаммеда «Open Doors, Open Minds» — садишься за общий стол, местный хозяин рассказывает про быт, религию и кухню, и можно спрашивать что угодно. Рядом — визит в <b>мечеть Джумейра</b>, единственную в Дубае, открытую не-мусульманам.</div>
+    <div class="look"><b>⏱ Тайминг под ваши дни:</b> завтрак пн/ср 10:00 (27 и 29 июля ✓) · обед вс–чт 13:00 (все дни ✓) · ужин вс/вт/ср 19:00 (28 и 29 ✓). Цена <span class="chip chip--check" style="margin:0">проверить: cultures.ae</span></div>
+    <div class="oneimg">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Jumeira_Mosque_Dubai.jpg/330px-Jumeira_Mosque_Dubai.jpg" alt="Мечеть Джумейра" loading="lazy">
+    </div>
+    <div class="img-src">фото: Wikimedia — <a href="https://en.wikipedia.org/wiki/Jumeirah_Mosque" target="_blank" rel="noopener">Jumeirah Mosque</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Jumeirah+Mosque+Dubai+SMCCU+cultural+meal" target="_blank" rel="noopener">смотреть фото →</a>
+      <a class="btn" href="https://cultures.ae/" target="_blank" rel="noopener">офсайт SMCCU →</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Sheikh+Mohammed+Centre+for+Cultural+Understanding" target="_blank" rel="noopener">на карте →</a>
+    </div>
+  </div>
+
+  <!-- B · СПОКОЙНЫЕ ИКОНЫ -->
+  <div class="place" style="border-left:6px solid #e0a32e">
+    <div class="kicker">спокойные иконы · в помещении · вечер</div>
+    <h3>Бурдж-Халифа, фонтаны, Музей будущего</h3>
+    <div class="why"><b>Зачем:</b> глянцевый Дубай, ради которого сюда и едут, — и всё в кондиционере, что в жару спасение.</div>
+    <div class="look"><b>Смотри:</b> (1) <b>Бурдж-Халифа «At the Top»</b>, смотровая на 452 м — <span class="price">AED 173 обычно / 250 в прайм 16–19 (закат)</span> · (2) у подножия — бесплатное <b>шоу фонтанов</b> по вечерам каждые полчаса · (3) <b>Музей будущего</b>, то самое кольцо с каллиграфией — <span class="price">AED 169, 10:00–19:00</span>.</div>
+    <div class="look" style="color:var(--fg)"><b>✓ по вашим датам:</b> Музей будущего работает — реконструкция только с 1 сентября, вы успеваете.</div>
+    <div class="look"><span class="tlabel">Ловушка рядом:</span> прайм-билеты на Бурдж на закат раскупают за дни — брать заранее онлайн на офсайте.</div>
+    <div class="gallery">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Burj_Khalifa_%28worlds_tallest_building%29_and_the_Dubai_skyline_%2825781049892%29.jpg/330px-Burj_Khalifa_%28worlds_tallest_building%29_and_the_Dubai_skyline_%2825781049892%29.jpg" alt="Бурдж-Халифа" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Dubai_Fountain.jpg/330px-Dubai_Fountain.jpg" alt="Шоу фонтанов" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8c/Museum_of_the_future%2C_Dubai.jpeg/330px-Museum_of_the_future%2C_Dubai.jpeg" alt="Музей будущего" loading="lazy">
+    </div>
+    <div class="img-src">фото: Wikimedia — <a href="https://en.wikipedia.org/wiki/Burj_Khalifa" target="_blank" rel="noopener">Бурдж-Халифа</a> · <a href="https://en.wikipedia.org/wiki/Dubai_Fountain" target="_blank" rel="noopener">Фонтаны</a> · <a href="https://en.wikipedia.org/wiki/Museum_of_the_Future" target="_blank" rel="noopener">Музей будущего</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Burj+Khalifa+At+the+Top+view+Dubai+Fountain" target="_blank" rel="noopener">смотреть фото →</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Burj+Khalifa" target="_blank" rel="noopener">на карте →</a>
+    </div>
+  </div>
+
+  <!-- C · САФАРИ -->
+  <div class="place" style="border-left:6px solid #e0a32e">
+    <div class="kicker">особый вечер · опция</div>
+    <h3>Сафари по барханам</h3>
+    <div class="why"><b>Зачем:</b> закатные дюны, катание на верблюде и ужин в бедуинском лагере — классический дубайский вечер-впечатление.</div>
+    <div class="look"><b>Смотри:</b> забор из отеля ~16:00, назад ~21:30 (≈6 ч). Внутри — 30 мин гонок по барханам на джипе, сэндбординг, верблюд, BBQ-буфет и шоу (танура, танец живота, огонь). <span class="price">Лето AED 99–165 (≈2400–4000 ₽), базовые от 50.</span></div>
+    <div class="look"><span class="tlabel">Ловушка рядом:</span> это масс-маркет-конвейер — бери оператора с хорошими свежими отзывами, дешёвые срезают углы (старые джипы, толпа в лагере). И честно: 6 часов съедают почти весь вечер, а летом даже после заката тепло.</div>
+    <div class="note">Спокойную культурную версию без гонок (Platinum Heritage: соколиная охота, без дюн-бэшинга) на ваши даты не взять — она открывается только 1 октября.</div>
+    <div class="gallery">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Dunes_in_the_Dubai_Desert_Conservation.jpg/330px-Dunes_in_the_Dubai_Desert_Conservation.jpg" alt="Дюны заповедника Дубая" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Arabian_Desert_-_panoramio.jpg/330px-Arabian_Desert_-_panoramio.jpg" alt="Аравийская пустыня" loading="lazy">
+    </div>
+    <div class="img-src">фото: Wikimedia — <a href="https://en.wikipedia.org/wiki/Dubai_Desert_Conservation_Reserve" target="_blank" rel="noopener">Заповедник</a> · <a href="https://en.wikipedia.org/wiki/Arabian_Desert" target="_blank" rel="noopener">Аравийская пустыня</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.google.com/search?tbm=isch&q=Dubai+evening+desert+safari+dune+bashing+camp" target="_blank" rel="noopener">смотреть фото →</a>
+    </div>
+  </div>
+
+  <!-- D · ПРОГУЛКИ -->
+  <div class="place" style="border-left:6px solid #1f7a6b">
+    <div class="kicker">где просто погулять · после заката · бесплатно</div>
+    <h3>Вечерние прогулки</h3>
+    <div class="why"><b>Зачем:</b> когда спадёт жара — пройтись без цели, посмотреть на город. Всё бесплатное.</div>
+    <div class="look"><b>Смотри:</b> <b>Аль-Сиф</b> (набережная бухты в старом стиле, склеивается с Аль-Фахиди) · <b>The Walk at JBR</b> + остров <b>Bluewaters</b> (море, бриз, фудтраки, самое живое место) · <b>City Walk</b> (европейская пешеходная улица с муралами) · <b>Alserkal Avenue</b> (квартал современного искусства, 25 галерей, «для своих», частично в помещении) · <b>Ibn Battuta Mall</b> — на случай дневной жары, молл-«страны по маршруту Ибн Баттуты».</div>
+    <div class="look"><span class="tlabel">Проверить:</span> статус колеса <b>Ain Dubai</b> на Bluewaters всё ещё под вопросом <span class="chip chip--check" style="margin:0">проверить</span> — но сам остров для прогулки открыт.</div>
+    <div class="gallery">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Dubai_Jumeirah_Beach.JPG/330px-Dubai_Jumeirah_Beach.JPG" alt="Пляж Джумейра / JBR" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Dubai_Alserkal_Avenue_2024-11-17.jpg/330px-Dubai_Alserkal_Avenue_2024-11-17.jpg" alt="Alserkal Avenue" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Ibn_Bathutha_Mall_of_Dubai.jpg/330px-Ibn_Bathutha_Mall_of_Dubai.jpg" alt="Ibn Battuta Mall" loading="lazy">
+    </div>
+    <div class="img-src">фото: Wikimedia — <a href="https://en.wikipedia.org/wiki/Jumeirah_Beach_Residence" target="_blank" rel="noopener">JBR</a> · <a href="https://en.wikipedia.org/wiki/Alserkal_Avenue" target="_blank" rel="noopener">Alserkal</a> · <a href="https://en.wikipedia.org/wiki/Ibn_Battuta_Mall" target="_blank" rel="noopener">Ibn Battuta</a></div>
+    <div class="actions">
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=The+Walk+JBR+Dubai" target="_blank" rel="noopener">JBR →</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Alserkal+Avenue+Dubai" target="_blank" rel="noopener">Alserkal →</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=City+Walk+Dubai" target="_blank" rel="noopener">City Walk →</a>
+    </div>
+  </div>
+
+  <!-- E · ЕДАЛЬНИ -->
+  <div class="place" style="border-left:6px solid #14110f">
+    <div class="kicker">едальни · от забегаловки до необычного · без дорогого</div>
+    <h3>Где и что есть</h3>
+    <div class="why">Лучшая еда Дубая — не в пафосных местах, а в забегаловках. Ниже — по ярусам, чтобы выбрать под настроение и кошелёк. Сначала — карта: цвет метки = ярус, видно, что рядом (например, вся эмиратская классика и рыбный Bu Qtair кучкуются у старого города).</div>
+    <div id="foodmap"></div>
+    <div class="legend">
+      <span><span class="sw" style="background:#14110f"></span>стритфуд · забегаловки</span>
+      <span><span class="sw" style="background:#d8412f"></span>эмиратское</span>
+      <span><span class="sw" style="background:#e0a32e"></span>виральное</span>
+      <span><span class="sw" style="background:#1f7a6b"></span>шефы-шоу</span>
+      <span><span class="sw" style="background:#6b645c"></span>кварталы дешёвой еды</span>
+    </div>
+    <div class="note">Метки примерные — для ориентира «что рядом»; точную точку открывай кнопкой «карта →» у нужного места ниже. FIX-шоколад на карту не ставил — у него нет одной точки (дропы/лавки по городу).</div>
+
+    <div class="tier">
+      <div class="lead">ярус 1 · стритфуд и хол-ин-зе-вол · легенды за копейки · <span class="pick">★ если только одно: Bu Qtair</span></div>
+      <div class="eat"><b>Ravi</b> <span class="m">— пакистанская семейная забегаловка (Сатва), кебабы и бирьяни, работает допоздна</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Ravi+Restaurant+Satwa+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><b>Al Ustad Special Kabab</b> <span class="m">— персидские кебабы с 1978, стены в фото знаменитостей, обед ~AED 40 (≈1000 ₽)</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Al+Ustad+Special+Kabab+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><b>Bu Qtair</b> <span class="m">— культовая рыбная лачуга у гавани Джумейры, свежий улов в специях, ~AED 50 (≈1200 ₽)</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Bu+Qtair+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><span class="m">Кварталы дешёвой еды, чтобы бродить и тыкать наугад: <b>Сатва</b>, <b>Карама</b>, <b>Меена-базар</b> (Бур-Дубай). Шаурма 5–7 AED (≈150 ₽).</span></div>
+    </div>
+
+    <div class="tier">
+      <div class="lead">ярус 2 · традиционное эмиратское · средне · <span class="pick">★ если только одно: Arabian Tea House</span></div>
+      <div class="eat"><b>Arabian Tea House</b> <span class="m">— двор под деревом в Аль-Фахиди, курица маджбус и карак-чай; склеивается с прогулкой по старому городу</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Arabian+Tea+House+Al+Fahidi+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><b>Al Fanar</b> <span class="m">— интерьер «Дубай 1960-х», местные блюда, верблюжатина, десерт лукаймат</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Al+Fanar+Restaurant+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><b>Local House</b> <span class="m">— в Аль-Фахиди с 1997, первыми в ОАЭ ввели бургер из верблюжатины; заодно верблюжье молоко</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Local+House+Restaurant+Al+Fahidi+Dubai" target="_blank" rel="noopener">карта →</a></div>
+    </div>
+
+    <div class="tier">
+      <div class="lead">ярус 3 · виральное / блогерское · <span class="pick">★ если только одно: FIX-шоколад</span></div>
+      <div class="eat"><b>FIX — «дубайский шоколад»</b> <span class="m">— тот самый батончик: фисташка + катаифи, взорвал TikTok; в лавках AED 20–75 (≈500–1800 ₽)</span> <a class="lnk" href="https://www.timeoutdubai.com/food-drink/viral-dubai-chocolate-original-dupes-2026" target="_blank" rel="noopener">где брать →</a></div>
+      <div class="eat"><b>SALT</b> <span class="m">— бургеры из фудтрака-«эйрстрима» на Kite Beach, вечер у моря, ~AED 125 на двоих (≈3000 ₽)</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=SALT+Kite+Beach+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><b>Aroos Damascus</b> <span class="m">— сирийский гигант в Дейре, гремит у фудблогеров, сытно и дёшево</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Aroos+Damascus+Deira+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><b>Allo Beirut</b> <span class="m">— шумный ливанский, гриль и кунафа, открыт до ночи</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Allo+Beirut+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><b>Operation: Falafel</b> <span class="m">— виральная «crispy shawarma», сеть по всему городу, дёшево</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Operation+Falafel+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><b>Logma</b> <span class="m">— модный эмиратский: слайдеры на хлебе хамир, карак, чебаб; инстаграмно, средний чек (City Walk / Boxpark)</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Logma+Dubai" target="_blank" rel="noopener">карта →</a></div>
+    </div>
+
+    <div class="tier">
+      <div class="lead">ярус 4 · шефы-шоу · «прикольно отметиться»</div>
+      <div class="eat"><b>CZN Burak</b> <span class="m">— тот, что улыбается в камеру; турецкий, гигантские порции, шоу-подача, средне по деньгам. Сам Бурак бывает редко (Boulevard Point, Даунтаун)</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=CZN+Burak+Dubai+Boulevard+Point" target="_blank" rel="noopener">карта →</a></div>
+      <div class="eat"><b>Nusr-Et / Salt Bae</b> <span class="m">— тот, что солит с локтя; золотой томагавк — несколько тыс. AED (аттракцион), но бургер ~AED 140–160, ланч-сет ~250–300. Salt Bae появляется редко (Джумейра)</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Nusr-Et+Steakhouse+Dubai" target="_blank" rel="noopener">карта →</a></div>
+      <div class="note">Вердикт по шефам: за шоу без удара по бюджету → <b>CZN Burak</b>. Nusr-Et — только если важна именно легенда Salt Bae, тогда бургер/ланч, а золотой стейк — для инстаграма других людей.</div>
+    </div>
+
+    <div class="tier">
+      <div class="lead">фуд-туры по забегаловкам · <span class="pick">★ топ: Frying Pan Adventures</span></div>
+      <div class="eat"><b>Frying Pan Adventures</b> <span class="m">— пеший фуд-тур по старому городу, 3–4 остановки, истории, малая группа, AED 252/чел (≈6200 ₽) — топ по качеству</span> <a class="lnk" href="https://www.fryingpanadventures.com/tours/old-dubai-quick-snacking-tour" target="_blank" rel="noopener">тур →</a></div>
+      <div class="eat"><b>Уличные фуд-туры через агрегаторы</b> <span class="m">— 3 ч: Аль-Фахиди + базары + абра + дегустации, от ~$12; операторов много, бери по свежим отзывам</span> <a class="lnk" href="https://www.getyourguide.com/dubai-l173/street-food-tc248/" target="_blank" rel="noopener">туры →</a></div>
+      <div class="eat"><b>Сам себе тур</b> <span class="m">— иди в Аль-Караму или Дейру и тыкай наугад; бесплатно и по-честному</span> <a class="lnk" href="https://www.google.com/maps/search/?api=1&query=Al+Karama+restaurants+Dubai" target="_blank" rel="noopener">карта →</a></div>
+    </div>
+  </div>
+
+  <!-- F · ФЕСТИВАЛЬ -->
+  <div class="place" style="border-left:6px solid var(--accent-2)">
+    <div class="kicker">бонус под ваши даты</div>
+    <h3>Dubai Summer Surprises</h3>
+    <div class="why">27–29 июля вы попадаете в городской летний фестиваль (2 июля – 30 августа): лето — низкий сезон из-за жары, и город приманивает скидками и событиями.</div>
+    <div class="look"><b>Что полезно:</b> (1) <b>Summer Restaurant Week: 13 июля – 2 августа</b> — ровно ваши дни: рестораны дают сет-меню (закуска+основное+десерт) по фиксированной сниженной цене, способ сходить в место поприличнее недорого · (2) скидки <b>до 90%</b> в моллах · (3) бесплатные концерты в торговых центрах, в т.ч. халиджи-музыка <span class="chip chip--check" style="margin:0">проверить: афиша на 27–29 июля</span>.</div>
+    <div class="actions">
+      <a class="btn" href="https://www.timeoutdubai.com/shopping/your-ultimate-guide-to-dubai-summer-surprises-2026" target="_blank" rel="noopener">гид по DSS 2026 →</a>
+    </div>
+  </div>
+
+  <!-- ЖИЛЬЁ · ГДЕ БАЗИРОВАТЬСЯ -->
+  <div class="place" style="background:transparent;border:0;padding:0;margin:22px 0 4px">
+    <div class="kicker">где жить · 2 ночи · 27→29 июля</div><h3 style="margin:2px 0">Где базироваться</h3>
+  </div>
+
+  <div class="place" style="border-left:6px solid var(--border)">
+    <div class="why"><b>Бюджет 10–15 000 ₽/ночь = AED 470–705 (~$128–192).</b> Конец июля — низкий сезон из-за жары, поэтому во всех районах реально уложиться, а часто ещё и остаётся сдача. Логика простая: <b>жить в современном и удобном</b>, а старый город и культуру брать вечерними вылазками на метро/такси. Под короткие 2 ночи и близость к иконам мой дефолт — <span class="pick">Даунтаун</span>, но все четыре точки честно рядом.</div>
+    <div class="cmp"><table>
+      <tr><th>Район</th><th>Вайб</th><th>До старого города</th><th>До моря</th><th>В бюджет?</th></tr>
+      <tr><td class="a"><span class="dot" style="background:#e0a32e"></span>Даунтаун / Business Bay</td><td>иконы, метро, центр</td><td>~15 мин</td><td>~25–30 мин</td><td>легко, со сдачей</td></tr>
+      <tr><td class="a"><span class="dot" style="background:#1f7a6b"></span>Marina / JBR</td><td>море, променад, движ</td><td>~25–30 мин</td><td>0 — на пляже</td><td>да</td></tr>
+      <tr><td class="a"><span class="dot" style="background:#14110f"></span>City Walk / Jumeirah</td><td>тихий стильный модерн</td><td>~15–20 мин</td><td>~10–15 мин</td><td>да</td></tr>
+      <tr><td class="a"><span class="dot" style="background:#d8412f"></span>Старый Дубай</td><td>максимум атмосферы</td><td>0 — внутри</td><td>~25–30 мин</td><td>да</td></tr>
+    </table></div>
+    <div class="note">Цены ниже — ориентир из агрегаторов на низкий сезон (июль). Живую цену ровно на 27→29 июля смотрите по кнопке «Booking →»: даты и «2 взрослых · 2 ночи» уже подставлены. Курс на 22.07.2026: 1 AED ≈ 21 ₽.</div>
+  </div>
+
+  <!-- Ж1 · ДАУНТАУН -->
+  <div class="place" style="border-left:6px solid #e0a32e">
+    <div class="kicker">даунтаун / business bay · иконы + метро · до старого города ~15 мин</div>
+    <h3>Даунтаун / Business Bay</h3>
+    <div class="why"><b>Зачем:</b> самый центр к тому, ради чего едут — Бурдж-Халифа и шоу фонтанов пешком или прямо из окна, Dubai Mall и Музей будущего рядом, метро Burj Khalifa/Dubai Mall под боком. Идеально под короткую ночёвку с иконами.</div>
+    <div class="eat"><b>Rove Downtown</b> <span class="m">— смарт-value: современный минимализм, бассейн, кинозал, у самого метро. Июль ~$60–80 (≈4700–6300 ₽).</span> <a class="lnk" href="https://www.booking.com/searchresults.html?ss=Rove+Downtown+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">Booking →</a> <a class="lnk" href="https://www.google.com/search?tbm=isch&q=Rove+Downtown+Dubai" target="_blank" rel="noopener">фото →</a></div>
+    <div class="eat"><b>Vida Downtown</b> <span class="m">— шаг вверх: дизайнерский lifestyle от Emaar, атмосфернее сетевых, пешком к Бурдж-Халифе. Июль ~$120–180 (≈9–14 000 ₽) <span class="chip chip--check" style="margin:0">проверить цену</span></span> <a class="lnk" href="https://www.booking.com/searchresults.html?ss=Vida+Downtown+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">Booking →</a> <a class="lnk" href="https://www.google.com/search?tbm=isch&q=Vida+Downtown+Dubai" target="_blank" rel="noopener">фото →</a></div>
+    <div class="oneimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Dubai_skyscrapers_at_night_2011.jpg/330px-Dubai_skyscrapers_at_night_2011.jpg" alt="Даунтаун Дубай ночью" loading="lazy"></div>
+    <div class="img-src">фото: Wikimedia — <a href="https://en.wikipedia.org/wiki/Downtown_Dubai" target="_blank" rel="noopener">Downtown Dubai</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.booking.com/searchresults.html?ss=Downtown+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">все отели района на Booking →</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Downtown+Dubai" target="_blank" rel="noopener">район на карте →</a>
+    </div>
+  </div>
+
+  <!-- Ж2 · MARINA / JBR -->
+  <div class="place" style="border-left:6px solid #1f7a6b">
+    <div class="kicker">marina / jbr · море + променад · до старого города ~25–30 мин</div>
+    <h3>Dubai Marina / JBR</h3>
+    <div class="why"><b>Зачем:</b> у воды — пляж JBR и длинный променад с ресторанами и вечерним движем, современные небоскрёбы, атмосфера «курорт в городе». Дальше от старого Дубая, зато своя жизнь и ваше «где погулять» под боком.</div>
+    <div class="eat"><b>Rove Dubai Marina</b> <span class="m">— value: виды на марину, рейтинг 9.0, у трамвая и набережной. Июль ~$60–90 (≈4700–7000 ₽).</span> <a class="lnk" href="https://www.booking.com/searchresults.html?ss=Rove+Dubai+Marina&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">Booking →</a> <a class="lnk" href="https://www.google.com/search?tbm=isch&q=Rove+Dubai+Marina" target="_blank" rel="noopener">фото →</a></div>
+    <div class="eat"><b>JA Ocean View (JBR)</b> <span class="m">— шаг вверх, на пляже: прямо на променаде JBR, спа, бассейны, рестораны. Июль ~$116–135 (≈9–10 500 ₽). Альтернатива: Mövenpick Jumeirah Beach ~$145–167.</span> <a class="lnk" href="https://www.booking.com/searchresults.html?ss=JA+Ocean+View+Hotel+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">Booking →</a> <a class="lnk" href="https://www.google.com/search?tbm=isch&q=JA+Ocean+View+Hotel+JBR+Dubai" target="_blank" rel="noopener">фото →</a></div>
+    <div class="oneimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Dubai_Marina_Skyline.jpg/330px-Dubai_Marina_Skyline.jpg" alt="Dubai Marina" loading="lazy"></div>
+    <div class="img-src">фото: Wikimedia — <a href="https://en.wikipedia.org/wiki/Dubai_Marina" target="_blank" rel="noopener">Dubai Marina</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.booking.com/searchresults.html?ss=Jumeirah+Beach+Residence&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">все отели района на Booking →</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Jumeirah+Beach+Residence" target="_blank" rel="noopener">район на карте →</a>
+    </div>
+  </div>
+
+  <!-- Ж3 · CITY WALK / JUMEIRAH -->
+  <div class="place" style="border-left:6px solid #14110f">
+    <div class="kicker">city walk / jumeirah · тихий модерн · до старого города ~15–20 мин</div>
+    <h3>City Walk / Jumeirah</h3>
+    <div class="why"><b>Зачем:</b> малоэтажный стильный модерн — пешеходные кварталы City Walk с муралами, галереями и ресторанами, рядом мечеть Джумейра (она и так в плане). Тише и камернее Даунтауна, но всё так же современно.</div>
+    <div class="eat"><b>Rove City Walk</b> <span class="m">— value: в самом пешеходном квартале, современный минимализм. Июль ~$50–70 (≈3900–5500 ₽).</span> <a class="lnk" href="https://www.booking.com/searchresults.html?ss=Rove+City+Walk+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">Booking →</a> <a class="lnk" href="https://www.google.com/search?tbm=isch&q=Rove+City+Walk+Dubai" target="_blank" rel="noopener">фото →</a></div>
+    <div class="eat"><b>La Ville, City Walk (Autograph/Marriott)</b> <span class="m">— шаг вверх: стильный, в сердце City Walk. Июль ~$139 (≈10 800 ₽). Альтернатива: Hyatt Centric Jumeirah ~$71–107.</span> <a class="lnk" href="https://www.booking.com/searchresults.html?ss=La+Ville+City+Walk+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">Booking →</a> <a class="lnk" href="https://www.google.com/search?tbm=isch&q=La+Ville+Hotel+Suites+City+Walk+Dubai" target="_blank" rel="noopener">фото →</a></div>
+    <div class="oneimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/City_Walk_Dubai.jpg/330px-City_Walk_Dubai.jpg" alt="City Walk Dubai" loading="lazy"></div>
+    <div class="img-src">фото: Wikimedia — <a href="https://en.wikipedia.org/wiki/City_Walk,_Dubai" target="_blank" rel="noopener">City Walk</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.booking.com/searchresults.html?ss=City+Walk+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">все отели района на Booking →</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=City+Walk+Dubai" target="_blank" rel="noopener">район на карте →</a>
+    </div>
+  </div>
+
+  <!-- Ж4 · СТАРЫЙ ДУБАЙ (для сравнения) -->
+  <div class="place" style="border-left:6px solid #d8412f">
+    <div class="kicker">старый Дубай · для сравнения · максимум атмосферы</div>
+    <h3>Старый Дубай (если вдруг передумаете)</h3>
+    <div class="why"><b>Зачем:</b> честные варианты у бухты и в Аль-Фахиди — на случай, если захочется жить прямо внутри атмосферы. Просыпаешься среди ветровых башен и базаров. Минус: район шумный, дневная жара и меньше «курортного» комфорта, чем в новых кварталах.</div>
+    <div class="eat"><b>Al Seef Heritage Hotel (Curio by Hilton)</b> <span class="m">— heritage 4★: 10 традиционных «байтов» с ветровыми башнями прямо на бухте, напротив базаров через абру. Июль ~$121–160 (≈9,5–12,5 000 ₽).</span> <a class="lnk" href="https://www.booking.com/searchresults.html?ss=Al+Seef+Heritage+Hotel+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">Booking →</a> <a class="lnk" href="https://www.google.com/search?tbm=isch&q=Al+Seef+Heritage+Hotel+Dubai" target="_blank" rel="noopener">фото →</a></div>
+    <div class="eat"><b>XVA Art Hotel</b> <span class="m">— арт-бутик внутри Аль-Фахиди: 15 комнат с характером, кафе и крыша, максимум колорита. Минус: номера крошечные, вайфай слабый. От AED 340 (~$93, ≈7300 ₽). Проще и дешевле: Arabian Courtyard напротив Музея Дубая ~$66–90.</span> <a class="lnk" href="https://www.booking.com/searchresults.html?ss=XVA+Art+Hotel+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">Booking →</a> <a class="lnk" href="https://www.google.com/search?tbm=isch&q=XVA+Art+Hotel+Al+Fahidi+Dubai" target="_blank" rel="noopener">фото →</a></div>
+    <div class="oneimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Wind_Tower_House%2C_Al_Seef%2C_Dubai.jpg/330px-Wind_Tower_House%2C_Al_Seef%2C_Dubai.jpg" alt="Дом с ветровой башней, Аль-Сиф" loading="lazy"></div>
+    <div class="img-src">фото: Wikimedia — <a href="https://en.wikipedia.org/wiki/Al_Seef" target="_blank" rel="noopener">Al Seef</a></div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.booking.com/searchresults.html?ss=Bur+Dubai&checkin=2026-07-27&checkout=2026-07-29&group_adults=2&no_rooms=1" target="_blank" rel="noopener">все отели района на Booking →</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Al+Fahidi+Historical+Neighbourhood" target="_blank" rel="noopener">район на карте →</a>
+    </div>
+  </div>
+
+  <!-- КУЛЬТУРНЫЙ СЛОЙ -->
+  <div class="place">
+    <div class="kicker">культурный слой · всё местное · настроиться на ОАЭ</div>
+    <h3>Послушать, посмотреть, почитать</h3>
+    <div class="note">Только эмиратское, со словами, по спектру от голоса-фолка до рэпа. Кнопки ведут в поиск YouTube / Google — слушать, смотреть, читать. Мальдивский слой соберём отдельно.</div>
+
+    <div class="tier">
+      <div class="lead">послушать · музыка ОАЭ</div>
+      <div class="eat"><b>Классика (тараб-поп):</b> <span class="m">Hussain Al Jassmi (хит «Boshret Kheir»), Fayez Al Saeed, Ahlam, Balqees</span> <a class="lnk" href="https://www.youtube.com/results?search_query=Hussain+Al+Jassmi" target="_blank" rel="noopener">слушать →</a></div>
+      <div class="eat"><b>Фолк / традиция:</b> <span class="m">Eidha Al Menhali — часто одним голосом, стиль «Аль-Шаллят»; жанры айяла, лива, песни ловцов жемчуга</span> <a class="lnk" href="https://www.youtube.com/results?search_query=Eidha+Al+Menhali" target="_blank" rel="noopener">слушать →</a></div>
+      <div class="eat"><b>Соул-фанк · живой бэнд:</b> <span class="m">Hamdan Al Abri / ABRI & Funk Radius — нео-соул и регги-фанк, вокал, драйв</span> <a class="lnk" href="https://www.youtube.com/results?search_query=Hamdan+Al+Abri+Funk+Radius" target="_blank" rel="noopener">слушать →</a></div>
+      <div class="eat"><b>Рэп / хип-хоп:</b> <span class="m">Freek (звезда сцены, лейбл GXR), Moh Flow, SG — по-арабски и по-английски</span> <a class="lnk" href="https://www.youtube.com/results?search_query=Freek+rapper+Dubai" target="_blank" rel="noopener">слушать →</a></div>
+    </div>
+
+    <div class="cols2">
+      <div class="col"><h4>Посмотреть · кино</h4><ul>
+        <li>«City of Life» (2009) <span class="src">Али Ф. Мостафа — первый эмиратский полный метр, судьбы в Дубае</span> <a class="lnk" href="https://www.google.com/search?q=City+of+Life+2009+Ali+Mostafa+watch" target="_blank" rel="noopener">найти →</a></li>
+        <li>«Zinzana / Rattle the Cage» (2015) <span class="src">Маджид Аль Ансари — психологический триллер, на Netflix</span> <a class="lnk" href="https://www.google.com/search?q=Rattle+the+Cage+Zinzana+Netflix" target="_blank" rel="noopener">найти →</a></li>
+        <li>«Sea Shadow» (2011) <span class="src">Наваф Аль-Джанахи — взросление, снят в ОАЭ</span> <a class="lnk" href="https://www.google.com/search?q=Sea+Shadow+2011+Emirati+film" target="_blank" rel="noopener">найти →</a></li>
+        <li>«The Worthy» (2016) · «From A to B» (2014) <span class="src">Али Мостафа — антиутопия и роуд-муви</span></li>
+        <li><span class="src">вживую: Cinema Akil (артхаус в Аль-Кузз) периодически крутит местное</span></li>
+      </ul></div>
+      <div class="col"><h4>Почитать · художка</h4><ul>
+        <li>Maha Gargash — «The Sand Fish» <span class="src">первый англоязычный эмиратский роман; женщина в Дубае 1950-х (и «That Other Me»)</span> <a class="lnk" href="https://www.google.com/search?q=Maha+Gargash+The+Sand+Fish+book" target="_blank" rel="noopener">найти →</a></li>
+        <li>Mohammad Al Murr — «Dubai Tales» <span class="src">мастер короткого рассказа о Дубае и его людях</span> <a class="lnk" href="https://www.google.com/search?q=Mohammad+Al+Murr+Dubai+Tales" target="_blank" rel="noopener">найти →</a></li>
+        <li>Reem Al Kamali — «Rose's Diary» <span class="src">историческая проза, шортлист арабского «Букера» (IPAF) 2022</span></li>
+      </ul></div>
+    </div>
+    <div class="kicker" style="margin-top:14px">пара фраз · нажми ▶ послушать (Forvo)</div>
+    <table class="phrases">
+      <tr><td class="ar">مرحبا</td><td class="tr">ма́рхаба</td><td>привет</td><td><a href="https://forvo.com/word/مرحبا/" target="_blank" rel="noopener">▶</a></td></tr>
+      <tr><td class="ar">شكراً</td><td class="tr">шу́кран</td><td>спасибо</td><td><a href="https://forvo.com/word/شكرا/" target="_blank" rel="noopener">▶</a></td></tr>
+      <tr><td class="ar">من فضلك</td><td class="tr">мин фа́длак</td><td>будьте добры / пожалуйста</td><td><a href="https://forvo.com/word/من_فضلك/" target="_blank" rel="noopener">▶</a></td></tr>
+      <tr><td class="ar">بكم؟</td><td class="tr">би-ка́м?</td><td>сколько стоит?</td><td><a href="https://forvo.com/word/بكم/" target="_blank" rel="noopener">▶</a></td></tr>
+      <tr><td class="ar">لا، شكراً</td><td class="tr">ля, шу́кран</td><td>нет, спасибо (для базара!)</td><td><a href="https://forvo.com/word/شكرا/" target="_blank" rel="noopener">▶</a></td></tr>
+      <tr><td class="ar">صباح الخير</td><td class="tr">саба́х аль-хе́йр</td><td>доброе утро</td><td><a href="https://forvo.com/word/صباح_الخير/" target="_blank" rel="noopener">▶</a></td></tr>
+    </table>
+    <div class="note">Английского в Дубае хватает везде — арабский нужен не для дела, а для улыбки. <b>Фишка:</b> закажи <b>карак-чай</b> (сладкий молочный чай с кардамоном) за 1–2 дирхама в любой чайной — это местный ежедневный ритуал, а не туристический аттракцион.</div>
+  </div>
+
+  <!-- РЕГИОНАЛЬНЫЕ ОСОБЕННОСТИ -->
+  <div class="place" style="border-left:6px solid #d8412f">
+    <div class="kicker">региональные особенности · чтобы не влететь и не задеть</div>
+    <h3>Что нельзя, что осторожно, что просто уважают</h3>
+    <div class="note">Дубай космополитичный и к туристам мягкий, но ОАЭ — мусульманская страна со строгими законами. Ниже честно разведено: <span style="color:#d8412f;font-weight:600">✕ строго нельзя</span> (реальные штрафы / арест / депортация) и <span style="color:#e0a32e;font-weight:600">▲ осторожно</span> (не тюрьма, но трения или неуважение). Хорошая новость: <b>Рамадан 2026 — 18 февраля – 18 марта</b>, ваши даты 27–29 июля чистые, никаких ограничений по еде/питью днём нет.</div>
+    <div class="cols2 rules">
+      <div class="col">
+        <h4 style="color:#d8412f">✕ Строго нельзя — закон</h4>
+        <ul>
+          <li><span class="gl gl--no">✕</span> <b>Наркотики</b> — нулевая терпимость, даже следы. CBD-масла/гумми/вейпы, мак и маковые семечки — тоже под запретом. Реально сажают (от 4 лет).</li>
+          <li><span class="gl gl--no">✕</span> <b>«Не те» лекарства без справки</b> — кодеин, Xanax, Valium, Adderall/Риталин и др. в контролируемом списке. Везти в оригинальной упаковке + рецепт на англ.; на контролируемые — заранее разрешение Минздрава (MOHAP). Детали ниже.</li>
+          <li><span class="gl gl--no">✕</span> <b>Пьяным на улице</b> — алкоголь легален только в лицензированных барах/ресторанах/клубах; шататься, шуметь или буянить пьяным на улице/в такси — арест.</li>
+          <li><span class="gl gl--no">✕</span> <b>Оскорбительные жесты и брань</b> — средний палец, мат, оскорбления (в т.ч. в соцсетях, переписке и <b>за рулём</b> — дорожные жесты наказывают отдельно) — уголовно, штраф или депортация.</li>
+          <li><span class="gl gl--no">✕</span> <b>Съёмка людей без спроса</b> — особенно женщин; и госзданий, аэропорта, военных объектов — штраф или изъятие техники.</li>
+          <li><span class="gl gl--no">✕</span> <b>Однополые отношения</b> — под запретом по закону.</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4 style="color:#e0a32e">▲ Осторожно / этикет</h4>
+        <ul>
+          <li><span class="gl gl--care">▲</span> <b>Нежности на людях</b> — держаться за руки ок, а поцелуи и объятия на публике могут кончиться замечанием или штрафом. Сдержанно.</li>
+          <li><span class="gl gl--care">▲</span> <b>Дресс-код</b> — в моллах, на базарах и в ресторанах прикрывайте плечи и колени; купальник — только на пляже и у бассейна, на улицу — накидка. Абайя/хиджаб не нужны (кроме мечети — там платок дадут).</li>
+          <li><span class="gl gl--care">▲</span> <b>Правая рука</b> — приветствие, еда руками, передача денег/предметов — правой; левая считается «нечистой».</li>
+          <li><span class="gl gl--care">▲</span> <b>«Большой палец» 👍 и «ОК» 👌</b> — в традиционной арабской культуре могут читаться грубо (палец ≈ средний, «ОК» ≈ «дурной глаз»). В космополитичном Дубае смысл размылся, их спокойно используют — <b>за них не арестуют</b>. Но с пожилыми/консервативными или в накале (пробки) — лучше без них.</li>
+          <li><span class="gl gl--care">▲</span> <b>Уважение к религии и властям</b> — не критиковать ислам, правителей и страну (в т.ч. онлайн). Резко отказаться от гостеприимства (кофе, финики) — невежливо.</li>
+          <li><span class="gl gl--ok">✓</span> <b>Пара в одном номере — без проблем:</b> с реформы 2020 сожительство и отношения вне брака декриминализованы, отели брак не проверяют.</li>
+          <li><span class="gl gl--ok">✓</span> <b>Чаевые</b> ~10–15%, если не включены. <b>Такси</b> — официальные по счётчику или Careem/Uber.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="look" style="margin-top:14px"><span class="tlabel">Регистрация:</span> отдельно регистрироваться туристу не нужно — <b>отель сам</b> подаёт данные о госте властям, ваш «штамп» — отметка на прилёте. Берёте апартаменты/Airbnb — селитесь только у <b>лицензированного</b> (DTCM) хоста, тогда регистрирует он. <span class="chip chip--check" style="margin:0">проверить для апартаментов</span></div>
+    <div class="look"><span class="tlabel">Лекарства — важно:</span> всё в оригинальной упаковке + рецепт (англ./араб.); турист — до 3-месячного запаса. Контролируемые/наркотические (кодеин, снотворные, АДГ-препараты, сильные обезболивающие) — заранее оформить <b>разрешение на ввоз</b> на сайте Минздрава ОАЭ (MOHAP). Обычное (парацетамол, ибупрофен, лоперамид) — свободно.</div>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://www.expatriatehealthcare.com/which-medications-are-you-allowed-to-take-into-dubai/" target="_blank" rel="noopener">лекарства: правила ввоза →</a>
+      <a class="btn" href="https://www.expatriatehealthcare.com/avoid-jail-dubai/" target="_blank" rel="noopener">законы для туристов →</a>
+    </div>
+  </div>
+
+  <!-- ИСТОЧНИКИ -->
+  <div class="place" style="background:transparent;border:0;padding:0">
+    <div class="kicker">источники проверенных фактов</div>
+    <div class="img-src" style="font-size:12px;line-height:1.7">
+      Старый город/абра/базары: <a href="https://thebettervacation.com/dubai/old-dubai-guide/" target="_blank" rel="noopener">Old Dubai guide</a> ·
+      Бурдж-Халифа: <a href="https://thebettervacation.com/dubai/at-the-top-burj-khalifa/" target="_blank" rel="noopener">At the Top</a> ·
+      Музей будущего (закрытие с 1 сен): <a href="https://blog.wego.com/how-to-visit-museum-of-the-future/" target="_blank" rel="noopener">Wego</a> ·
+      SMCCU/мечеть: <a href="https://cultures.ae/" target="_blank" rel="noopener">cultures.ae</a> ·
+      Сафари (цены/лето): <a href="https://www.desertsafarisdubai.com/evening-desert-safari-with-bbq-dinner/" target="_blank" rel="noopener">evening safari</a> ·
+      Прогулки: <a href="https://whatson.ae/2026/05/the-best-places-for-evening-walks-in-dubai/" target="_blank" rel="noopener">WhatsOn</a>, <a href="https://www.tripadvisor.com/Attraction_Review-g295424-d6545107-Reviews-Alserkal_Avenue-Dubai_Emirate_of_Dubai.html" target="_blank" rel="noopener">Alserkal</a> ·
+      Едальни: <a href="https://whatson.ae/2025/07/the-dubai-icons-legendary-hole-in-the-wall-eateries-you-need-to-visit/" target="_blank" rel="noopener">hole-in-the-wall</a>, <a href="https://www.fryingpanadventures.com/tours/old-dubai-quick-snacking-tour" target="_blank" rel="noopener">Frying Pan</a>, <a href="https://simplydxb.com/articles/dubai-street-food/" target="_blank" rel="noopener">street food</a> ·
+      Виральное: <a href="https://www.timeoutdubai.com/food-drink/viral-dubai-chocolate-original-dupes-2026" target="_blank" rel="noopener">FIX chocolate</a>, <a href="https://www.tripadvisor.co.uk/Restaurant_Review-g295424-d7809652-Reviews-Salt-Dubai_Emirate_of_Dubai.html" target="_blank" rel="noopener">SALT</a>, <a href="https://www.visitdubai.com/en/restaurants/nusr-et-steakhouse" target="_blank" rel="noopener">Nusr-Et</a> ·
+      Фестиваль: <a href="https://www.timeoutdubai.com/shopping/your-ultimate-guide-to-dubai-summer-surprises-2026" target="_blank" rel="noopener">DSS 2026</a> ·
+      Районы/жильё: <a href="https://www.roughguides.com/articles/where-to-stay-in-dubai/" target="_blank" rel="noopener">Rough Guides</a>, <a href="https://thebettervacation.com/dubai/where-to-stay-in-dubai/" target="_blank" rel="noopener">where to stay</a>, <a href="https://www.hilton.com/en/hotels/dxbasqq-al-seef-heritage-hotel-dubai/" target="_blank" rel="noopener">Al Seef Heritage</a> · курс AED/₽: <a href="https://wise.com/us/currency-converter/rub-to-aed-rate" target="_blank" rel="noopener">Wise</a> ·
+      Музыка ОАЭ: <a href="https://en.wikipedia.org/wiki/Hussain_Al_Jassmi" target="_blank" rel="noopener">Al Jassmi</a>, <a href="https://en.wikipedia.org/wiki/Hamdan_Al_Abri" target="_blank" rel="noopener">Al Abri</a>, <a href="https://www.cnn.com/2023/03/03/middleeast/dubai-hip-hop-scene-spc-intl/" target="_blank" rel="noopener">хип-хоп (CNN)</a> ·
+      Кино: <a href="https://en.wikipedia.org/wiki/Ali_F._Mostafa" target="_blank" rel="noopener">Ali F. Mostafa</a>, <a href="https://en.wikipedia.org/wiki/Rattle_the_Cage" target="_blank" rel="noopener">Rattle the Cage</a>, <a href="https://en.wikipedia.org/wiki/Sea_Shadow_(film)" target="_blank" rel="noopener">Sea Shadow</a> ·
+      Книги: <a href="https://www.thenationalnews.com/arts-culture/books/10-emirati-authors-you-need-to-know-about-from-maha-gargash-to-omar-ghobash-1.1176585" target="_blank" rel="noopener">10 эмиратских авторов</a> ·
+      Правила/законы: <a href="https://www.expatriatehealthcare.com/avoid-jail-dubai/" target="_blank" rel="noopener">что нельзя</a>, <a href="https://www.expatriatehealthcare.com/which-medications-are-you-allowed-to-take-into-dubai/" target="_blank" rel="noopener">лекарства</a>, сожительство (реформа 2020): <a href="https://www.bayut.com/mybayut/new-personal-family-laws-uae/" target="_blank" rel="noopener">MyBayut</a> ·
+      Фото: Wikimedia Commons
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="cheer" dir="rtl">رحلة سعيدة — хорошей поездки!</span>
+    <span class="kicker">✓ проверено · [проверить] — уточнить перед выходом</span>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // отсчёт до Дубая
+  try{
+    var t=new Date('2026-07-27T00:00:00'), now=new Date();
+    var d=Math.max(0,Math.ceil((t-now)/86400000));
+    var el=document.getElementById('cd'); if(el) el.textContent=d;
+    var u=document.getElementById('cdu');
+    if(u){var m10=d%10,m100=d%100,w='дней';
+      if(m10===1&&m100!==11)w='день';
+      else if(m10>=2&&m10<=4&&(m100<12||m100>14))w='дня';
+      u.textContent=w;}
+  }catch(e){}
+
+  // карта города — метки по типу места
+  var pts=[
+    {n:"Абра · Бур-Дубай (старый город)",ll:[25.2637,55.2972],c:"#d8412f"},
+    {n:"Базары золота и специй · Дейра",ll:[25.2685,55.2960],c:"#d8412f"},
+    {n:"Аль-Сиф · набережная",ll:[25.2610,55.2985],c:"#d8412f"},
+    {n:"Мечеть Джумейра + SMCCU",ll:[25.2332,55.2665],c:"#d8412f"},
+    {n:"Бурдж-Халифа · Dubai Mall · фонтаны",ll:[25.1972,55.2744],c:"#e0a32e"},
+    {n:"Музей будущего",ll:[25.2189,55.2820],c:"#e0a32e"},
+    {n:"Alserkal Avenue · арт-квартал",ll:[25.1450,55.2380],c:"#e0a32e"},
+    {n:"SALT · Kite Beach (едальня)",ll:[25.1615,55.2000],c:"#14110f"},
+    {n:"Bu Qtair · рыбная лачуга",ll:[25.1470,55.1930],c:"#14110f"},
+    {n:"The Walk at JBR · Bluewaters",ll:[25.0785,55.1330],c:"#1f7a6b"},
+    {n:"Ibn Battuta Mall",ll:[25.0445,55.1170],c:"#1f7a6b"},
+    {n:"Ravi · Сатва",ll:[25.2280,55.2760],c:"#14110f"},
+    {n:"Al Ustad Kabab · Бур-Дубай",ll:[25.2560,55.2930],c:"#14110f"}
+  ];
+  // карта едален — метки по ярусам (координаты примерные, для ориентира)
+  var food=[
+    {n:"Ravi · пакистанская (Сатва)",ll:[25.2287,55.2759],c:"#14110f"},
+    {n:"Al Ustad Special Kabab (Бур-Дубай)",ll:[25.2557,55.2925],c:"#14110f"},
+    {n:"Bu Qtair · рыбная лачуга (Джумейра)",ll:[25.1472,55.1931],c:"#14110f"},
+    {n:"Arabian Tea House (Аль-Фахиди)",ll:[25.2637,55.2976],c:"#d8412f"},
+    {n:"Al Fanar (Festival City)",ll:[25.2220,55.3530],c:"#d8412f"},
+    {n:"Local House · верблюжий бургер (Аль-Фахиди)",ll:[25.2635,55.2985],c:"#d8412f"},
+    {n:"Aroos Damascus · сирийский (Дейра)",ll:[25.2560,55.3280],c:"#e0a32e"},
+    {n:"Allo Beirut · ливанский (JBR)",ll:[25.0790,55.1370],c:"#e0a32e"},
+    {n:"Operation: Falafel (City Walk)",ll:[25.2075,55.2620],c:"#e0a32e"},
+    {n:"Logma · модный эмиратский (Boxpark)",ll:[25.2110,55.2545],c:"#e0a32e"},
+    {n:"SALT · бургеры (Kite Beach)",ll:[25.1615,55.2000],c:"#e0a32e"},
+    {n:"CZN Burak (Boulevard Point, Даунтаун)",ll:[25.1930,55.2790],c:"#1f7a6b"},
+    {n:"Nusr-Et / Salt Bae (Джумейра)",ll:[25.2035,55.2430],c:"#1f7a6b"},
+    {n:"Аль-Карама · квартал дешёвой еды",ll:[25.2480,55.3040],c:"#6b645c"},
+    {n:"Сатва · квартал дешёвой еды",ll:[25.2310,55.2720],c:"#6b645c"},
+    {n:"Меена-базар (Бур-Дубай) · квартал",ll:[25.2585,55.2960],c:"#6b645c"}
+  ];
+  function di(color){return L.divIcon({html:'<div class="pin" style="background:'+color+'"></div>',className:'',iconSize:[26,26],iconAnchor:[13,13]});}
+  function buildMap(elId,points){
+    if(typeof L==='undefined'||!document.getElementById(elId)) return;
+    try{
+      var hasGH=!!L.GestureHandling;
+      var opts=hasGH?{gestureHandling:true,gestureHandlingOptions:{text:{touch:"Двумя пальцами, чтобы двигать карту",scroll:"Зум — Ctrl + скролл",scrollMac:"Зум — ⌘ + скролл (или пинч)"},duration:1400}}:{scrollWheelZoom:false};
+      var m=L.map(elId,opts);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(m);
+      var layer=L.layerGroup().addTo(m);
+      var bounds=[];
+      points.forEach(function(p){
+        bounds.push(p.ll);
+        L.marker(p.ll,{icon:di(p.c)}).bindPopup('<b>'+p.n+'</b>').addTo(layer);
+      });
+      try{ m.fitBounds(bounds,{padding:[30,30]}); }catch(e){ m.setView([25.19,55.25],11); }
+    }catch(e){}
+  }
+  buildMap('map',pts);
+  buildMap('foodmap',food);
+})();
+</script>
+
+</body>
+</html>
