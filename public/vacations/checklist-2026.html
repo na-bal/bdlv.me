@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Чек-лист готовности · Дубай + Мальдивы · 27 июля 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="trip.css" rel="stylesheet">
+<style>
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media(max-width:640px){.cols2{grid-template-columns:1fr}}
+  .col h4{font-family:var(--font-display);font-size:14px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em}
+  .col ul{list-style:none;margin:0;padding:0;font-size:14px}
+  .col li{padding:5px 0;border-bottom:1px dashed var(--muted)}
+  .note{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:8px;line-height:1.55}
+  .lnk{color:var(--accent);font-family:var(--font-mono);font-size:12px;text-decoration:none}
+  .lnk:hover{text-decoration:underline}
+  .tlabel{color:var(--accent);font-weight:600}
+  .price{font-family:var(--font-mono);font-size:13px}
+  .tier{margin:16px 0 0}
+  .tier .lead{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .tier h4{font-family:var(--font-display);font-size:16px;margin:2px 0 6px;text-transform:uppercase;letter-spacing:.02em}
+  .eat{font-size:14.5px;margin:0;padding:8px 0;border-bottom:1px dashed var(--muted)}
+  .eat .m{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+
+  /* — интерактивный чек-лист — */
+  .todo{list-style:none;margin:10px 0 0;padding:0}
+  .todo li{padding:0;border-bottom:1px dashed var(--muted)}
+  .todo label{display:flex;gap:11px;align-items:flex-start;padding:9px 2px;cursor:pointer;font-size:15px;line-height:1.45}
+  .todo input{position:absolute;opacity:0;width:0;height:0}
+  .todo .bx{flex:0 0 18px;width:18px;height:18px;margin-top:2px;border:var(--bw) solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:700;line-height:1;color:transparent}
+  .todo input:checked + .bx{background:var(--fg);color:#fff}
+  .todo input:checked + .bx::after{content:"✓"}
+  .todo input:focus-visible + .bx{outline:2px solid var(--accent);outline-offset:2px}
+  .todo input:checked ~ .tx{opacity:.45;text-decoration:line-through;text-decoration-thickness:1px}
+  .todo .tx .m{display:block;font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:2px;text-decoration:none}
+  .todo.todo--hot .bx{border-color:var(--accent)}
+  .prog{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+  .prog b{color:var(--fg);font-size:17px}
+  .reset{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+
+  /* — метки да/нет — */
+  .gl{font-family:var(--font-mono);font-weight:700;margin-right:6px}
+  .gl--no{color:var(--accent)}
+  .gl--care{color:var(--accent-2)}
+  .gl--ok{color:var(--ok)}
+
+  /* — телефоны — */
+  .tel{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+  .tel td{border-bottom:1px dashed var(--muted);padding:7px 8px 7px 0;vertical-align:top}
+  .tel td:last-child{text-align:right;font-family:var(--font-mono);white-space:nowrap}
+  .tel .w{color:var(--muted);font-family:var(--font-mono);font-size:12px}
+
+  /* — фиксы дизайн-критика — */
+  :root{--ok:#1f7a6b}                                        /* «ok/зелёный» как именованный токен */
+  /* контраст AA: тёмная ступень штампового красного (hover-цвет DS) под белым текстом ~6:1 */
+  .chip--accent,.btn--accent{background:#b82e1e;border-color:#b82e1e}
+  /* убрать висячий пунктир под последним пунктом перед .note */
+  .todo li:last-child,.col li:last-child,.eat:last-of-type{border-bottom:0}
+  .tel tr:last-child td{border-bottom:0}
+  /* висячий отступ глифов ✕/▲/✓: перенос строки идёт под текст, не под маркер */
+  .eat{padding-left:1.5em}
+  .eat .gl{display:inline-block;width:1.5em;margin-left:-1.5em;margin-right:0;text-align:left}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- 1 · ГЕРОЙ -->
+  <div class="pass">
+    <div class="pass__stub">
+      <div class="kicker">pre-flight</div>
+      <div class="countdown">до вылета<br><b id="cd">—</b><br><span id="cdu">дней</span></div>
+      <div class="prog">сделано<br><b><span id="pdone">0</span>/<span id="ptotal">0</span></b></div>
+    </div>
+    <div class="pass__body">
+      <div class="kicker">чек-лист готовности · Москва → Дубай → Kandima</div>
+      <h1 class="title">Собраться<br><span class="u">за три дня</span></h1>
+      <div class="vibe">вылет <b>27 июля 2026</b> · Дубай 27–29 · дальше Мальдивы · паспорт РФ</div>
+      <div style="margin-top:10px">
+        <span class="chip chip--accent">визы не нужны</span>
+        <span class="chip">карты РФ не работают</span>
+        <span class="chip">IMUGA — по окну</span>
+        <span class="chip">нал в USD</span>
+      </div>
+      <div class="note" style="margin-top:12px">Галочки сохраняются в этом браузере — можно отмечать по ходу. <button class="reset" id="reset" type="button">сбросить всё</button></div>
+    </div>
+  </div>
+
+  <!-- КАК ЧИТАТЬ -->
+  <div class="place">
+    <div class="kicker">как читать эту страницу</div>
+    <h3>Три дня — это мало, но хватает</h3>
+    <div class="why">Хорошая новость: <b>ничего долгого делать не нужно</b>. Виз нет ни там, ни там, отель на Мальдивах забронирован, прививок не требуется. Всё, что осталось, делается за вечер — кроме <b>двух вещей с жёсткими сроками</b> (декларация IMUGA и подтверждение трансфера в Kandima) и одной, которую надо решить головой: <b>чем платить</b>, потому что российские карты за границей не работают, а на курортном острове банкомата нет.</div>
+    <div class="look"><span class="tlabel">Главный риск поездки — не документы, а деньги.</span> На Мальдивах российский пластик бесполезен полностью, в ОАЭ — почти. Если нет карты иностранного банка, весь бюджет «сверх пакета» придётся везти наличными долларами. Блок «Деньги» ниже — самый важный на странице.</div>
+    <div class="note">Всё, что ниже, проверено веб-поиском 24 июля 2026; курсы — ЦБ РФ на эту дату; ссылки на источники внизу. Метка <span class="chip chip--check" style="margin:0">проверить</span> = зависит от твоей брони, я это знать не могу.</div>
+  </div>
+
+  <!-- 2 · СРОЧНОЕ -->
+  <div class="place" style="border-left:6px solid var(--accent)">
+    <div class="kicker">до 26 июля · срочное</div>
+    <h3>Сделать в ближайшие 48 часов</h3>
+    <div class="why">Восемь пунктов. Реально это один вечер, но два из них зависят от чужой стороны — их лучше запустить сегодня.</div>
+    <ul class="todo todo--hot">
+      <li><label><input type="checkbox" data-k="h1"><span class="bx"></span><span class="tx"><b>Написать в Kandima номера рейсов и подтвердить трансфер.</b><span class="m">Курорт просит прислать данные рейсов на reservations <b>минимум за 7 дней</b> до заезда — это окно уже прошло, поэтому пишем сегодня. Спроси прямо: внутренний рейс или гидросамолёт, во сколько, встречает ли «Kandima Airport Buddy» в Велане, нужна ли ночёвка в Мале (и за чей счёт), сколько багажа можно на внутренний рейс.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="h2"><span class="bx"></span><span class="tx"><b>Заполнить IMUGA — как только откроется окно.</b><span class="m">Обязательная декларация для въезда на Мальдивы, на <b>каждого человека отдельно</b>, включая детей. Окно — <b>ровно 96 часов до рейса на Мале</b>: раньше система отклонит, позже не пустят. Если летите из Дубая 29 июля, подавать примерно с 25 июля. Бесплатно, только на imuga.immigration.gov.mv. На выходе QR-код — сохрани в телефон и распечатай. Декларация на выезд не нужна: её отменили в августе 2024.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="h3"><span class="bx"></span><span class="tx"><b>Оформить страховку — с дайвингом отдельной строкой.</b><span class="m">Обычный полис ВЗР дайвинг <b>не покрывает</b>. Если планируешь погружения — нужен спортивный/дайверский райдер, иначе барокамера и эвакуация с атолла (десятки тысяч $) будут за свой счёт. Оформляется онлайн за 5–10 минут, приходит на почту.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="h4"><span class="bx"></span><span class="tx"><b>Взять наличные доллары — купюры 2009 года и новее.</b><span class="m">Kandima прямым текстом пишет: принимают USD, <b>банкноты серии 2009 и позже</b>. В Дубае старые купюры (без голограммы и синей защитной ленты) тоже меняют по худшему курсу, а магазины всё чаще просто отказываются. Проверь серию в банке при получении и возьми мелкие — $1/$5/$10 на чаевые.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="h5"><span class="bx"></span><span class="tx"><b>Купить eSIM и установить профиль дома.</b><span class="m">Установка требует интернета — ставим заранее, активируем по прилёту. Российской картой платят: Yesim (МИР, СБП, росс. Visa/MC), Drimsim, Just eSIM, Esim365. Airalo росскартами стабильно не проходит.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="h6"><span class="bx"></span><span class="tx"><b>Проверить отель в Дубае на 27–29 июля.</b> <span class="chip chip--check" style="margin:0 0 0 4px">проверить</span><span class="m">В блоке «Где базироваться» на дубайской странице финальный вариант так и не выбран. Если брони нет — конец июля низкий сезон, места есть, но за три дня лучше не тянуть.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="h7"><span class="bx"></span><span class="tx"><b>Онлайн-регистрация на рейс.</b><span class="m">Открывается обычно за 24–48 часов. Заодно проверь, сквозной ли багаж до Мале или его нужно получать и сдавать заново в Дубае.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="h8"><span class="bx"></span><span class="tx"><b>Копии документов — в облако и на бумагу.</b><span class="m">Разворот паспорта, страховка с телефоном ассистанса, билеты, брони, QR из IMUGA. Бумажные копии — отдельно от оригиналов. Одну копию отправь близкому дома.</span></span></label></li>
+    </ul>
+    <div class="actions">
+      <a class="btn btn--accent" href="https://imuga.immigration.gov.mv/traveller" target="_blank" rel="noopener">IMUGA — подать декларацию →</a>
+      <a class="btn" href="https://kandima.com/en/explore/faq" target="_blank" rel="noopener">Kandima FAQ →</a>
+    </div>
+  </div>
+
+  <!-- 3 · ДОКУМЕНТЫ -->
+  <div class="place" style="border-left:6px solid var(--ok)">
+    <div class="kicker">документы</div>
+    <h3>Что везём и что уже не нужно</h3>
+    <div class="why"><b>Виз нет.</b> В ОАЭ россиянам виза не нужна — штамп по прилёту даёт до <b>90 дней в течение каждых 180</b>. На Мальдивах бесплатная виза по прилёту на <b>30 дней</b>, оформляется на паспортном контроле, ничего заранее подавать не надо. Единственная обязательная онлайн-форма за всю поездку — IMUGA.</div>
+    <ul class="todo">
+      <li><label><input type="checkbox" data-k="d1"><span class="bx"></span><span class="tx"><b>Загранпаспорт действует ≥ 6 месяцев</b><span class="m">Требование обеих стран. Считается от даты въезда — то есть паспорт должен быть жив как минимум до конца января 2027.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="d2"><span class="bx"></span><span class="tx"><b>Чистые страницы для штампов</b><span class="m">Штампов будет минимум четыре: въезд/выезд ОАЭ и въезд/выезд Мальдив.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="d3"><span class="bx"></span><span class="tx"><b>Обратный билет и подтверждения броней</b><span class="m">Мальдивы формально требуют подтверждение вылета из страны. На паспортном контроле спрашивают редко, но пусть лежит в телефоне.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="d4"><span class="bx"></span><span class="tx"><b>QR-код IMUGA</b><span class="m">Показывается на паспортном контроле в Велане. Скриншот + распечатка.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="d5"><span class="bx"></span><span class="tx"><b>Страховой полис + телефон ассистанса отдельной записью</b><span class="m">Записать телефон так, чтобы он нашёлся без интернета и без разряженного телефона — на бумаге в кошельке.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="d6"><span class="bx"></span><span class="tx"><b>Рецепты на английском — если везёшь рецептурное</b><span class="m">Для ОАЭ это не формальность, см. блок «Что нельзя везти».</span></span></label></li>
+    </ul>
+    <div class="note">Прививочных требований ни для ОАЭ, ни для Мальдив нет. Регистрация в Дубае туристу не нужна — отель подаёт данные сам.</div>
+  </div>
+
+  <!-- 4 · ДЕНЬГИ -->
+  <div class="place" style="border-left:6px solid var(--accent-2)">
+    <div class="kicker">деньги · главный блок</div>
+    <h3>Чем платить, когда карта — просто кусок пластика</h3>
+
+    <div class="why"><b>Мальдивы: российские карты не работают вообще.</b> Ни Visa и Mastercard российской эмиссии, ни МИР — массового приёма нет, отдельные точечные внедрения в резортах через посредников погоды не делают. На курортном острове <b>нет банкомата</b>: снять наличные можно только в Мале (аэропорт Велана, банкомат Bank of Maldives в зале прилёта, 24/7) — и то по иностранной карте и только в руфиях, с фиксированной комиссией около $6,5 за операцию.</div>
+
+    <div class="why"><b>ОАЭ: почти то же самое, но не совсем.</b> МИР в Дубае не принимают. UnionPay Россельхозбанка формально работает — платежи и снятие наличных заявлены, — но <b>в ограниченном числе точек</b>: как единственный способ оплаты это брать нельзя. Рабочая схема на два дня в Дубае — наличные.</div>
+
+    <div class="look"><span class="tlabel">Что реально закрывает всё:</span> карта иностранного банка (СНГ) — ей можно и залог на ресепшене оставить, и счёт при выезде закрыть. Если такой карты нет, схема одна: <b>наличные доллары + карта только как бесполезный запасной вариант</b>.</div>
+
+    <div class="tier">
+      <div class="lead">курсы на 24 июля 2026</div>
+      <h4>По чему считать</h4>
+      <table class="budget">
+        <tr><td>1 USD (ЦБ РФ)</td><td>78,40 ₽</td></tr>
+        <tr><td>1 AED дирхам (ЦБ РФ)</td><td>21,35 ₽</td></tr>
+        <tr><td>1 USD → дирхамы (жёсткая привязка)</td><td>3,6725 AED</td></tr>
+        <tr><td>1 USD → руфии (привязка)</td><td>≈ 15,42 MVR</td></tr>
+        <tr><td>$100 / AED 100 в рублях</td><td>≈ 7 840 ₽ / 2 135 ₽</td></tr>
+      </table>
+      <div class="note">Дирхам и руфия привязаны к доллару — курс не скачет, торговаться не с чем. Руфии нужны только на обитаемых островах и в Мале: на курорте всё в долларах.</div>
+    </div>
+
+    <div class="tier">
+      <div class="lead">сколько нала брать</div>
+      <h4>Прикидка на двоих</h4>
+      <table class="budget">
+        <tr><td>Дубай, 2 дня: еда, такси/метро, 1–2 билета в иконы</td><td>AED 1 500–2 500 ≈ $410–680</td></tr>
+        <tr><td>Мальдивы: дайвинг, пакет 5 погружений × 2 чел</td><td>≈ $790</td></tr>
+        <tr><td>Экскурсия (сэндбанк / дельфины), 2 чел</td><td>$50–90</td></tr>
+        <tr><td>Спа, бары, мелочи <span class="chip chip--check" style="margin:0">по тарифу</span></td><td>$200–400</td></tr>
+        <tr><td>Чаевые — только мелкими купюрами</td><td>$100–200</td></tr>
+        <tr><td>Резерв «на всякий случай»</td><td>$300</td></tr>
+        <tr><td>Итого наличными</td><td>≈ $1 850–2 450</td></tr>
+      </table>
+      <div class="note">Это <b>сверх</b> того, что уже оплачено броней. Отдельно проверь по своей брони две крупные позиции: <b>трансфер</b> (для Kandima ориентир ~$675 с человека туда-обратно) и <b>тариф питания</b> — они обычно предоплачены, но если нет, суммы совсем другого порядка.</div>
+      <div class="note"><b>Налоги на Мальдивах закладывай сразу:</b> к «чистому» ценнику прибавляются 10% сервисного сбора и 17% TGST (действует с 1 июля 2025) — это множитель <b>×1,29</b>, — плюс зелёный налог <b>$12 с человека за ночь</b>. Часто уже зашито в пакет, но на активности и бары — почти никогда.</div>
+    </div>
+
+    <ul class="todo">
+      <li><label><input type="checkbox" data-k="m1"><span class="bx"></span><span class="tx"><b>Доллары серии 2009 и новее</b><span class="m">Kandima требует прямо. В ОАЭ старые купюры меняют примерно по 3,60 вместо 3,65–3,66 за доллар, а магазины и кафе всё чаще отказываются брать их совсем.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="m2"><span class="bx"></span><span class="tx"><b>Мелкие купюры на чаевые</b><span class="m">$1, $5, $10. На курорте чаевых будет много: горничная, дайв-гид, официанты, катер. Разменять на острове негде.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="m3"><span class="bx"></span><span class="tx"><b>Не больше $10 000 на человека</b><span class="m">Больше наличной валюты из России вывозить <b>запрещено</b> (не «нужно декларировать», а нельзя). До $10 000 — без декларации. Превышение свыше $20 000 без декларации — уже статья 200.1 УК.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="m4"><span class="bx"></span><span class="tx"><b>ОАЭ: декларация при сумме свыше AED 60 000</b><span class="m">≈ $16 335 на человека старше 18 — деньги, чеки, ювелирка и драгметаллы суммарно. При наших суммах не грозит, но если везёшь дорогие украшения — посчитай вместе с налом.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="m5"><span class="bx"></span><span class="tx"><b>Менять доллары в Дубае — не в аэропорту и не в отеле</b><span class="m">Лучший курс и минимальный сбор обычно у сети Al Ansari Exchange, отделения есть в моллах. В аэропорту и на ресепшене курс заметно хуже.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="m6"><span class="bx"></span><span class="tx"><b>Платить всегда в местной валюте</b><span class="m">Если терминал или банкомат спрашивает «списать в рублях/долларах?» — отказывайся. Это DCC, скрытая наценка 5–7%.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="m7"><span class="bx"></span><span class="tx"><b>Разложить деньги по разным местам</b><span class="m">Часть в сейф отеля, часть с собой, немного отдельно в ручной клади. Не весь запас в одном кошельке.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="m8"><span class="bx"></span><span class="tx"><b>Немного дирхамов сразу по прилёту в Дубай</b><span class="m">Такси из аэропорта берут наличные дирхамы. Для метро нужна карта Nol — продаётся в кассах и автоматах на станциях всех терминалов, покупается и пополняется наличными; серебряная стоит AED 25, из них AED 19 — сразу на проезд. Наличными в самом транспорте платить нельзя, только картой Nol.</span></span></label></li>
+    </ul>
+    <div class="note">В Мале можно поменять немного долларов на руфии в кассе Bank of Maldives в зале прилёта — курс там честный, наценки почти нет. Нужно только если планируешь вылазку на обитаемый остров; на курорте руфии бесполезны.</div>
+  </div>
+
+  <!-- 5 · СВЯЗЬ -->
+  <div class="place" style="border-left:6px solid var(--border)">
+    <div class="kicker">связь</div>
+    <h3>Интернет есть, а вот позвонить — сюрприз</h3>
+    <div class="why"><span class="tlabel">Неожиданное про ОАЭ:</span> в Эмиратах <b>заблокированы голосовые и видеозвонки</b> через WhatsApp, Telegram, Skype, Viber — это государственное ограничение VoIP, действует с 2015 года. <b>Переписка во всех мессенджерах работает нормально</b>, блокируются именно звонки. Легальные альтернативы (BOTIM, C'Me, GoChat) требуют платной подписки около 50 AED в месяц. Zoom, Teams и Google Meet работают по ссылке-приглашению. Часть международных eSIM гонит трафик через зарубежные серверы, и звонки иногда проходят — но на это нельзя рассчитывать.</div>
+    <div class="look"><b>Практический вывод:</b> предупреди тех, кто будет ждать звонка, что два дня в Дубае — только текст и голосовые сообщения. На Мальдивах таких ограничений нет.</div>
+    <ul class="todo">
+      <li><label><input type="checkbox" data-k="c1"><span class="bx"></span><span class="tx"><b>eSIM куплена и профиль установлен дома</b><span class="m">Один пакет на ОАЭ + Мальдивы или два отдельных. Активировать по прилёту.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="c2"><span class="bx"></span><span class="tx"><b>На основной SIM выключены мобильные данные и роуминг</b><span class="m">Иначе телефон молча уйдёт в роуминг и насчитает счёт.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="c3"><span class="bx"></span><span class="tx"><b>Офлайн-карта Дубая скачана</b><span class="m">Google Maps Offline или Organic Maps. На Мальдивах карта не нужна — остров один.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="c4"><span class="bx"></span><span class="tx"><b>Офлайн-пакет переводчика</b><span class="m">Английский хватает и там, и там, но камера-переводчик выручает с меню и указателями.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="c5"><span class="bx"></span><span class="tx"><b>Приложения поставлены заранее</b><span class="m">Авиакомпания, банк, брони с офлайн-доступом, Careem/Uber для Дубая. Ставим дома: из-за границы часть магазинов приложений капризничает.</span></span></label></li>
+    </ul>
+  </div>
+
+  <!-- 6 · ЧТО НЕЛЬЗЯ ВЕЗТИ -->
+  <div class="place" style="border-left:6px solid var(--accent)">
+    <div class="kicker">таможня</div>
+    <h3>Что нельзя везти — и что за это будет</h3>
+    <div class="why">Два разных набора правил, и оба строгие. Мальдивы — мусульманская страна с сухим законом за пределами курортов; ОАЭ — с нулевой терпимостью к веществам. Ошибка здесь стоит не штрафа, а поездки.</div>
+
+    <div class="tier">
+      <div class="lead">Мальдивы</div>
+      <h4>Изымут на границе</h4>
+      <p class="eat"><span class="gl gl--no">✕</span><b>Любой алкоголь</b> — включая купленный в дьюти-фри. Алкоголь легален <b>только внутри курортных островов</b> по отдельной лицензии, ввозить его нельзя вообще. На Kandima бары есть — вот там и пейте.</p>
+      <p class="eat"><span class="gl gl--no">✕</span><b>Вейпы и всё для них</b> — с 15 ноября 2024 запрещён ввоз устройств, комплектующих и жидкостей, в том числе для личного пользования; с 15 декабря 2024 запрещены и владение, и использование — для местных и для туристов одинаково. Устройство заберут на границе, но <b>вернут при вылете</b>. Проверьте карманы и рюкзак: забытый под подкладкой вейп — это разбирательство на паспортном контроле.</p>
+      <p class="eat"><span class="gl gl--no">✕</span><b>Свинина</b> и продукты из неё. На курорте в ресторанах она может быть — по той же спецлицензии; везти с собой нельзя.</p>
+      <p class="eat"><span class="gl gl--care">▲</span><b>Табак — с лимитом:</b> до 200 сигарет, или 25 сигар, или 250 г табака на человека. Отдельно: закон, вступивший в силу 1 ноября 2025, запрещает покупать и употреблять табак всем, кто <b>родился 1 января 2007 года и позже</b> — включая иностранных туристов.</p>
+    </div>
+
+    <div class="tier">
+      <div class="lead">ОАЭ · лекарства</div>
+      <h4>Здесь важнее всего не ошибиться</h4>
+      <p class="eat"><span class="gl gl--ok">✓</span><b>Свободно, без бумаг:</b> парацетамол, ибупрофен, антигистаминные (лоратадин, цетиризин), антациды, обычные сиропы от кашля, лоперамид. Запас до 3 месяцев, в оригинальной упаковке.</p>
+      <p class="eat"><span class="gl gl--care">▲</span><b>Нужен рецепт на руках:</b> большинство антибиотиков, препараты от давления, статины, ингаляторы от астмы, распространённые препараты от диабета и щитовидной железы, большинство антидепрессантов. Оригинальная упаковка + рецепт на английском, всё в <b>ручной клади</b>.</p>
+      <p class="eat"><span class="gl gl--no">✕</span><b>Нужно разрешение eDrug, оформленное заранее:</b> комбинации с кодеином, трамадол, препараты от СДВГ (метилфенидат, лиздексамфетамин), бензодиазепины (валиум, ксанакс), сильные опиоиды, часть снотворных. Само разрешение бесплатное, но <b>без него это квалифицируется как незаконное хранение контролируемого вещества</b> — не штраф, а уголовная история.</p>
+      <p class="eat"><span class="gl gl--no">✕</span><b>CBD, гемп, любые следы THC</b> — независимо от того, что они легальны там, где куплены. Медицинского исключения в ОАЭ не существует. Проверь косметику и БАДы: «масло конопли» в составе тоже считается.</p>
+      <div class="note">Практическое правило: всё, что серьёзнее парацетамола, летит в ручной клади в аптечной упаковке с вложенной инструкцией и распечатанным рецептом на английском. Контролируемое — декларируется на въезде вместе с разрешением.</div>
+    </div>
+  </div>
+
+  <!-- 7 · ЧЕМОДАН -->
+  <div class="place" style="border-left:6px solid var(--ok)">
+    <div class="kicker">чемодан</div>
+    <h3>+42 в Дубае, +30 и вода 29 на Мальдивах</h3>
+    <div class="why">Конец июля в Дубае — <b>около 42 °C днём и под 30 °C ночью</b>, влажность к концу месяца растёт до трети, дождя нет вообще, вода в заливе почти +33. На Мальдивах мягче: <b>27–30 °C</b>, море около 29 °C, но это разгар зелёного сезона — короткие сильные ливни, чаще во второй половине дня, между ними солнце. Два разных гардероба в одном чемодане.</div>
+
+    <div class="cols2">
+      <div class="col">
+        <h4>Дубай, 2 дня</h4>
+        <ul>
+          <li>Лёгкий хлопок и лён — но <b>плечи и колени закрыты</b> для моллов и старого города</li>
+          <li>Лёгкий длинный рукав — от солнца и от свирепых кондиционеров</li>
+          <li>Закрытая разношенная обувь для ходьбы + шлёпки</li>
+          <li>Очки, головной убор, бутылка для воды</li>
+          <li>Купальник — только для пляжа и бассейна, по городу нельзя</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Kandima</h4>
+        <ul>
+          <li>Купальники ×2 — один всегда сохнет</li>
+          <li><b>Рашгард UPF</b> — на снорклинге спина сгорает за полчаса</li>
+          <li>Коралловые тапки — риф режет, и по нему нельзя ходить</li>
+          <li>Лёгкий дождевик или ветровка — ливни короткие, но плотные</li>
+          <li>Сухая гермосумка — катер, экскурсии, сэндбанк</li>
+          <li>Дресс-код курорта: днём beach casual, вечером smart casual. Каблуки на песке не работают</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note" style="margin-top:10px"><b>На обитаемый остров или в Мале</b> — закрытая одежда, плечи и колени прикрыты, как в Дубае: это мусульманская страна за пределами курорта.</div>
+
+    <div class="look" style="margin-top:14px"><span class="tlabel">Солнцезащитный крем — отдельная история.</span> На Мальдивах <b>оксибензон и октиноксат запрещены</b>, многие курорты отказывают и в авобензоне: они убивают кораллы. Нужен минеральный reef-safe SPF 30–50 на <b>оксиде цинка или диоксиде титана</b>. Бери с запасом на много нанесений в день, плюс стик для лица и бальзам для губ с SPF — губы горят раньше всего. На месте такой крем стоит курортных денег.</div>
+
+    <div class="tier">
+      <div class="lead">техника и багаж</div>
+      <h4>Мелочи, которые бесят на месте</h4>
+      <p class="eat"><b>Переходник.</b> <span class="m">В ОАЭ розетки типов C, D и G при 220 В; на Мальдивах основной тип G, местами D и J, 230 В. Один универсальный переходник с типом G закрывает всю поездку. Напряжение наше — конвертер не нужен, только переходник.</span></p>
+      <p class="eat"><b>Повербанк — только в ручную кладь.</b> <span class="m">Литий в сдаваемый багаж не принимают. Пригодится: перелёты, катер, день на пляже.</span></p>
+      <p class="eat"><b>Багаж на внутренний рейс по Мальдивам меньше международного.</b> <span class="m">У Maldivian норма порядка 20–25 кг сдаваемого и 5 кг ручной клади — перевес платный, а гидросамолёты ещё строже. <span class="chip chip--check" style="margin:0">уточнить у Kandima вместе с трансфером</span></span></p>
+      <p class="eat"><b>Ручная кладь на случай потери чемодана.</b> <span class="m">Паспорта, деньги, телефон, все рецептурные лекарства в оригинале с рецептом, смена белья и футболка, зарядки и повербанк, очки/линзы — и <b>купальник</b>. Если чемодан догонит вас на день позже, вы всё равно будете в воде.</span></p>
+    </div>
+
+    <div class="note"><b>Аптечка:</b> обезболивающее и жаропонижающее, от диареи + электролиты (жара и смена воды), антацид, антигистаминное, средство от укачивания — <b>катер до Kandima и обратно это оправдает</b>, пластыри и антисептик, что-то от солнечных ожогов (алоэ, пантенол), репеллент от комаров, личные препараты с копией рецепта. Ножницы и пинцет — в сдаваемый багаж.</div>
+  </div>
+
+  <!-- 8 · ЗДОРОВЬЕ И ЭКСТРЕННОЕ -->
+  <div class="place" style="border-left:6px solid var(--accent)">
+    <div class="kicker">здоровье · экстренное</div>
+    <h3>Если что-то пойдёт не так</h3>
+    <div class="why"><b>Страховка для въезда в ОАЭ формально не обязательна</b> — её нет в списке требований для россиян. Но медицина там платная и дорогая, бесплатна она только для граждан ОАЭ, так что полис берём не ради галочки на границе, а ради себя.</div>
+    <div class="look"><span class="tlabel">Дайвинг покрывается отдельно.</span> Стандартный полис ВЗР травмы и заболевания, полученные при погружениях, <b>не покрывает</b> — нужен дайверский райдер, который включает барокамеру, поисково-спасательные работы и эвакуацию. Эвакуация с дальнего атолла в госпиталь стоит десятки тысяч долларов. Полисы с дайвингом делают АльфаСтрахование, Ингосстрах, Ренессанс, Согласие, Евроинс, ЕРВ, Т-Страхование — оформление онлайн за 5–10 минут.</div>
+    <div class="look"><span class="gl gl--ok">✓</span><b>Хорошая новость про Kandima:</b> на острове есть полноценный медцентр со стоматологией и <b>собственной декомпрессионной барокамерой</b>, врачи с международным опытом. Для дальнего атолла это редкость и серьёзный плюс к безопасности погружений.</div>
+    <div class="look"><span class="tlabel">Правило «не летать после дайва»:</span> после погружений <b>18–24 часа нельзя в воздух</b>. Трансфер с острова — это внутренний рейс или гидросамолёт, то есть полёт. Планируй последнее погружение минимум за сутки до вылета домой.</div>
+
+    <div class="tier">
+      <div class="lead">записать на бумагу</div>
+      <h4>Телефоны</h4>
+      <table class="tel">
+        <tr><td>ОАЭ · полиция <span class="w">экстренно</span></td><td>999</td></tr>
+        <tr><td>ОАЭ · скорая</td><td>998</td></tr>
+        <tr><td>ОАЭ · пожарные</td><td>997</td></tr>
+        <tr><td>Дубай · полиция <span class="w">не экстренно, справки</span></td><td>901</td></tr>
+        <tr><td>Мальдивы · полиция</td><td>119</td></tr>
+        <tr><td>Мальдивы · скорая <span class="w">IGMH, Мале</span></td><td>102</td></tr>
+        <tr><td>Мальдивы · береговая охрана <span class="w">на воде</span></td><td>191</td></tr>
+        <tr><td>Генконсульство РФ в Дубае <span class="w">Al Safa 2, 18C street, villa 58 · condubai@mid.ru</span></td><td>+971 4 328-53-47<br><span class="w">экстр. +971 50 454-77-54</span></td></tr>
+        <tr><td>Посольство РФ в Абу-Даби <span class="w">rusembuae@mail.ru</span></td><td>+971 2 672-17-97<br><span class="w">экстр. +971 50 865-27-01</span></td></tr>
+        <tr><td>Генконсульство РФ в Мале <span class="w">maldives@mid.ru · пн–пт 09:00–13:00</span></td><td><span class="w">экстр.</span> +960 725-9888</td></tr>
+        <tr><td>Посольство РФ в Коломбо <span class="w">курирует Мальдивы</span></td><td>+94 11 269-70-36</td></tr>
+      </table>
+      <div class="note">На курорте первая точка обращения — ресепшен и медцентр острова, они же вызывают эвакуацию. Консульство — для потери паспорта и серьёзных историй. <b>Потерял паспорт:</b> сначала в полицию за протоколом, потом в консульство с копией паспорта и фотографиями.</div>
+    </div>
+  </div>
+
+  <!-- 9 · ДЕНЬ ВЫЛЕТА -->
+  <div class="place" style="border-left:6px solid var(--border)">
+    <div class="kicker">27 июля</div>
+    <h3>Накануне и в день вылета</h3>
+    <ul class="todo">
+      <li><label><input type="checkbox" data-k="g1"><span class="bx"></span><span class="tx"><b>Проверить статус рейса и погоду</b><span class="m">Заодно перепроверь, что QR из IMUGA сохранён офлайн.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="g2"><span class="bx"></span><span class="tx"><b>Зарядить всё: телефон, повербанк, наушники, камеру</b></span></label></li>
+      <li><label><input type="checkbox" data-k="g3"><span class="bx"></span><span class="tx"><b>Жидкости в ручной клади ≤ 100 мл</b><span class="m">Солнцезащитный крем большого объёма — в сдаваемый багаж, иначе отберут на досмотре.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="g4"><span class="bx"></span><span class="tx"><b>Touch-check перед выходом</b><span class="m">Паспорта · деньги · телефон · ключи · лекарства. Четыре кармана, десять секунд.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="g5"><span class="bx"></span><span class="tx"><b>В аэропорту за 3 часа</b><span class="m">Международный рейс, конец июля, высокий поток.</span></span></label></li>
+      <li><label><input type="checkbox" data-k="g6"><span class="bx"></span><span class="tx"><b>Деньги разложены по разным местам ещё дома</b></span></label></li>
+      <li><label><input type="checkbox" data-k="g7"><span class="bx"></span><span class="tx"><b>Часы: Дубай = Москва +1, Мальдивы = Москва +2</b><span class="m">Разница маленькая — джетлага не будет ни туда, ни обратно.</span></span></label></li>
+    </ul>
+    <div class="note">Про часовые пояса: ОАЭ живут по UTC+4, Мальдивы по UTC+5, Москва по UTC+3 — сдвиг в один и два часа соответственно.</div>
+  </div>
+
+  <!-- ИСТОЧНИКИ -->
+  <div class="place">
+    <div class="kicker">источники</div>
+    <h3>Откуда цифры</h3>
+    <div class="note">
+      Въезд и визы: <a href="https://www.atorus.ru/article/oae-bez-syurprizov-chto-vazhno-znat-turistu-v-2026-godu-68737" target="_blank" rel="noopener">АТОР — ОАЭ 2026</a>,
+      <a href="https://imuga.immigration.gov.mv/traveller" target="_blank" rel="noopener">IMUGA — Maldives Immigration</a>,
+      <a href="https://blog.wego.com/imuga/" target="_blank" rel="noopener">Wego — гид по IMUGA 2026</a> ·
+      Таможня и запреты: <a href="https://www.maldives.com/articles/rules-and-regulations/import-restrictions-for-the-maldives" target="_blank" rel="noopener">Maldives.com — import restrictions</a>,
+      <a href="https://www.dubaicustoms.gov.ae/en/eServices/ServicesForIndividuals/ViewCustomsProcedure/Pages/DeclaringMoneyProcedure.aspx" target="_blank" rel="noopener">Dubai Customs — декларация денег</a>,
+      <a href="https://www.aviasales.ru/psgr/article/vyvoz-i-vvoz-deneg-iz-rossii" target="_blank" rel="noopener">вывоз валюты из РФ</a> ·
+      Лекарства в ОАЭ: <a href="https://uaeinform.com/healthcare-guide/medication" target="_blank" rel="noopener">UAE Inform — категории и eDrug</a>,
+      <a href="https://www.startdxb.ae/article/bringing-medication-to-dubai-2026-import-rules-and-banned-list" target="_blank" rel="noopener">StartDXB — banned list 2026</a> ·
+      Деньги: <a href="https://www.cbr.ru/currency_base/daily/" target="_blank" rel="noopener">курсы ЦБ РФ</a>,
+      <a href="https://kandima.com/en/explore/faq" target="_blank" rel="noopener">Kandima FAQ — USD, серия 2009+</a>,
+      <a href="https://maldivesairport.com/arrivals/currency" target="_blank" rel="noopener">Velana — обмен и банкоматы</a>,
+      <a href="https://www.rshb.ru/natural/debetcards/unionpay-uae" target="_blank" rel="noopener">РСХБ — UnionPay в ОАЭ</a>,
+      <a href="https://www.exiap.com/guides/currency-in-maldives" target="_blank" rel="noopener">Exiap — валюта Мальдив</a> ·
+      Связь: <a href="https://vc.ru/travel/2863135-yesim-v-rossii-kak-oplatit-esim-rossijskoj-kartoj" target="_blank" rel="noopener">eSIM с оплатой росскартой</a> ·
+      Страховка: <a href="https://polis812.ru/blog/strahovka-v-oae-trebovaniya/" target="_blank" rel="noopener">polis812 — нужна ли в ОАЭ</a> ·
+      Багаж: <a href="https://www.maldivian.aero/flying-with-us/before-you-fly/baggage-policy.html" target="_blank" rel="noopener">Maldivian — baggage policy</a> ·
+      Экстренные телефоны: <a href="https://u.ae/en/information-and-services/justice-safety-and-the-law/handling-emergencies" target="_blank" rel="noopener">u.ae — handling emergencies</a>,
+      <a href="https://www.kdmid.ru/docs/united-arab-emirates/russian-consular-offices/" target="_blank" rel="noopener">КД МИД — ОАЭ</a>,
+      <a href="https://www.kdmid.ru/docs/maldives/russian-consular-offices/" target="_blank" rel="noopener">КД МИД — Мальдивы</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="cheer">Три дня — и вы в воде</span>
+    <span class="kicker">✓ проверено 24.07.2026 · [проверить] — уточнить по своей брони</span>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // отсчёт до вылета из Москвы
+  try{
+    var t=new Date('2026-07-27T00:00:00'), now=new Date();
+    var d=Math.max(0,Math.ceil((t-now)/86400000));
+    var el=document.getElementById('cd'); if(el) el.textContent=d;
+    var u=document.getElementById('cdu');
+    if(u){var m10=d%10,m100=d%100,w='дней';
+      if(m10===1&&m100!==11)w='день';
+      else if(m10>=2&&m10<=4&&(m100<12||m100>14))w='дня';
+      u.textContent=w;}
+  }catch(e){}
+
+  // чек-лист: сохранение галочек + счётчик
+  try{
+    var KEY='trip2026-checklist';
+    var boxes=[].slice.call(document.querySelectorAll('.todo input[type=checkbox]'));
+    var total=document.getElementById('ptotal');
+    var done=document.getElementById('pdone');
+    if(total) total.textContent=boxes.length;
+
+    var state={};
+    try{ state=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ state={}; }
+
+    function render(){
+      var n=0;
+      boxes.forEach(function(b){ if(b.checked) n++; });
+      if(done) done.textContent=n;
+    }
+    function save(){
+      var s={};
+      boxes.forEach(function(b){ if(b.checked) s[b.dataset.k]=1; });
+      try{ localStorage.setItem(KEY,JSON.stringify(s)); }catch(e){}
+    }
+
+    boxes.forEach(function(b){
+      if(state[b.dataset.k]) b.checked=true;
+      b.addEventListener('change',function(){ save(); render(); });
+    });
+    render();
+
+    var r=document.getElementById('reset');
+    if(r) r.addEventListener('click',function(){
+      boxes.forEach(function(b){ b.checked=false; });
+      save(); render();
+    });
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
