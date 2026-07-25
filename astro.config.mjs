@@ -12,7 +12,11 @@ export default defineConfig({
   integrations: [
     sitemap({
       // Исключаем dev-страницы — они не публичные.
-      filter: (page) => !/\/dev-(layout|layout-noheader|tokens)\/?$/.test(page),
+      // /vacations/ — тоже: страницы поездок живут по прямой ссылке, из навигации
+      // сайта на них ничего не ведёт, и в поиске им делать нечего.
+      filter: (page) =>
+        !/\/dev-(layout|layout-noheader|tokens)\/?$/.test(page) &&
+        !/\/vacations(\/|$)/.test(page),
     }),
   ],
 });

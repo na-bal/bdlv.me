@@ -1,0 +1,166 @@
+---
+// Точка входа в поездку июль-2026 → /vacations/
+// Сознательно без PageLayout: у путеводителей свой визуальный язык «Билет»
+// (public/vacations/trip.css), сайтовый хедер/футер тут только мешал бы.
+// Сами путеводители лежат статикой в public/vacations/ — отсюда на них относительные ссылки.
+
+const steps = [
+  {
+    n: "1",
+    kicker: "начни отсюда · до 26 июля",
+    title: "Собраться",
+    vibe: "чек-лист готовности · Москва → Дубай → Kandima",
+    what: "Что осталось сделать перед вылетом: восемь срочных пунктов, документы, <b>деньги</b>, связь, таможня, чемодан, аптечка и порядок дня вылета. Галочки отмечаются прямо на странице и сохраняются в браузере.",
+    note: "Главный блок — деньги: российские карты не работают ни на Мальдивах, ни почти в ОАЭ, а на курортном острове нет банкомата.",
+    href: "checklist-2026.html",
+    cta: "Открыть чек-лист",
+    hot: true,
+  },
+  {
+    n: "2",
+    kicker: "27–29 июля · пн–ср · 2 дня",
+    title: "Дубай",
+    vibe: "путеводитель · старый город + иконы · стыковка перед пляжем",
+    what: "Меню на два вечера, а не расписание: старый Дубай и абра, базары, спокойные иконы в кондиционере, едальни от рыбной лачуги до необычного, где базироваться на 2 ночи, карта и культурный слой с парой фраз по-арабски.",
+    note: "Днём +40 °C, поэтому вся страница построена на вечернем режиме: с полудня в помещение, гулять и есть — после заката.",
+    href: "dubai-2026.html",
+    cta: "Открыть Дубай",
+    hot: false,
+  },
+  {
+    n: "3",
+    kicker: "сразу после Дубая",
+    title: "Мальдивы",
+    vibe: "путеводитель · Kandima · атолл Дхаалу",
+    what: "Как устроен остров-курорт, дом-риф и снорклинг у берега, крупная морская жизнь и китовые акулы, безопасность в воде (кого не трогать), дайв-центр, экскурсии за пределы острова, ориентир по доплатам.",
+    note: "Конец июля — «зелёный» сезон: короткие дожди в обмен на планктон, китовых акул, меньше народу и ниже цены.",
+    href: "maldives-2026.html",
+    cta: "Открыть Мальдивы",
+    hot: false,
+  },
+];
+---
+
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Отпуск июль 2026 · Дубай + Мальдивы · начни отсюда</title>
+<meta name="description" content="Точка входа в поездку: чек-лист сборов, путеводитель по Дубаю и по Мальдивам (Kandima).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="trip.css" rel="stylesheet">
+<style>
+  .note{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:8px;line-height:1.55}
+  /* номер шага — как штамп на корешке, слева от заголовка */
+  .step__head{display:flex;align-items:baseline;gap:12px}
+  .step__n{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.08em;
+    color:#fff;background:var(--fg);border:var(--bw) solid var(--border);padding:3px 9px;flex:0 0 auto}
+  .step--hot .step__n{background:var(--accent);border-color:var(--accent)}
+  .step__head h3{margin:0}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <nav class="tripnav" aria-label="Поездка">
+    <a class="tripnav__home" href="./" aria-current="page">Поездка</a>
+    <a href="checklist-2026.html">Сборы</a>
+    <a href="dubai-2026.html">Дубай</a>
+    <a href="maldives-2026.html">Мальдивы</a>
+  </nav>
+
+  <!-- 1 · ГЕРОЙ -->
+  <div class="pass">
+    <div class="pass__stub">
+      <div class="kicker">trip</div>
+      <div class="countdown">до вылета<br><b id="cd">—</b><br><span id="cdu">дней</span></div>
+      <div class="stamp">27.07</div>
+    </div>
+    <div class="pass__body">
+      <div class="kicker">отпуск · июль 2026 · три страницы</div>
+      <h1 class="title">Отпуск<br><span class="u">Дубай + Мальдивы</span></h1>
+      <div class="vibe">вылет <b>27 июля 2026</b> из Москвы · Дубай 27–29 · дальше Kandima, атолл Дхаалу</div>
+      <div style="margin-top:10px">
+        <span class="chip chip--accent">визы не нужны</span>
+        <span class="chip">2 дня города → потом ничего не делать</span>
+        <span class="chip">нал в USD</span>
+        <span class="chip chip--check">даты Мальдив уточнить</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- КАК ЭТИМ ПОЛЬЗОВАТЬСЯ -->
+  <div class="place">
+    <div class="kicker">что это за страница</div>
+    <h3>Три страницы по порядку поездки</h3>
+    <div class="why">Это оглавление отпуска: ниже три страницы в том порядке, в котором они понадобятся —
+      <b>сначала собраться</b>, потом два вечера в Дубае, потом остров. Каждая работает сама по себе,
+      открывается с телефона и печатается. Ничего запоминать не надо: с любой из них можно вернуться
+      сюда красной кнопкой сверху.</div>
+    <div class="look">Путеводители — это <b>меню, а не расписание</b>: выбираешь из блоков то, что хочется, остальное игнорируешь.</div>
+  </div>
+
+  <!-- МАРШРУТ -->
+  <div class="place">
+    <div class="kicker">маршрут</div>
+    <h3>Как всё стыкуется</h3>
+    <ul class="route">
+      <li>
+        <div class="seg">Москва → Дубай</div>
+        <div class="meta">27 июля 2026 · вылет</div>
+      </li>
+      <li>
+        <div class="seg">Дубай · 2 ночи</div>
+        <div class="meta">27–29 июля · пн–ср · город и вечера</div>
+      </li>
+      <li>
+        <div class="seg">Дубай → Мальдивы, Kandima</div>
+        <div class="meta">с 29 июля · атолл Дхаалу · <span class="chip chip--check" style="margin:0">сколько ночей — проверить</span></div>
+      </li>
+    </ul>
+    <div class="look">Обратная дорога в страницах пока не зафиксирована — как будет билет, добавим сюда.</div>
+  </div>
+
+  <!-- ТРИ ШАГА -->
+  {steps.map((s) => (
+    <div class:list={["place", "step", { "step--hot": s.hot }]} style={s.hot ? "border-left:6px solid var(--accent)" : undefined}>
+      <div class="kicker">{s.kicker}</div>
+      <div class="step__head">
+        <span class="step__n">{s.n}</span>
+        <h3>{s.title}</h3>
+      </div>
+      <div class="look">{s.vibe}</div>
+      <div class="why" set:html={s.what} />
+      <div class="note" set:html={s.note} />
+      <div class="actions">
+        <a class:list={["btn", { "btn--accent": s.hot }]} href={s.href}>{s.cta} →</a>
+      </div>
+    </div>
+  ))}
+
+  <div class="foot">
+    <span class="cheer">хорошей поездки!</span>
+    <span class="kicker">оглавление · обновляется по ходу</span>
+  </div>
+
+</div>
+
+<script is:inline>
+(function(){
+  // отсчёт до вылета — тот же, что на страницах поездки
+  try{
+    var t=new Date('2026-07-27T00:00:00'), now=new Date();
+    var d=Math.max(0,Math.ceil((t-now)/86400000));
+    var el=document.getElementById('cd'); if(el) el.textContent=d;
+    var u=document.getElementById('cdu');
+    if(u){var m10=d%10,m100=d%100,w='дней';
+      if(m10===1&&m100!==11)w='день';
+      else if(m10>=2&&m10<=4&&(m100<12||m100>14))w='дня';
+      u.textContent=w;}
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
