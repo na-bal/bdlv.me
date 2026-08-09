@@ -72,8 +72,22 @@ RewriteRule ^wallpaper-room\.html$     - [G,L]
 # ============================================================================
 
 <IfModule mod_headers.c>
-    # Хэшированные ассеты Astro: имя содержит хэш, безопасный immutable.
-    <FilesMatch "^.+\.(?:js|css)$">
+    # Порядок важен: правила идут от общего к частному, последнее Header set
+    # перекрывает предыдущее.
+    #
+    # 1) Любой css/js со СТАБИЛЬНЫМ именем меняется на месте — revalidate.
+    #    Раньше здесь стояло одно правило ^.+\.(?:js|css)$ с immutable на год.
+    #    Оно matchало не только хэшированные ассеты Astro, но и
+    #    /mealprep/mealprep.css и mealprep.js. В результате редизайн бланков
+    #    доехал на телефон разметкой, а стили и скрипт остались из кэша:
+    #    ни кнопок таймера, ни сворачивания отмеченного шага.
+    <FilesMatch "\.(?:js|css)$">
+        Header set Cache-Control "public, max-age=300, must-revalidate"
+    </FilesMatch>
+
+    # 2) Хэшированные ассеты Astro — имя содержит 8-символьный хэш
+    #    (tokens.D2aK8eu9.css), содержимое под этим именем не меняется никогда.
+    <FilesMatch "\.[A-Za-z0-9_-]{8}\.(?:js|css)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 
