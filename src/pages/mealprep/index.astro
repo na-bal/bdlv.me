@@ -87,6 +87,14 @@ const weeks = [
   },
 ];
 
+// Файлы с расширением раздаёт фронтенд хоста мимо .htaccess, с жёстким
+// max-age=604800 — заголовками это не лечится. Индекс раздела — Astro-роут
+// без расширения, его отдаёт Apache с max-age=300, поэтому он всегда свежий.
+// Вешаем версию на ссылки отсюда: переход с индекса приносит актуальный HTML,
+// а тот уже тянет ассеты с ?v=. Бампать вместе с версией ассетов.
+const V = "20260809";
+const v = (href) => (href ? `${href}?v=${V}` : href);
+
 const current = weeks.find((w) => w.current);
 const recipeCount = weeks.reduce((n, w) => n + w.recipes.length, 0);
 ---
@@ -132,9 +140,9 @@ const recipeCount = weeks.reduce((n, w) => n + w.recipes.length, 0);
 
   <nav class="nav topnav" aria-label="Разделы">
     <a class="home" href="./" aria-current="page">Все недели</a>
-    <a href={current.karta}>Текущая неделя</a>
-    <a href={current.runbook}>Готовка</a>
-    <a href={current.sborka}>Сборка</a>
+    <a href={v(current.karta)}>Текущая неделя</a>
+    <a href={v(current.runbook)}>Готовка</a>
+    <a href={v(current.sborka)}>Сборка</a>
     <a href="#recipes">Рецепты</a>
   </nav>
 
@@ -145,7 +153,7 @@ const recipeCount = weeks.reduce((n, w) => n + w.recipes.length, 0);
       (сценарий у плиты с галочками) и <b>сборка</b> (что с чем класть в тарелку).
       Старые недели не удаляются — рецепты из них продолжают работать.</p>
     <p>Если стоишь у плиты прямо сейчас — тебе нужна
-      <a href={current.runbook}>готовка недели {current.label}</a>.</p>
+      <a href={v(current.runbook)}>готовка недели {current.label}</a>.</p>
   </div>
 
   {weeks.map((w) => (
@@ -173,18 +181,18 @@ const recipeCount = weeks.reduce((n, w) => n + w.recipes.length, 0);
           </div>
 
           <div class="nav">
-            {w.karta && <a href={w.karta}>Карта недели →</a>}
-            <a href={w.plan}>План</a>
-            <a href={w.runbook}>Готовка</a>
-            <a href={w.sborka}>Сборка</a>
-            {w.fridge && <a href={w.fridge}>Холодильник</a>}
+            {w.karta && <a href={v(w.karta)}>Карта недели →</a>}
+            <a href={v(w.plan)}>План</a>
+            <a href={v(w.runbook)}>Готовка</a>
+            <a href={v(w.sborka)}>Сборка</a>
+            {w.fridge && <a href={v(w.fridge)}>Холодильник</a>}
           </div>
 
           {w.recipes.length > 0 && (
             <div class="shelf">
               <div class="shelf__k">Рецепты, появившиеся в эту неделю</div>
               <div class="nav">
-                {w.recipes.map(([href, title]) => <a href={href}>{title} →</a>)}
+                {w.recipes.map(([href, title]) => <a href={v(href)}>{title} →</a>)}
               </div>
             </div>
           )}
@@ -200,7 +208,7 @@ const recipeCount = weeks.reduce((n, w) => n + w.recipes.length, 0);
         <div class="shelf">
           <div class="shelf__k">Неделя {w.n} · {w.label}</div>
           <div class="nav">
-            {w.recipes.map(([href, title]) => <a href={href}>{title} →</a>)}
+            {w.recipes.map(([href, title]) => <a href={v(href)}>{title} →</a>)}
           </div>
         </div>
       )
