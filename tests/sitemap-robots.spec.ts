@@ -46,5 +46,9 @@ test.describe("sitemap.xml + robots.txt", () => {
     expect(xml).not.toMatch(/\/dev-layout\b/);
     expect(xml).not.toMatch(/\/dev-layout-noheader\b/);
     expect(xml).not.toMatch(/\/dev-tokens\b/);
+
+    // Личные разделы — тоже не должны: живут по прямой ссылке.
+    expect(xml).not.toMatch(/\/vacations\b/);
+    expect(xml).not.toMatch(/\/mealprep\b/);
   });
 });

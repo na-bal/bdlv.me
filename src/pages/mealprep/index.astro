@@ -1,0 +1,216 @@
+---
+// Индекс раздела MealPrep → /mealprep/
+// Сознательно без PageLayout: у бланков свой визуальный язык «Кухонный бланк»
+// (public/mealprep/mealprep.css), сайтовый хедер/футер тут только мешал бы.
+// Сами бланки лежат статикой в public/mealprep/ — отсюда на них относительные ссылки.
+//
+// ВАЖНО: страница собирается в dist/mealprep/index.html, поэтому все ссылки
+// href="index.html" и href="index.html#recipes" внутри бланков ведут сюда.
+// Поэтому здесь обязан быть якорь #recipes — на него ссылается верхнее меню
+// каждой страницы раздела.
+//
+// Как добавить неделю: положить бланки в public/mealprep/ и добавить объект
+// в начало weeks[]. Ничего больше — старые недели не удаляются, это архив.
+// Подробности: .claude/skills/playbook/references/publishing-static-content.md
+
+const weeks = [
+  {
+    n: 3,
+    current: true,
+    label: "10–16.08",
+    kicker: "неделя 3 · текущая",
+    vibe: "3 белка · буррито-банк · готовка в два дня",
+    what:
+      "Старт с нуля, морозилка пуста. Три героя: индейка, куриные голени в глазури и мексиканский фарш. " +
+      "Новое — <b>буррито-банк</b>: восемнадцать готовых обедов и завтраков в морозилке.",
+    meta: [
+      ["Порции", "1 чел, 7 дней"],
+      ["Готовка", "2 дня: 3.5 + 1.5 ч"],
+    ],
+    karta: "karta-2026-08-08.html",
+    plan: "plan-2026-08-08.html",
+    runbook: "runbook-2026-08-09.html",
+    sborka: "sborka-2026-08-09.html",
+    recipes: [
+      ["recept-indeyka-2026-08-08.html", "Индейка, филе бедра"],
+      ["recept-golyeni-2026-08-08.html", "Голени в глазури"],
+      ["recept-farsh-mex-2026-08-08.html", "Мексиканская начинка"],
+      ["recept-chimichurri-2026-08-08.html", "Чимичурри"],
+      ["recept-burrito-2026-08-08.html", "Буррито-банк"],
+    ],
+  },
+  {
+    n: 2,
+    current: false,
+    label: "13.06",
+    kicker: "неделя 2 · архив",
+    vibe: "свинина в двух профилях · банк-курица",
+    what:
+      "Банк заготовок плюс пять профилей — семь тарелок. Свиная шейка расходится на два разных вкуса, " +
+      "курица уходит в банк.",
+    meta: [
+      ["Порции", "1 чел"],
+      ["Готовка", "~2.5–3 ч"],
+    ],
+    karta: null,
+    plan: "plan-2026-06-12.html",
+    runbook: "runbook-2026-06-13.html",
+    sborka: "sborka-2026-06-13.html",
+    recipes: [["recept-svinina-2026-06-13.html", "Свинина шейка (2 профиля)"]],
+  },
+  {
+    n: 1,
+    current: false,
+    label: "06.06",
+    kicker: "неделя 1 · архив · пилот",
+    vibe: "первый заход · семь заготовок → семь тарелок",
+    what:
+      "Пилотная неделя, с которой всё началось. Базовый набор: фарш на два профиля, запечённая курица, " +
+      "рис par-cook и три соуса.",
+    meta: [
+      ["Порции", "1 чел"],
+      ["Готовка", "вечер ~3 ч"],
+    ],
+    karta: null,
+    plan: "plan-2026-06-01.html",
+    runbook: "runbook-2026-06-06.html",
+    sborka: "sborka-2026-06-06.html",
+    recipes: [
+      ["recept-farsh-2026-06-01.html", "Фарш-база (2 профиля)"],
+      ["recept-kuritsa-2026-06-01.html", "Курица запечённая"],
+      ["recept-ris-2026-06-01.html", "Рис (par-cook)"],
+      ["recept-karri-2026-06-01.html", "Карри-соус на кокосовом молоке"],
+      ["recept-yogurt-2026-06-01.html", "Йогурт-соус"],
+      ["recept-frittata-2026-06-01.html", "Фриттата"],
+    ],
+  },
+];
+
+const current = weeks.find((w) => w.current);
+const recipeCount = weeks.reduce((n, w) => n + w.recipes.length, 0);
+---
+
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>MealPrep — все недели</title>
+<link rel="stylesheet" href="mealprep.css">
+<style>
+  /* на индексе нет плавающей панели действий — снимаем зарезервированный под неё запас */
+  body{padding-bottom:40px}
+  /* номер недели — штампом слева от заголовка карточки, как на корешке бланка */
+  .wk__head{display:flex;align-items:baseline;gap:10px}
+  .wk__n{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.08em;
+    color:var(--surface);background:var(--ink);padding:3px 9px;flex:0 0 auto}
+  .wk--current .wk__n{background:var(--stamp)}
+  .wk--current{border-left:6px solid var(--stamp)}
+  .wk__meta{display:flex;flex-wrap:wrap;gap:0 18px;margin-top:6px;
+    font-family:var(--mono);font-size:12px;color:var(--muted)}
+  /* «полка» рецептов недели */
+  .shelf{margin-top:10px}
+  .shelf__k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="blank__head">
+    <div class="kicker">MealPrep · оглавление раздела</div>
+    <h1 class="title">Все недели</h1>
+    <div class="stamp">Индекс</div>
+    <div class="meta">
+      <div class="cell"><span class="k">Недель</span><span class="v">{weeks.length}</span></div>
+      <div class="cell"><span class="k">Рецептов</span><span class="v">{recipeCount}</span></div>
+      <div class="cell"><span class="k">Текущая</span><span class="v">{current.label}</span></div>
+      <div class="cell"><span class="k">Порции</span><span class="v">1 чел</span></div>
+    </div>
+  </header>
+
+  <nav class="nav topnav" aria-label="Разделы">
+    <a class="home" href="./" aria-current="page">Все недели</a>
+    <a href={current.karta}>Текущая неделя</a>
+    <a href={current.runbook}>Готовка</a>
+    <a href={current.sborka}>Сборка</a>
+    <a href="#recipes">Рецепты</a>
+  </nav>
+
+  <div class="lead">
+    <div class="lead__k">Что это за страница</div>
+    <p>Оглавление раздела. Каждая неделя — это одна готовка и семь дней еды из неё,
+      и у каждой свой набор страниц: <b>план</b> (что и зачем), <b>готовка</b>
+      (сценарий у плиты с галочками) и <b>сборка</b> (что с чем класть в тарелку).
+      Старые недели не удаляются — рецепты из них продолжают работать.</p>
+    <p>Если стоишь у плиты прямо сейчас — тебе нужна
+      <a href={current.runbook}>готовка недели {current.label}</a>.</p>
+  </div>
+
+  {weeks.map((w) => (
+    <section class:list={["section", { "section--primary": w.current }]}>
+      <div class="section__label">
+        {w.current ? "Текущая неделя" : `Неделя ${w.n}`}
+        <span class="hint">{w.label}</span>
+      </div>
+
+      <div class:list={["card", "wk", { "wk--current": w.current }]}>
+        <div class="card__head">
+          <span class="card__title">
+            <span class="wk__head">
+              <span class="wk__n">{w.n}</span>
+              <span>MealPrep {w.label}</span>
+            </span>
+          </span>
+          <span class="card__id">{w.kicker}</span>
+        </div>
+        <div class="card__body">
+          <div class="card__row"><span class="rk">Про что</span><span class="rv">{w.vibe}</span></div>
+          <div class="card__row"><span class="rk">Коротко</span><span class="rv" set:html={w.what} /></div>
+          <div class="wk__meta">
+            {w.meta.map(([k, v]) => <span>{k}: <b>{v}</b></span>)}
+          </div>
+
+          <div class="nav">
+            {w.karta && <a href={w.karta}>Карта недели →</a>}
+            <a href={w.plan}>План</a>
+            <a href={w.runbook}>Готовка</a>
+            <a href={w.sborka}>Сборка</a>
+          </div>
+
+          {w.recipes.length > 0 && (
+            <div class="shelf">
+              <div class="shelf__k">Рецепты, появившиеся в эту неделю</div>
+              <div class="nav">
+                {w.recipes.map(([href, title]) => <a href={href}>{title} →</a>)}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section" id="recipes">
+    <div class="section__label">Все рецепты <span class="hint">что / зачем / как понять готовность</span></div>
+    {weeks.map((w) => (
+      w.recipes.length > 0 && (
+        <div class="shelf">
+          <div class="shelf__k">Неделя {w.n} · {w.label}</div>
+          <div class="nav">
+            {w.recipes.map(([href, title]) => <a href={href}>{title} →</a>)}
+          </div>
+        </div>
+      )
+    ))}
+    <div class="prose">
+      <p><span class="why">Рецепт живёт дольше недели.</span> Карточка описывает заготовку саму по себе —
+        что это, зачем и как понять, что готово. Поэтому неделя 2 спокойно берёт курицу и рис из недели 1,
+        а не переписывает их заново.</p>
+    </div>
+  </section>
+
+  <div class="foot">MealPrep · оглавление раздела · новые недели добавляются сверху</div>
+</div>
+</body>
+</html>
