@@ -31,6 +31,7 @@ const weeks = [
     plan: "plan-2026-08-08.html",
     runbook: "runbook-2026-08-09.html",
     sborka: "sborka-2026-08-09.html",
+    fridge: "holodilnik-2026-08-09.html",
     recipes: [
       ["recept-indeyka-2026-08-08.html", "Индейка, филе бедра"],
       ["recept-golyeni-2026-08-08.html", "Голени в глазури"],
@@ -176,6 +177,7 @@ const recipeCount = weeks.reduce((n, w) => n + w.recipes.length, 0);
             <a href={w.plan}>План</a>
             <a href={w.runbook}>Готовка</a>
             <a href={w.sborka}>Сборка</a>
+            {w.fridge && <a href={w.fridge}>Холодильник</a>}
           </div>
 
           {w.recipes.length > 0 && (

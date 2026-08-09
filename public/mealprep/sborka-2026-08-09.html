@@ -45,15 +45,15 @@
   <section class="section section--primary">
     <div class="section__label">Неделя одним взглядом</div>
     <table class="matrix">
-      <thead><tr><th>День</th><th>Что берёшь</th><th>Достать накануне</th></tr></thead>
+      <thead><tr><th>День</th><th>Что берёшь</th></tr></thead>
       <tbody>
-        <tr><th>Пн</th><td>голени 3 шт + рис 175 г + маринованный лук<span class="prof">сладко-липкий · руками</span></td><td>—</td></tr>
-        <tr><th>Вт</th><td>индейка 150 г + рис 175 г + йогурт-чеснок-укроп + черри<span class="prof">средиземноморский</span></td><td>—</td></tr>
-        <tr><th>Ср</th><td>фарш 250 г + тортилья + сыр 40 г + йогурт-лайм-кинза<span class="prof">мексиканский</span></td><td>завтрак-буррито</td></tr>
-        <tr><th>Чт</th><td>голени 3 шт + рис + чимичурри 3 ст.л. + черри<span class="prof">аргентинский</span></td><td>голени + рис (Вт вечером)</td></tr>
-        <tr><th>Пт</th><td>фарш 250 г + 2 тортильи + сальса + маринованный лук<span class="prof">мексиканский</span></td><td>фарш + завтрак-буррито (Чт)</td></tr>
-        <tr><th>Сб</th><td>индейка + рис + чимичурри + жареный лук<span class="prof">аргентинский</span></td><td>индейка + рис (Пт вечером)</td></tr>
-        <tr><th>Вс</th><td>индейка + тортилья + сальса + сыр + маринованный лук<span class="prof">сборный</span></td><td>индейка (Сб вечером)</td></tr>
+        <tr><th>Пн</th><td>голени 3 шт + рис 175 г + маринованный лук<span class="prof">сладко-липкий · руками</span></td></tr>
+        <tr><th>Вт</th><td>индейка 150 г + рис 175 г + йогурт-чеснок-укроп + черри<span class="prof">средиземноморский</span></td></tr>
+        <tr><th>Ср</th><td>фарш 250 г + тортилья + сыр 40 г + йогурт-лайм-кинза<span class="prof">мексиканский</span></td></tr>
+        <tr><th>Чт</th><td>голени 3 шт + рис + чимичурри 3 ст.л. + черри<span class="prof">аргентинский</span></td></tr>
+        <tr><th>Пт</th><td>фарш 250 г + 2 тортильи + сальса + маринованный лук<span class="prof">мексиканский</span></td></tr>
+        <tr><th>Сб</th><td>индейка + рис + чимичурри + жареный лук<span class="prof">аргентинский</span></td></tr>
+        <tr><th>Вс</th><td>индейка + тортилья + сальса + сыр + маринованный лук<span class="prof">сборный</span></td></tr>
       </tbody>
     </table>
   </section>
@@ -61,78 +61,114 @@
   <section class="section">
     <div class="section__label">По дням <span class="hint">порции, порядок, температура</span></div>
 
-    <div class="card">
+    <!-- Показан один день — сегодняшний; остальные листаются стрелками.
+         Семь одинаковых карточек, из которых человек каждый раз выбирает свою
+         глазами, — это работа, переложенная на того, у кого десять секунд и голод. -->
+    <div class="today">
+      <div>
+        <div class="today__k">Сегодня</div>
+        <div class="today__d">—</div>
+      </div>
+      <div class="today__nav">
+        <button data-day-nav="-1" aria-label="Предыдущий день">‹</button>
+        <button data-day-nav="1" aria-label="Следующий день">›</button>
+      </div>
+    </div>
+
+    <div class="card" data-day="1" data-date="2026-08-10">
       <div class="card__head"><span class="card__title">Понедельник · голени в глазури</span><span class="card__id">руками</span></div>
       <div class="card__body">
         <div class="card__row"><span class="rk">Берёшь</span><span class="rv">3 голени из холодильника · рис 175 г · маринованный лук ложкой</span></div>
         <div class="card__row"><span class="rk">Греешь</span><span class="rv"><b>Голени — на сковороду или в духовку, не в микроволновку.</b> Глазурь должна снова стать липкой, а микроволновка её просто размягчит в лужу. Рис отдельно, с 1–2 ст.л. воды под крышкой</span></div>
         <div class="card__row"><span class="rk">Кладёшь холодным</span><span class="rv">маринованный лук сверху, уже на тарелке</span></div>
         <div class="card__row"><span class="rk">Смысл дня</span><span class="rv">единственный день на неделе, когда ешь руками. Это не мелочь — способ есть работает как разнообразие не хуже специй</span></div>
-        <div class="tags"><span class="tag tag--temp">74 °C</span><span class="tag tag--fridge">из холодильника</span></div>
+        <ul class="checklist"><li data-thaw-day="1"><span class="box"></span><span class="txt"><span class="kind">Достать заранее</span>завтрак-буррито на среду</span></li></ul><div class="tags"><span class="tag tag--temp">74 °C</span><span class="tag tag--fridge">из холодильника</span></div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-day="2" data-date="2026-08-11">
       <div class="card__head"><span class="card__title">Вторник · индейка средиземноморская</span><span class="card__id">вилкой</span></div>
       <div class="card__body">
         <div class="card__row"><span class="rk">Берёшь</span><span class="rv">индейка 150 г (отрежь от целого куска <b>сейчас</b>, не заранее) · рис 175 г · йогурт с чесноком и укропом · черри горстью</span></div>
         <div class="card__row"><span class="rk">Греешь</span><span class="rv">индейку и рис вместе, рис — с водой под крышкой</span></div>
         <div class="card__row"><span class="rk">Кладёшь холодным</span><span class="rv">ложка йогуртового соуса и черри — <b>после</b> разогрева</span></div>
         <div class="card__row"><span class="rk">Почему не режем заранее</span><span class="rv">резаное мясо сохнет и теряет сок. Целый кусок в контейнере доживает до пятницы, нарезанный — до среды</span></div>
-        <div class="tags"><span class="tag tag--temp">74 °C</span></div>
+        <ul class="checklist"><li data-thaw-day="2"><span class="box"></span><span class="txt"><span class="kind">Достать заранее</span>голени и рис на четверг</span></li></ul><div class="tags"><span class="tag tag--temp">74 °C</span></div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-day="3" data-date="2026-08-12" data-frozen="1" data-thaw-from="1">
       <div class="card__head"><span class="card__title">Среда · буррито свежей сборки</span><span class="card__id">из холодильника, не из банка</span></div>
       <div class="card__body">
         <div class="card__row"><span class="rk">Берёшь</span><span class="rv">фарш 250 г · тортилья · тёртый сыр 40 г · йогурт с лаймом и кинзой · начос</span></div>
         <div class="card__row"><span class="rk">Собираешь</span><span class="rv">разогрей фарш, выложи на тортилью, сыр сверху — он подтает от горячего. Соус ложкой. <b>Начос раскроши внутрь</b>, а не рядом: иначе к третьему укусу всё мягкое</span></div>
         <div class="card__row"><span class="rk">Не путать с банком</span><span class="rv">это порция фарша из холодильника, среда — день 3, он в лимите. Банк не трогаем</span></div>
-        <div class="tags"><span class="tag tag--fridge">день 3 из 4</span><span class="tag tag--temp">74 °C</span></div>
+        <div class="card__row"><span class="rk">Достать</span><span class="rv thaw--idle">Сегодня доставать нечего — всё на четверг ты достал вчера</span></div><div class="tags"><span class="tag tag--fridge">до 13.08 (день 3 из 4)</span><span class="tag tag--temp">74 °C</span></div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-day="4" data-date="2026-08-13" data-frozen="1" data-thaw-from="2">
       <div class="card__head"><span class="card__title">Четверг · голени с чимичурри</span><span class="card__id">первый день из морозилки</span></div>
       <div class="card__body">
         <div class="card__row"><span class="rk">Берёшь</span><span class="rv">3 голени и рис — <b>разморожены со вторника</b> · чимичурри 3 ст.л. · черри · начос сбоку</span></div>
         <div class="card__row"><span class="rk">Греешь</span><span class="rv">голени в духовке или на сковороде. Рис с водой под крышкой</span></div>
         <div class="card__row"><span class="rk">Кладёшь холодным</span><span class="rv"><b>Чимичурри — только на уже горячую тарелку.</b> Никогда не грей его вместе с едой</span></div>
         <div class="card__row"><span class="rk">Зачем кислота именно здесь</span><span class="rv">четверг — самый дальний от готовки день. Разогретое мясо к этому моменту читается плоско: летучие ароматы ушли, остались соль и жир. Кислота и свежая зелень возвращают ему звук, а сладость мёда в глазури она заодно режет</span></div>
-        <div class="tags"><span class="tag tag--freeze">из морозилки</span><span class="tag tag--temp">74 °C</span></div>
+        <ul class="checklist"><li data-thaw-day="4"><span class="box"></span><span class="txt"><span class="kind">Достать заранее</span>фарш и завтрак-буррито на пятницу</span></li></ul><div class="tags"><span class="tag tag--freeze">из морозилки</span><span class="tag tag--temp">74 °C</span></div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-day="5" data-date="2026-08-14" data-frozen="1" data-thaw-from="4">
       <div class="card__head"><span class="card__title">Пятница · тако</span><span class="card__id">руками, две штуки</span></div>
       <div class="card__body">
         <div class="card__row"><span class="rk">Берёшь</span><span class="rv">фарш 250 г <b>из морозилки, разморожен с четверга</b> · 2 тортильи · сальса · маринованный лук · начос</span></div>
         <div class="card__row"><span class="rk">Собираешь</span><span class="rv">фарш горячим на тортильи, сальса и лук сверху холодными. Тортилью можно 20 секунд на сухой сковороде — станет мягче и запахнет</span></div>
         <div class="card__row"><span class="rk">Почему из морозилки</span><span class="rv">пятница — день 5, а готовое мясо живёт в холодильнике 3–4 дня. Эта порция замораживалась в день 0 именно поэтому</span></div>
-        <div class="tags"><span class="tag tag--freeze">из морозилки</span><span class="tag tag--temp">74 °C</span></div>
+        <ul class="checklist"><li data-thaw-day="5"><span class="box"></span><span class="txt"><span class="kind">Достать заранее</span>индейка и рис на субботу</span></li></ul><div class="tags"><span class="tag tag--freeze">из морозилки</span><span class="tag tag--temp">74 °C</span></div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-day="6" data-date="2026-08-15" data-frozen="1" data-thaw-from="5">
       <div class="card__head"><span class="card__title">Суббота · индейка с чимичурри</span><span class="card__id">день 6</span></div>
       <div class="card__body">
         <div class="card__row"><span class="rk">Берёшь</span><span class="rv">индейка и рис <b>из морозилки, разморожены с пятницы</b> · чимичурри · жареный хрустящий лук сверху</span></div>
         <div class="card__row"><span class="rk">Собираешь</span><span class="rv">греешь, потом чимичурри ложкой, потом жареный лук — <b>последним</b>, иначе он размокнет от пара</span></div>
         <div class="card__row"><span class="rk">Проверь срок соуса</span><span class="rv">чимичурри сделан в воскресенье, суббота — <b>день 6 из 7</b>. Ещё в норме, но это последний день, когда его берём. Остаток — выбросить или он уже в морозилке кубиками</span></div>
-        <div class="tags"><span class="tag tag--freeze">из морозилки</span><span class="tag tag--date">чимичурри: день 6 из 7</span></div>
+        <ul class="checklist"><li data-thaw-day="6"><span class="box"></span><span class="txt"><span class="kind">Достать заранее</span>индейка на воскресенье</span></li></ul><div class="tags"><span class="tag tag--freeze">из морозилки</span><span class="tag tag--date">чимичурри до 16.08</span></div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-day="0" data-date="2026-08-16" data-frozen="1" data-thaw-from="6">
       <div class="card__head"><span class="card__title">Воскресенье · врап</span><span class="card__id">последний день</span></div>
       <div class="card__body">
         <div class="card__row"><span class="rk">Берёшь</span><span class="rv">индейка <b>из морозилки, размороженная с субботы</b> · тортилья · сальса (последняя ложка) · сыр · маринованный лук</span></div>
         <div class="card__row"><span class="rk">Собираешь</span><span class="rv">греешь индейку, на тортилью, сыр — на горячее, сальса и лук — сверху холодными, свернуть</span></div>
         <div class="card__row"><span class="rk">Проверь сроки</span><span class="rv">сальса — <b>день 7, последний</b>. Варёные яйца в скорлупе тоже доживают ровно до сегодня. Что не съедено — выбрасываем, а не «ещё денёк постоит»</span></div>
-        <div class="tags"><span class="tag tag--date">сальса: день 7</span><span class="tag tag--date">яйца: день 7</span></div>
+        <div class="card__row"><span class="rk">Достать</span><span class="rv thaw--idle">Неделя закончилась. Что не съедено — выбрасываем</span></div><div class="tags"><span class="tag tag--date">сальса до 16.08</span><span class="tag tag--date">яйца до 16.08</span></div>
       </div>
     </div>
+  </section>
+
+  <section class="section">
+    <div class="section__label">Сгорает раньше всего <span class="hint">по дате, не по «дню N»</span></div>
+    <!-- Источник — state/plans/sroki-2026-08-09.md. Сюда сроки не вписываются
+         руками: разъедутся. Из морозилки (всё до 09.11) в список не попадает —
+         красное «просрочено» рядом с тем, что тебе сейчас велено съесть,
+         это отказ системы, а не подсказка. -->
+    <div class="burn">
+      <div class="burn__row" data-burn="2026-08-13"><span class="burn__n">Голени в глазури</span><span class="burn__d">до 13.08</span></div>
+      <div class="burn__row" data-burn="2026-08-13"><span class="burn__n">Индейка в холодильнике</span><span class="burn__d">до 13.08</span></div>
+      <div class="burn__row" data-burn="2026-08-13"><span class="burn__n">Фарш в холодильнике</span><span class="burn__d">до 13.08</span></div>
+      <div class="burn__row" data-burn="2026-08-13"><span class="burn__n">Рис в холодильнике</span><span class="burn__d">до 13.08</span></div>
+      <div class="burn__row" data-burn="2026-08-16"><span class="burn__n">Чимичурри</span><span class="burn__d">до 16.08</span></div>
+      <div class="burn__row" data-burn="2026-08-16"><span class="burn__n">Сальса</span><span class="burn__d">до 16.08</span></div>
+      <div class="burn__row" data-burn="2026-08-16"><span class="burn__n">Варёные яйца в скорлупе</span><span class="burn__d">до 16.08</span></div>
+      <div class="burn__row"><span class="burn__n">Йогурт-чеснок-укроп</span><span class="burn__d burn__d--none">срок не указан</span></div>
+      <div class="burn__row"><span class="burn__n">Йогурт-лайм-кинза</span><span class="burn__d burn__d--none">срок не указан</span></div>
+      <div class="burn__row"><span class="burn__n">Маринованный лук</span><span class="burn__d burn__d--none">срок не указан</span></div>
+      <div class="burn__row"><span class="burn__n">Тёртый сыр</span><span class="burn__d burn__d--none">срок не указан</span></div>
+    </div>
+    <div class="nav"><a href="holodilnik-2026-08-09.html">Вся таблица сроков →</a></div>
   </section>
 
   <div class="lead lead--warn">

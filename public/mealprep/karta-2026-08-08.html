@@ -14,15 +14,9 @@
 <div class="sheet">
 
   <header class="blank__head">
-    <div class="kicker">Заготовка · начни отсюда · неделя 3</div>
-    <h1 class="title">MealPrep <span class="u">10–16.08</span></h1>
+    <div class="kicker">Неделя 3 · 10–16.08</div>
+    <h1 class="title">Влезаю<br>или нет</h1>
     <div class="stamp">Карта</div>
-    <div class="meta">
-      <div class="cell"><span class="k">Порции</span><span class="v">1 чел, 7 дней</span></div>
-      <div class="cell"><span class="k">Героев</span><span class="v">3 белка</span></div>
-      <div class="cell"><span class="k">Новое</span><span class="v">банк из 18 буррито</span></div>
-      <div class="cell"><span class="k">Готовка</span><span class="v">2 дня: 3.5 + 1.5 ч</span></div>
-    </div>
   </header>
 
   <nav class="nav topnav" aria-label="Разделы">
@@ -33,52 +27,69 @@
     <a href="#recipes">Рецепты</a>
   </nav>
 
-  <div class="lead">
-    <div class="lead__k">Как этим пользоваться — три шага</div>
-    <p>Идея простая: готовишь <b>один раз</b> набор заготовок, а всю неделю не готовишь —
-      собираешь из них разные тарелки. Поэтому страницы и делятся на три этапа:
-      <b>сначала планируешь, потом готовишь, потом собираешь и ешь</b>. Захочется понять
-      «почему так» — открываешь карточку нужного рецепта.</p>
-    <p>Неделя 3 стартует с нуля, морозилка пуста. Три героя: <b>индейка, куриные голени
-      в глазури и мексиканский фарш</b>. И новое — <b>буррито-банк</b>: восемнадцать готовых
-      обедов и завтраков в морозилке, которые окупят следующую неделю.</p>
+  <!-- Первый экран отвечает на вопрос страницы: четыре числа и один риск.
+       Не проценты: «60–70 % морозилки» у открытой камеры решение не принимает,
+       «полтора-два ящика из трёх» и «24 порции» — принимают. -->
+  <div class="stats">
+    <div>
+      <div class="k">Стоит времени</div>
+      <div class="v">5 ч</div>
+      <div class="n">3.5 + 1.5, два дня</div>
+    </div>
+    <div>
+      <div class="k">Даёт еды</div>
+      <div class="v">7 дн</div>
+      <div class="n">+ 18 буррито в запас</div>
+    </div>
+    <div>
+      <div class="k">Из них активно</div>
+      <div class="v">2.5 ч</div>
+      <div class="n">остальное ждёшь духовку</div>
+    </div>
+    <div class="warn">
+      <div class="k">В морозилку ляжет</div>
+      <div class="v">24 порции</div>
+      <div class="n">18 буррито + 6 порций мяса и риса ≈ 6 кг</div>
+    </div>
   </div>
 
   <div class="lead lead--warn">
-    <div class="lead__k">⚠ Две вещи, которые надо знать до начала</div>
-    <p>· <b>Готовка разбита на два дня.</b> Воскресенье — мясо, фарш, рис, банки (~3.5 ч).
-      Понедельник вечером — сборка буррито, сидя, без плиты (~1.5 ч). В один заход это пять
-      с половиной часов, и морозилка не примет шесть килограммов тёплого груза за сутки.<br>
-      · <b>Банк займёт 60–70 % морозилки примерно на месяц.</b> Неприемлемо — уменьшай его
-      до шести штук, но решай до готовки, а не посреди неё.</p>
+    <div class="lead__k">Решить до готовки, не посреди</div>
+    <p>Это <b>полтора-два ящика из трёх</b>, и лежать они там будут месяц. Не готов отдать
+      столько места — режь банк с 18 буррито до 6, тогда уйдёт меньше половины ящика.</p>
+    <p>Ещё одна причина решить сейчас: шесть килограммов тёплого груза камера не примет
+      за сутки — поэтому готовка и разбита на два дня.</p>
   </div>
 
+  <section class="section">
+    <div class="section__label">Что за еда <span class="hint">три героя на семь дней</span></div>
+    <div class="heroes">
+      <div class="heroes__row"><span class="heroes__n">Индейка, филе бедра</span><span class="heroes__d">Вт · Сб · Вс</span></div>
+      <div class="heroes__row"><span class="heroes__n">Голени в глазури</span><span class="heroes__d">Пн · Чт</span></div>
+      <div class="heroes__row"><span class="heroes__n">Мексиканский фарш</span><span class="heroes__d">Ср · Пт</span></div>
+    </div>
+  </section>
+
+  <!-- Три строки-кнопки вместо трёх карточек: карточки пересказывали содержимое
+       страниц вместо того, чтобы вести на них. Пересказ — не навигация. -->
   <section class="section section--primary">
     <div class="section__label">С чего начать <span class="hint">по порядку</span></div>
-
-    <div class="card">
-      <div class="card__head"><span class="card__title">1 · Планирую</span><span class="card__id">меню и стратегия</span></div>
-      <div class="card__body">
-        <div class="card__row"><span class="rk">Что тут</span><span class="rv">обзор недели: какие заготовки делаем и зачем, как они складываются в семь тарелок, пять соусов, завтраки и лесенка перекусов</span></div>
-        <div class="nav"><a href="plan-2026-08-08.html">Открыть план →</a></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card__head"><span class="card__title">2 · Готовлю</span><span class="card__id">боевой сценарий у плиты</span></div>
-      <div class="card__body">
-        <div class="card__row"><span class="rk">Что тут</span><span class="rv">пошаговый сценарий на оба дня: preflight, мизанплас, блоки, паузы с чтением, пересборки. Это держишь открытым у плиты — галочки запоминаются</span></div>
-        <div class="nav"><a href="runbook-2026-08-09.html">Открыть готовку →</a></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card__head"><span class="card__title">3 · Ем (сборка)</span><span class="card__id">как собрать тарелку</span></div>
-      <div class="card__body">
-        <div class="card__row"><span class="rk">Что тут</span><span class="rv">что с чем и в каких граммах собрать каждый день, что достать из морозилки накануне, как греть и в каком порядке класть — соус всегда последним</span></div>
-        <div class="nav"><a href="sborka-2026-08-09.html">Открыть сборку →</a></div>
-      </div>
-    </div>
+    <a class="rowlink" href="plan-2026-08-08.html">
+      <span><span class="rowlink__t">1 · Планирую</span><span class="rowlink__s">меню и стратегия</span></span>
+      <span class="rowlink__a">→</span>
+    </a>
+    <a class="rowlink" href="runbook-2026-08-09.html">
+      <span><span class="rowlink__t">2 · Готовлю</span><span class="rowlink__s">сценарий у плиты</span></span>
+      <span class="rowlink__a">→</span>
+    </a>
+    <a class="rowlink" href="sborka-2026-08-09.html">
+      <span><span class="rowlink__t">3 · Ем</span><span class="rowlink__s">как собрать тарелку</span></span>
+      <span class="rowlink__a">→</span>
+    </a>
+    <a class="rowlink" href="holodilnik-2026-08-09.html">
+      <span><span class="rowlink__t">Холодильник</span><span class="rowlink__s">а это ещё можно есть</span></span>
+      <span class="rowlink__a">→</span>
+    </a>
   </section>
 
   <section class="section" id="recipes">
@@ -104,6 +115,16 @@
       <p><span class="why">Третий рычаг разнообразия.</span> Кроме специй и температуры добавился способ есть: голени в понедельник и четверг — единственная еда руками.</p>
     </div>
   </section>
+
+  <div class="lead">
+    <div class="lead__k">Как этим пользоваться — три шага</div>
+    <p>Идея простая: готовишь <b>один раз</b> набор заготовок, а всю неделю не готовишь —
+      собираешь из них разные тарелки. Поэтому страницы и делятся на три этапа:
+      сначала планируешь, потом готовишь, потом собираешь и ешь. Захочется понять
+      «почему так» — открываешь карточку нужного рецепта.</p>
+    <p>Неделя 3 стартует с нуля, морозилка пуста. Новое — буррито-банк: восемнадцать
+      готовых обедов и завтраков в морозилке, которые окупят следующую неделю.</p>
+  </div>
 
   <div class="lead">
     <div class="lead__k">Чего тут нет</div>

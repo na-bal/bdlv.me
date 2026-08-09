@@ -119,10 +119,16 @@ body{
 
 /* ——— Чек-лист (центральный блок: закупка, шаги, разморозка) ——— */
 .checklist{list-style:none;margin:0 0 6px;padding:0}
+/* Зона нажатия: было padding:7px + 15px → строка ~38px, мокрым пальцем лотерея.
+   Стало ~60px. border-left — рельс типа шага, ВНУТРИ инсета .sheet > *:
+   ничего не делает full-bleed, отрицательных margin нет. */
 .checklist li{
-  display:flex;align-items:flex-start;gap:11px;
-  padding:7px 0;border-bottom:1px dashed var(--rule);cursor:pointer;
-  font-size:15px;user-select:none;
+  position:relative;
+  display:flex;align-items:flex-start;gap:12px;
+  padding:16px 0 16px 10px;
+  border-left:6px solid transparent;
+  border-bottom:1px dashed var(--rule);
+  cursor:pointer;font-size:16.5px;line-height:1.42;user-select:none;
 }
 .checklist li:last-child{border-bottom:0}
 .checklist li:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
@@ -130,19 +136,81 @@ body{
 .checklist--cols{columns:2;column-gap:32px}
 .checklist--cols li{break-inside:avoid}
 .checklist--cols .group{column-span:all}
+/* 16px → 26px: галочка должна попадаться, а не выцеливаться */
 .checklist .box{
-  flex:0 0 16px;width:16px;height:16px;margin-top:2px;
-  border:2px solid var(--ink);border-radius:3px;position:relative;background:var(--surface);
+  flex:0 0 26px;width:26px;height:26px;margin-top:1px;
+  border:2.5px solid var(--ink);border-radius:3px;position:relative;
+  background:var(--surface);
 }
 .checklist li.is-done .box{background:var(--stamp);border-color:var(--stamp)}
 .checklist li.is-done .box::after{
-  content:"";position:absolute;left:4px;top:0px;width:5px;height:10px;
-  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg);
+  content:"";position:absolute;left:8px;top:2px;width:7px;height:14px;
+  border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(42deg);
 }
-.checklist .txt{min-width:0;overflow-wrap:anywhere}
-.checklist li.is-done .txt{color:var(--muted);text-decoration:line-through}
-.checklist .qty{font-family:var(--mono);font-size:13px;color:var(--muted);margin-left:auto;padding-left:12px;white-space:nowrap}
-.checklist li.is-done .qty{text-decoration:line-through}
+.checklist .txt{min-width:0;overflow-wrap:anywhere;flex:1}
+.checklist .qty{font-family:var(--mono);font-size:13px;color:var(--muted);padding-left:12px;white-space:nowrap}
+
+/* ——— Тип шага несёт цвет, а не болд ———
+   data-kind на <li>. Красный — ТОЛЬКО безопасность (температуры, гигиена после
+   сырой птицы, скорость охлаждения, «не в фольгу»). Больше 12 красных на
+   страницу — критерий размыт, сужать его, а не добавлять ещё цвет. */
+.checklist li[data-kind="safe"]{border-left-color:var(--warn)}
+.checklist li[data-kind="timer"],
+.checklist li[data-kind="pass"]{border-left-color:#2c5d86}
+
+/* моно-подпись типа шага над текстом; у обычного шага — нейтральная */
+.checklist .kind{
+  display:block;font-family:var(--mono);font-size:11px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:#9a9384;margin-bottom:3px;
+}
+li[data-kind="safe"] .kind{color:var(--warn)}
+li[data-kind="timer"] .kind,
+li[data-kind="pass"] .kind{color:#2c5d86}
+
+/* сквозной номер шага справа — ориентир при диктовке и на бумаге */
+/* Номер вынесен из потока: в строке он вместе с .qty съедал до 40 % ширины,
+   и текст шага схлопывался в узкую колонку. Под него зарезервирован
+   padding-right у .txt. */
+.checklist .num{
+  position:absolute;right:0;top:15px;
+  font-family:var(--mono);font-size:12px;color:#b5ad9c;
+}
+.checklist li.is-done .num{top:8px}
+.checklist .txt{padding-right:30px}
+
+/* Сигнал готовности отдельной плашкой: сейчас он утоплен в середину
+   предложения после «· готовность:» и на 375px теряется. */
+.checklist .ready{
+  display:block;margin-top:8px;background:var(--accent-bg);
+  padding:8px 10px;font-size:14px;line-height:1.4;
+}
+.checklist .ready::before{
+  content:"готово когда";display:block;font-family:var(--mono);
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:2px;
+}
+
+/* «почему» по умолчанию свёрнуто: у плиты нужен шаг, лекция нужна в паузу */
+.checklist .why-in{
+  display:none;margin-top:7px;padding-left:10px;
+  border-left:2px solid var(--rule);
+  font-size:13.5px;line-height:1.45;color:var(--muted);
+}
+body.show-why .checklist .why-in{display:block}
+
+/* Вычеркнутый шаг сворачивается, а не просто зачёркивается: сделанное
+   перестаёт занимать экран, но остаётся видимым. Это НЕ hide-done по «H». */
+.checklist li.is-done{padding:9px 0 9px 10px;border-left-color:transparent;background:#f6f3ea}
+.checklist li.is-done .txt{
+  font-size:14px;color:var(--muted);text-decoration:line-through;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.checklist li.is-done .kind,
+.checklist li.is-done .ready,
+.checklist li.is-done .why-in,
+.checklist li.is-done .qty,
+.checklist li.is-done .timer-start{display:none}
+/* .num остаётся: номер шага — ориентир и на экране, и на бумаге */
 /* подзаголовок-группа внутри чек-листа (отделы магазина и т.п.) */
 .checklist .group{
   display:block;
@@ -204,9 +272,10 @@ body{
   display:flex;gap:8px;background:var(--surface);border:var(--bw) solid var(--border);
   padding:8px;box-shadow:4px 4px 0 rgba(27,26,23,.16);z-index:10;
 }
+/* 33px высоты мало — та же дисциплина зоны нажатия, что и у пунктов списка */
 .btn{
   font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;
-  padding:8px 12px;border:1.5px solid var(--ink);background:var(--surface);color:var(--ink);
+  padding:13px 14px;border:1.5px solid var(--ink);background:var(--surface);color:var(--ink);
   cursor:pointer;display:flex;align-items:center;gap:6px;
 }
 .btn:hover{background:var(--ink);color:var(--surface)}
@@ -217,6 +286,123 @@ body{
 
 /* скрыть отмеченное */
 body.hide-done .checklist li.is-done{display:none}
+
+/* ——— Липкая шапка раннбука: где я, сколько прошёл, что сейчас тикает ——— */
+.runbar{position:sticky;top:0;z-index:8;background:var(--ink);color:var(--surface)}
+/* шапка — прямой ребёнок .sheet, но горизонтальный инсет держит сама:
+   иначе к отступу .sheet > * добавился бы ещё и внутренний */
+.sheet > .runbar{padding-left:0;padding-right:0}
+.runbar__row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px 9px}
+.runbar__block{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.62}
+.runbar__name{font-size:15px;font-weight:700;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.runbar__count{font-family:var(--mono);font-size:19px;font-weight:600;white-space:nowrap}
+.runbar__count i{opacity:.5;font-size:13px;font-style:normal}
+.runbar__bar{height:4px;background:rgba(255,253,248,.22)}
+.runbar__bar span{display:block;height:4px;background:#7fbf9a;transition:width .2s}
+
+/* стопка таймеров: несколько сразу, каждый правится ±1 мин, каждый звенит */
+.tmr{display:flex;align-items:center;gap:6px;padding:7px 8px 7px 13px;
+  background:#2c5d86;color:#fff;font-family:var(--mono);font-size:12.5px;
+  border-top:1px solid rgba(255,255,255,.2)}
+.tmr.is-fired{background:var(--warn)}
+.tmr__label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tmr__time{font-size:18px;font-weight:600;font-variant-numeric:tabular-nums;min-width:54px;text-align:center}
+.tmr button{width:30px;height:30px;flex:0 0 30px;padding:0;cursor:pointer;
+  background:none;border:1px solid rgba(255,255,255,.45);color:#fff;
+  font-family:var(--mono);font-size:15px}
+.timer-start{margin-top:9px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;padding:10px 12px;border:1.5px solid #2c5d86;color:#2c5d86;
+  background:var(--surface);cursor:pointer}
+
+/* ——— «Ты остановился здесь» ———
+   Галочки помнились, место в списке — нет. После погасшего экрана
+   пользователь возвращался в начало стопунктового списка. */
+.resume{display:flex;width:100%;align-items:center;gap:10px;text-align:left;
+  background:var(--accent-bg);border:0;border-bottom:var(--bw) solid var(--border);
+  padding:14px;cursor:pointer;font-family:var(--sans)}
+.resume__k{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.resume__v{display:block;font-size:15px;font-weight:600;margin-top:2px}
+
+/* ——— Ряд экранных контролов, в потоке страницы ———
+   Не плавающая панель: у плиты она съедала бы низ экрана. Печать и Notion
+   сюда не выносим — это десктопные сценарии, они остались в .actions. */
+.controls{display:flex;gap:8px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+.controls .btn{flex:1;justify-content:center;min-width:96px}
+.controls .btn.is-on{background:var(--ink);color:var(--surface)}
+
+/* ——— Режим «один шаг» ———
+   Паузы ОСТАЮТСЯ остановками последовательности — иначе режим их
+   проглатывает, а пауза это смена режима, а не шаг. */
+body.focus-step .checklist li{display:none}
+body.focus-step .checklist li.is-current{display:flex;font-size:21px;padding:22px 0 22px 10px}
+body.focus-step .checklist li.group--pause.is-current{display:block}
+.pause-next{margin-top:14px;width:100%;font-family:var(--mono);font-size:13px;
+  letter-spacing:.1em;text-transform:uppercase;padding:16px 12px;
+  border:var(--bw) solid var(--ink);background:var(--ink);color:var(--surface);cursor:pointer}
+
+/* ——— Сборка знает сегодня ——— */
+.today{background:var(--ink);color:var(--surface);padding:14px 16px 15px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.today__k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.62}
+.today__d{font-size:34px;font-weight:800;line-height:1.02;text-transform:uppercase;margin-top:6px}
+.today__nav{display:flex;gap:6px;flex:0 0 auto}
+.today__nav button{width:38px;height:38px;padding:0;cursor:pointer;background:none;
+  border:1px solid rgba(255,253,248,.45);color:var(--surface);font-size:17px;line-height:1}
+.card.is-today{border-width:var(--bw)}
+/* дни листаются стрелками в .today — показан ровно один; на печати
+   ограничение снимается и выходят все семь */
+.card.is-other{display:none}
+
+/* Контрол только там, где есть действие: «неделя закончилась, что не съедено —
+   выбрасываем» это факт, у него не может быть галочки. */
+.thaw--idle{font-size:15.5px;line-height:1.4;color:var(--muted);margin-top:7px}
+
+/* ——— Плитка решения на карте недели ———
+   Проценты решение не принимают: «60–70 % морозилки» ничего не значит
+   у открытой камеры, «24 порции» и «≈ 6 кг» — значат. */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ink);
+  border:var(--bw) solid var(--border);margin-top:14px}
+.stats > div{background:var(--surface);padding:12px 13px}
+.stats .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.stats .v{font-family:var(--mono);font-size:25px;font-weight:600;line-height:1.1;margin-top:4px}
+.stats .n{font-size:12.5px;color:#3a362e;margin-top:2px;line-height:1.35}
+.stats .warn .k,.stats .warn .v,.stats .warn .n{color:var(--warn)}
+
+/* ——— «Сгорает раньше всего»: список по дате ———
+   Статус считает initBurn() из data-burn, чтобы «просрочено» не пришлось
+   вписывать руками и переписывать каждую неделю. */
+.burn{border:1px solid var(--ink);margin-top:10px}
+.burn__row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+  padding:11px 13px;border-bottom:1px dashed var(--rule)}
+.burn__row:last-child{border-bottom:0}
+.burn__n{flex:1;min-width:120px;font-size:15.5px}
+.burn__n .prof{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:2px}
+.burn__d{font-family:var(--mono);font-size:13px;white-space:nowrap}
+.burn__d--none{color:var(--muted);font-style:italic}
+.burn__s{font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;white-space:nowrap}
+.burn__row.is-last .burn__d,.burn__row.is-last .burn__s{color:var(--warn)}
+.burn__row.is-over .burn__n{color:var(--muted);text-decoration:line-through}
+.burn__row.is-over .burn__d,.burn__row.is-over .burn__s{color:var(--warn);font-weight:600}
+
+/* ——— «Что за еда»: герой × дни ——— */
+.heroes{border:1px solid var(--ink);margin-top:10px}
+.heroes__row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding:11px 13px;border-bottom:1px solid var(--rule)}
+.heroes__row:last-child{border-bottom:0}
+.heroes__n{font-weight:700;font-size:15.5px}
+.heroes__d{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+
+/* ——— Кнопка-строка: навигация, а не пересказ содержимого ——— */
+.rowlink{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:16px 14px;margin-top:8px;text-decoration:none;color:var(--ink);
+  border:var(--bw) solid var(--border);background:var(--surface)}
+.rowlink:hover{background:var(--accent-bg)}
+.rowlink__t{font-weight:700;font-size:16px}
+.rowlink__s{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-top:2px}
+.rowlink__a{font-family:var(--mono);font-size:18px;color:var(--muted)}
 
 /* тост */
 .toast{
@@ -233,9 +419,16 @@ body.hide-done .checklist li.is-done{display:none}
 /* ——— Адаптив под телефон ——— */
 @media (max-width:560px){
   html,body{overflow-x:hidden}
-  body{display:block;padding:20px 12px 32px}
-  .sheet{max-width:100%;min-width:0;overflow-x:clip}
+  /* панели снизу на телефоне нет (см. ниже), поэтому запас под неё не резервируем */
+  body{display:block;padding:0 0 32px}
+  .sheet{max-width:100%;min-width:0;overflow-x:clip;border-left:0;border-right:0}
   .sheet > *{padding-left:16px;padding-right:16px}
+  .runbar__row,.tmr,.today{padding-left:16px;padding-right:16px}
+  .stats{grid-template-columns:1fr 1fr}
+  .today__d{font-size:30px}
+  /* количество уходит под текст: рядом с ним на 375px тексту оставалось ~180px */
+  .checklist li{flex-wrap:wrap}
+  .checklist .qty{flex-basis:100%;margin-left:38px;padding-left:0;margin-top:4px}
   .card__head{flex-wrap:wrap;gap:2px}
   .title{font-size:27px}
   .stamp{position:static;display:inline-block;margin-top:8px;transform:rotate(-3deg)}
@@ -248,7 +441,9 @@ body.hide-done .checklist li.is-done{display:none}
   .section__label .hint{flex-basis:100%}
   .matrix{table-layout:fixed;font-size:12px}
   .matrix th,.matrix td{word-break:break-word;padding:6px 6px}
-  /* на телефоне панель действий (печать/Notion/скрыть) не нужна — прячем, на десктопе остаётся */
+  /* На телефоне плавающая панель не нужна: экранные контролы («один шаг»,
+     «скрыть ✓», «почему») стоят рядом со списком в .controls, а печать и
+     экспорт — десктопные сценарии. Панель съедала бы низ экрана у плиты. */
   .actions,.toast{display:none}
 }
 
@@ -257,12 +452,72 @@ body.hide-done .checklist li.is-done{display:none}
 @media print{
   body{background:#fff;padding:0}
   .sheet{border:1.5px solid #000;max-width:none}
-  .actions,.toast{display:none !important}
+  .actions,.toast,.runbar,.resume,.controls,.timer-start,.today__nav{display:none !important}
   .stamp{opacity:1}
   .checklist--cols{columns:1}
-  .card,.matrix th,.matrix td,.checklist li,.matrix tr{break-inside:avoid}
+
+  /* Браузеры по умолчанию не печатают фоны. Без этого на бумаге исчезает вся
+     сигнальная система: акцентные секции, красные врезки, чёрные плашки и рельсы. */
+  .section--primary,.lead,.lead--warn,.tag--vac,.card__head,.matrix thead th,
+  .matrix tbody th,.checklist .ready,.checklist li[data-kind],.group--pause,.today,.stats{
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+
+  /* На бумаге пальцем не тыкают: зона нажатия в 56 px превращала раннбук
+     в двенадцать листов А4. Возвращаем плотную вёрстку — правило 8 про
+     экран, а не про печать. */
+  .checklist li{padding:5px 0 5px 8px;font-size:12px;line-height:1.32}
+  .checklist .kind{font-size:8.5px;margin-bottom:1px}
+  .checklist .ready{padding:3px 6px;font-size:10.5px;margin-top:3px}
+  .checklist .why-in{font-size:10.5px;margin-top:3px;padding-left:7px}
+  .checklist .num{font-size:9px;top:5px}
+  .checklist .qty{font-size:10.5px}
+  .checklist .group{padding:8px 0 2px;font-size:10px}
+  .checklist .group--pause{padding:5px 8px 6px;margin:6px 0 2px}
+  .checklist .intro{font-size:10.5px;line-height:1.35;padding:1px 0 5px}
+
+  /* текстовые врезки на бумаге тоже плотнее — иначе раннбук не влезает
+     в шесть листов, а лист вешают на холодильник, а не подшивают */
+  .lead{padding:7px 10px;font-size:11px;line-height:1.35}
+  .lead p{margin:3px 0}
+  .lead .lead__k{font-size:9px;margin-bottom:2px}
+  .prose{font-size:11px;line-height:1.35}
+  .prose p{margin:3px 0}
+  .section{padding-top:8px;padding-bottom:2px}
+  .section__label{font-size:10px;padding-bottom:3px;margin-bottom:5px}
+  .blank__head{padding-top:8px;padding-bottom:8px}
+  .title{font-size:22px}
+  .meta{font-size:10px}
+  .meta .cell{padding:5px 7px}
+  .card__body{padding:6px 9px}
+  .card__row{font-size:11px;padding:1px 0}
+  .foot{padding-top:6px;padding-bottom:6px;font-size:9px}
+
+  /* чекбоксы обязаны печататься пустыми квадратами: лист вешают на холодильник
+     и отмечают ручкой */
+  .checklist .box{flex:0 0 15px;width:15px;height:15px;
+    border:1.5px solid #000 !important;background:#fff !important}
+  .checklist li.is-done .box::after{left:4px;top:1px;width:5px;height:9px;border-width:0 1.5px 1.5px 0}
+  .checklist li.is-done .box{background:#fff !important}
+  .checklist li.is-done .box::after{border-color:#000}
+
+  /* на бумаге ничего не сворачиваем и не прячем — лист читают целиком */
+  .checklist li.is-done{background:none}
+  .checklist li.is-done .txt{-webkit-line-clamp:none;font-size:inherit;color:#000;display:block}
+  .checklist li.is-done .ready,.checklist li.is-done .qty,
+  .checklist li.is-done .kind{display:block}
+  body.hide-done .checklist li.is-done{display:flex !important}
+  body.focus-step .checklist li{display:flex !important}
+  .checklist .why-in{display:block !important}
+  .card.is-other{display:block !important}
+
+  .card,.matrix th,.matrix td,.checklist li,.matrix tr,.group--pause{break-inside:avoid}
   .section{break-inside:auto}   /* высокие секции (готовка) переносятся предсказуемо */
   .checklist .group,.section__label{break-after:avoid}
   /* warn-врезка на дешёвой печати: рамка вместо бледной заливки */
   .lead--warn{background:none;border:1.5px solid var(--warn);border-left-width:4px}
+
+  /* «📖 открой карточку» на бумаге бессмысленно — раскрываем, куда именно */
+  .read a{text-decoration:none;color:#000}
+  .read a::after{content:" — см. карточку рецепта";font-size:.9em;color:#555}
 }
