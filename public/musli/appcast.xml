@@ -8,6 +8,30 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.1.5</title>
+      <sparkle:version>29</sparkle:version>
+      <sparkle:shortVersionString>0.1.5</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.6</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h1 class="musli-headline" style="font-size: 19px; font-weight: 600; margin: 0 0 10px;">Мюсли получили сертификат Apple</h1>
+        <p class="musli-note" style="line-height: 1.55; margin: 0 0 16px;">
+          Ребята, крутая новость! Наконец получил сертификат разработчика Apple. Тот самый, без которого macOS считала Мюсли незнакомым приложением, ругалась и не давала запустить программу — при первом запуске приходилось танцевать с бубном.<br><br>
+          Теперь, когда сертификат есть, всё работает великолепно. А после сегодняшнего обновления разрешения на микрофон и системный звук перестанут слетать после каждого следующего.<br><br>
+          — Саша
+        </p>
+        <img src="https://bdlv.me/products/musli/whatsnew/0.1.5.png"
+             alt="Значок Мюслей рядом с листом сертификата разработчика"
+             style="display: block; width: 100%; max-width: 620px; height: auto; border-radius: 10px; margin: 0 0 18px;">
+      ]]></description>
+      <pubDate>Wed, 16 Sep 2026 12:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/products/musli/Musli-0.1.5.dmg"
+        sparkle:edSignature="v4zhE34HV4Y4epRr7iG6Akufu0kihKUw9R27mQOLZ/+z0C7Bv5MuniiY73FRgR34LbcUzrf34dh3J/81DleaAg=="
+        length="12354080"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.1.4</title>
       <sparkle:version>28</sparkle:version>
       <sparkle:shortVersionString>0.1.4</sparkle:shortVersionString>
