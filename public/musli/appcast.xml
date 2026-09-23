@@ -8,6 +8,48 @@
 
     <!-- Последняя версия должна быть первой -->
     <item>
+      <title>Version 0.1.6</title>
+      <sparkle:version>30</sparkle:version>
+      <sparkle:shortVersionString>0.1.6</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.6</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <h1 class="musli-headline" style="font-size: 19px; font-weight: 600; margin: 0 0 10px;">У Мюслей новый значок</h1>
+        <p class="musli-note" style="line-height: 1.55; margin: 0 0 16px;">
+          Мюслями пользуется всё больше людей — всем привет, я вам очень рад! Раз гостей становится больше, захотелось немного прибраться и сделать всё посимпатичнее. Так что этот выпуск — про косметику.<br><br>
+          Если у вас macOS 27, загляните в Системные настройки → Оформление и выберите тёмный стиль значков — значок Мюслей станет розовым. По-моему, это весело.<br><br>
+          — Саша
+        </p>
+        <img src="https://bdlv.me/products/musli/whatsnew/0.1.6.png"
+             alt="Новый стеклянный значок Мюслей в карандашной петле, рядом подпись от руки «новый значок»"
+             style="display: block; width: 100%; max-width: 620px; height: auto; border-radius: 10px; margin: 0 0 18px;">
+        <h2 style="font-size: 15px; margin: 20px 0 6px;">Добавлено</h2>
+        <ul>
+          <li><b>Новый значок в стиле macOS 27</b><br>В macOS 27 значок Мюслей стеклянный, как у системных приложений: жёлтый в обычном стиле значков и розовый в тёмном. В прозрачном и подкрашенном стиле он тоже подстраивается. На macOS 14 и 15 — тот же знак, без стекла. Он же теперь на файле установки, а у окна установки новый фон.</li>
+        </ul>
+        <h2 style="font-size: 15px; margin: 20px 0 6px;">Исправлено</h2>
+        <ul>
+          <li><b>Ссылка на страницу Мюслей показывается в Telegram с картинкой</b><br>В совете «У Мюслей есть своя страница» теперь адрес musli.gaasgaas.ru. Раньше ссылку gaasgaas.ru/musli Telegram показывал без превью; новая открывает ту же страницу, но с картинкой и описанием.</li>
+        </ul>
+        <hr style="border: none; border-top: 1px solid #3a3a3a; margin: 16px 0;">
+        <h3 style="font-size: 13px; margin: 0 0 8px;">За кулисами</h3>
+        <table style="font-size: 12px; color: #999; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 2px 12px 2px 0;"><b>13</b> коммитов</td>
+            <td style="padding: 2px 12px 2px 0;"><b>51</b> файлов</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #6abf69;">+1 463</b> строк</td>
+            <td style="padding: 2px 12px 2px 0;"><b style="color: #e07a5f;">−311</b> строк</td>
+          </tr>
+        </table>
+      ]]></description>
+      <pubDate>Wed, 23 Sep 2026 12:00:00 +0300</pubDate>
+      <enclosure
+        url="https://bdlv.me/products/musli/Musli-0.1.6.dmg"
+        sparkle:edSignature="Q7gRq727zXq1f/xlPyODpHMlPs+NTk2aH+gmI3NBE3x6Gf5vBh8DZGQXY4h+ZmcTHXi2MXv1mef+6On/GhB4Cg=="
+        length="15751992"
+        type="application/octet-stream"/>
+    </item>
+
+    <item>
       <title>Version 0.1.5</title>
       <sparkle:version>29</sparkle:version>
       <sparkle:shortVersionString>0.1.5</sparkle:shortVersionString>
