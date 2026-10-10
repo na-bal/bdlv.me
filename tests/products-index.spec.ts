@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 
 const INDEX_URL = "/products/";
+const MUSLI_LANDING = "https://gaasgaas.ru/musli/";
 
 async function trackErrors(page: Page) {
   const errors: string[] = [];
@@ -37,7 +38,7 @@ test.describe("/products/ — каталог продуктов", () => {
     expect(errors, "no 404s during page load").toEqual([]);
   });
 
-  test("renders exactly one product card (Musli) linking to /products/musli/", async ({
+  test("renders exactly one product card (Musli) linking to the Musli landing", async ({
     page,
   }) => {
     await page.goto(INDEX_URL);
@@ -48,23 +49,18 @@ test.describe("/products/ — каталог продуктов", () => {
     await expect(cards.first().getByText(/musli/i).first()).toBeVisible();
     await expect(cards.first()).toContainText(/macOS/i);
 
-    await expect(
-      page.locator('main a[href="/products/musli/"]').first(),
-      "link to /products/musli/ present",
-    ).toBeVisible();
+    // /products/musli/ — только полка образов, страницы там нет (403).
+    // Лендинг живёт на gaasgaas.ru.
+    await expect(cards.first()).toHaveAttribute("href", MUSLI_LANDING);
   });
 
-  test("product card shows the Musli icon", async ({ page }) => {
+  test("product card shows the current Musli app icon", async ({ page }) => {
     await page.goto(INDEX_URL);
 
-    const icon = page.locator('main .product-card img[src*="/products/musli/images/icon"]');
+    // Новое имя файла, а не замена icon.png: картинки кешируются на год.
+    const icon = page.locator('main .product-card img[src="/products/musli/images/app-icon.png"]');
     await expect(icon).toBeVisible();
-  });
-
-  test("clicking the card navigates to /products/musli/", async ({ page }) => {
-    await page.goto(INDEX_URL);
-
-    await page.locator('main a[href="/products/musli/"]').first().click();
-    await expect(page).toHaveURL(/\/products\/musli\/?$/);
+    await expect(icon).toHaveAttribute("srcset", /app-icon@2x\.png 2x/);
+    expect(await icon.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
   });
 });

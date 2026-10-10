@@ -76,6 +76,11 @@ test.describe(".htaccess — Apache config", () => {
     expect(text).toContain("RewriteRule ^musli/(.+)$ /products/musli/$1 [R=301,L]");
   });
 
+  test("/products/musli/ (без файла) уводит на лендинг gaasgaas.ru", () => {
+    const text = readFileSync(DIST_HTACCESS, "utf8");
+    expect(text).toContain("RewriteRule ^products/musli/?$ https://gaasgaas.ru/musli/ [R=302,L]");
+  });
+
   test("all legacy HTML URLs (except index.html) are 410 Gone", () => {
     const text = readFileSync(DIST_HTACCESS, "utf8");
     const lines = text.split("\n");
