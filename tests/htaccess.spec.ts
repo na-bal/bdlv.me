@@ -65,6 +65,15 @@ test.describe(".htaccess — Apache config", () => {
     ).toBeLessThan(musliRedirectIdx);
   });
 
+  test("appcast.xml отдаёт скрипт-счётчик, и он лежит не под /musli/", () => {
+    const text = readFileSync(DIST_HTACCESS, "utf8");
+    expect(text).toMatch(/^RewriteRule\s+\^musli\/appcast\\\.xml\$\s+updates\/appcast\.php\s+\[L\]$/m);
+    expect(
+      existsSync(resolve(process.cwd(), "dist", "updates", "appcast.php")),
+      "скрипт попадает в сборку",
+    ).toBe(true);
+  });
+
   test("old /musli/Musli-*.dmg URLs are 410 Gone", () => {
     const text = readFileSync(DIST_HTACCESS, "utf8");
     expect(text).toMatch(/RewriteRule\s+\^musli\/Musli-\[\\d\.\]\+\\\.\(dmg\|zip\)\$\s+-\s+\[G,L\]/);
