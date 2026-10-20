@@ -23,8 +23,11 @@ declare(strict_types=1);
 
 ini_set('display_errors', '0'); // предупреждение в теле сломало бы ленту
 
-const KEYS = ['id', 'name', 'v', 'build', 'os', 'chip', 'model', 'ram', 'first', 'tz', 'lang', 'rec', 'login'];
+const KEYS = ['id', 'name', 'v', 'build', 'os', 'chip', 'model', 'ram', 'first', 'tz', 'lang', 'rec', 'login',
+              'tried', 'fail'];
 const VALUE_MAX = 64;
+/** «Что пробовал»: все 11 возможностей через запятую — 66 знаков, общий предел их режет. */
+const LONG_KEYS = ['tried' => 128];
 
 function feedPath(): string { return dirname(__DIR__) . '/musli/appcast.xml'; }
 
@@ -89,7 +92,7 @@ function record(): void {
     }
 
     foreach (KEYS as $k) {
-        $v = clean($_GET[$k] ?? null);
+        $v = clean($_GET[$k] ?? null, LONG_KEYS[$k] ?? VALUE_MAX);
         if ($v !== '') $line[$k] = $v;
     }
 

@@ -111,6 +111,18 @@ test.describe("счётчик проверок обновлений — updates/
     expect(JSON.stringify(line)).not.toContain("203.0.113.7");
   });
 
+  test("что пробовал и был ли сбой — полный список возможностей не режется", async () => {
+    server = await startServer();
+    // Все 11 возможностей — 66 знаков, длиннее общего предела в 64.
+    const tried = "call,voices,names,notes,tags,people,search,ai,export,hotkeys,pause";
+    const q = new URLSearchParams({ id: "4f1c9e2a7b", tried, fail: "1" });
+    await fetch(`${server.url}?${q}`, { headers: { "User-Agent": UA } });
+
+    const [line] = lines(server.stats);
+    expect(line.tried).toBe(tried);
+    expect(line.fail).toBe("1");
+  });
+
   test("старая копия без номера — суточная метка, адреса нет", async () => {
     server = await startServer();
     const old = { "User-Agent": "Musli/0.1.9 Sparkle/2.8.0" };
