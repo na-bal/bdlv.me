@@ -19,7 +19,11 @@ declare(strict_types=1);
  *   - тот же месяц той же установки дважды не пишется (повтор после обрыва связи) — ответ тот же;
  *   - слова уходят в Telegram тем же ботом, что заявки с сайта, ПОСЛЕ записи: не ответил бот —
  *     строка на месте; сводки без слов в Telegram не идут;
- *   - сырые строки хранятся 14 месяцев: старые файлы убираются при записи, без расписания.
+ *   - сырые строки хранятся 14 месяцев: старые файлы и контакты убираются при записи, без расписания;
+ *   - адрес открыт всем (карточка 293): поток с одного адреса отсекается до разбора тела, отказ по
+ *     потолку не оставляет отметок, занятый замок — «повторите позже», а не очередь процессов.
+ *     Адрес отправителя и здесь не пишется: для потолка — метка, перемешанная с солью дня, как в
+ *     счётчике проверок, и живёт она час.
  *
  * Ключ бота — `secrets.php` выше публичной папки: своего у bdlv.me нет — берём соседний,
  * gaasgaas.ru на том же хостинге (один ключ — одно место для замены).
@@ -36,6 +40,8 @@ const VALUE_MAX    = 64;
 const MESSAGE_MAX  = 2000;
 const CONTACT_MAX  = 120;
 const KEEP_MONTHS  = 14;
+const TG_TEXT_MAX  = 4000;   // у Telegram предел 4096
+const LOCK_WAIT_MS = 2000;
 const KINDS = ['emotion' => 'эмоция', 'use' => 'польза', 'idea' => 'идея', 'bug' => 'сбой'];
 
 /** Числа можно подменить окружением — только для тестов. */
@@ -123,10 +129,19 @@ function sanitizeReport(array $in): array {
 
 /* --- Файлы под одним замком: просьб мало, простота важнее. --- */
 
+/** Замок занят дольше двух секунд — «повторите позже» (приложение повторит само): процессы PHP
+ *  не выстраиваются в очередь, которая задела бы и ленту обновлений на том же хостинге. */
 function withLock(string $dir, callable $body) {
     $fh = fopen($dir . '/reports.lock', 'c');
     if ($fh === false) respond(500, ['ok' => false]);
-    flock($fh, LOCK_EX);
+    $until = microtime(true) + LOCK_WAIT_MS / 1000;
+    while (!flock($fh, LOCK_EX | LOCK_NB)) {
+        if (microtime(true) >= $until) {
+            fclose($fh);
+            respond(503, ['ok' => false]);
+        }
+        usleep(50000);
+    }
     try {
         return $body();
     } finally {
@@ -159,18 +174,67 @@ function appendLine(string $path, array $row): bool {
 
 function reportsFile(string $dir, int $now): string { return $dir . '/reports-' . gmdate('Y-m', $now) . '.jsonl'; }
 
-/** Отметки за последний час: укладываемся ли в потолок. Отметку ставит только прошедший. */
-function rateTake(string $path, string $key, int $max, int $now): bool {
+/** Отметки за последний час: укладывается ли просьба во все потолки сразу (`[ключ => потолок]`).
+ *  Отметки ставит только прошедший все — отказ не оставляет следа, и мусор файл не растит. */
+function rateTake(string $path, array $limits, int $now): bool {
     $data = readJson($path);
     $edge = $now - 3600;
     foreach ($data as $k => $stamps) {
         $kept = array_values(array_filter((array) $stamps, function ($t) use ($edge) { return is_int($t) && $t > $edge; }));
         if ($kept) $data[$k] = $kept; else unset($data[$k]);
     }
-    $ok = count($data[$key] ?? []) < $max;
-    if ($ok) $data[$key][] = $now;
+    $ok = true;
+    foreach ($limits as $key => $max) {
+        if (count($data[$key] ?? []) >= $max) $ok = false;
+    }
+    if ($ok) {
+        foreach ($limits as $key => $max) $data[$key][] = $now;
+    }
     writeJson($path, $data);
     return $ok;
+}
+
+function clientIp(): string {
+    foreach (['HTTP_X_REAL_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR'] as $k) {
+        $raw = $_SERVER[$k] ?? '';
+        if (!is_string($raw) || $raw === '') continue;
+        $first = trim(explode(',', $raw)[0]);
+        if (filter_var($first, FILTER_VALIDATE_IP)) return $first;
+    }
+    return '';
+}
+
+/** Соль дня — тот же файл, что у счётчика проверок (`appcast.php`): создаёт первый за день,
+ *  прошлые стираются. Пусто — потолок по адресу на эту просьбу не действует. */
+function todaySalt(string $dir, int $now): string {
+    $path = $dir . '/salt-' . gmdate('Y-m-d', $now);
+    $h = @fopen($path, 'x');
+    if ($h !== false) {
+        fwrite($h, bin2hex(random_bytes(32)));
+        fclose($h);
+        @chmod($path, 0600);
+        foreach (glob($dir . '/salt-*') ?: [] as $old) {
+            if ($old !== $path) @unlink($old);
+        }
+    }
+    for ($i = 0; $i < 5; $i++) {
+        $salt = @file_get_contents($path);
+        if (is_string($salt) && $salt !== '') return $salt;
+        usleep(20000);
+    }
+    return '';
+}
+
+/** Потолок по адресу — до чтения и разбора тела: случайные номера в теле его не обходят. */
+function checkAddress(string $dir, int $now): void {
+    $ip = clientIp();
+    $salt = $ip !== '' ? todaySalt($dir, $now) : '';
+    if ($salt === '') return;
+    $mark = 'a:' . substr(hash_hmac('sha256', $ip, $salt), 0, 16);
+    $ok = withLock($dir, function () use ($dir, $now, $mark) {
+        return rateTake($dir . '/reports-addr.json', [$mark => limit('MUSLI_REPORT_PER_ADDR_HOUR', 30)], $now);
+    });
+    if (!$ok) respond(429, ['ok' => false]);
 }
 
 /** Указатель повторов — по первым двум знакам номера: при десятках тысяч установок один файл
@@ -181,7 +245,7 @@ function seenPath(string $dir, string $id): string {
     return $shard . '/' . substr($id, 0, 2) . '.json';
 }
 
-/** Файлы сводок старше 14 месяцев и записи в этой части указателя — прочь. */
+/** Файлы сводок старше 14 месяцев, записи в этой части указателя и контакты — прочь. */
 function prune(string $dir, array &$seen, int $now): void {
     $y = (int) gmdate('Y', $now);
     $m = (int) gmdate('n', $now) - KEEP_MONTHS;
@@ -192,6 +256,26 @@ function prune(string $dir, array &$seen, int $now): void {
     }
     foreach ($seen as $key => $entry) {
         if (substr((string) ($entry['got'] ?? ''), 0, 7) < $cutoff) unset($seen[$key]);
+    }
+    pruneContacts($dir . '/contacts.jsonl', $cutoff);
+}
+
+/** Контакты пишутся по порядку: первая строка свежая — переписывать нечего, файл не перечитываем. */
+function pruneContacts(string $path, string $cutoff): void {
+    $fh = @fopen($path, 'r');
+    if ($fh === false) return;
+    $first = json_decode((string) fgets($fh), true);
+    fclose($fh);
+    if (is_array($first) && substr((string) ($first['at'] ?? ''), 0, 7) >= $cutoff) return;
+    $kept = '';
+    foreach (@file($path) ?: [] as $line) {
+        $row = json_decode($line, true);
+        if (is_array($row) && substr((string) ($row['at'] ?? ''), 0, 7) >= $cutoff) $kept .= $line;
+    }
+    $tmp = $path . '.tmp';
+    if (@file_put_contents($tmp, $kept) !== false) {
+        @chmod($tmp, 0600);
+        @rename($tmp, $path);
     }
 }
 
@@ -212,7 +296,8 @@ function plural(int $n, string $one, string $few, string $many): string {
     return "$n $w";
 }
 
-function titleName(string $raw): string {
+function titleName($raw): string {
+    $raw = (string) $raw;
     $names = [
         'marathoner' => 'Марафонец', 'sprinter' => 'Спринтер', 'earlyBird' => 'Ранняя пташка',
         'nightOwl' => 'Ночная сова', 'metronome' => 'Метроном', 'hurricane' => 'Ураган', 'polyglot' => 'Полиглот',
@@ -277,7 +362,7 @@ function wordsText(array $w, array $entry, bool $addition): string {
     }
     if ($bug && isset($entry['fails'])) $lines[] = 'сбои месяца: ' . failsLine((array) $entry['fails']);
     $lines[] = 'pulse --who ' . $name;
-    return implode("\n", $lines);
+    return mb_substr(implode("\n", $lines), 0, TG_TEXT_MAX);
 }
 
 /** Номер сообщения в Telegram или null. */
@@ -318,8 +403,8 @@ function handleReports(array $in, string $dir, int $now) {
     $months = array_map(function ($r) { return $r['month']; }, $clean);
 
     return withLock($dir, function () use ($dir, $now, $id, $clean, $months) {
-        if (!rateTake($dir . '/reports-rate.json', $id, limit('MUSLI_REPORT_PER_ID_HOUR', 20), $now)
-            || !rateTake($dir . '/reports-rate.json', '*', limit('MUSLI_REPORT_TOTAL_HOUR', 3000), $now)) {
+        if (!rateTake($dir . '/reports-rate.json', [$id => limit('MUSLI_REPORT_PER_ID_HOUR', 20),
+                                                    '*' => limit('MUSLI_REPORT_TOTAL_HOUR', 3000)], $now)) {
             respond(429, ['ok' => false]);
         }
         $seen = readJson(seenPath($dir, $id));
@@ -331,7 +416,8 @@ function handleReports(array $in, string $dir, int $now) {
                 respond(500, ['ok' => false]);
             }
             $seen[$key] = ($seen[$key] ?? []) + [
-                'report' => true, 'got' => gmdate('Y-m', $now), 'v' => $r['v'] ?? '', 'card' => $r['card'] ?? '',
+                'report' => true, 'got' => gmdate('Y-m', $now), 'v' => $r['v'] ?? '',
+                'card' => is_string($r['card'] ?? null) ? $r['card'] : '',
                 'meetings' => $r['meetings'] ?? 0, 'days' => $r['days'] ?? 0, 'opened' => $r['opened'] ?? 0,
                 'fails' => $r['fails'] ?? (object) [], 'bundle' => $months,
             ];
@@ -345,9 +431,9 @@ function handleWords(array $in, string $dir, int $now) {
     $w = [
         'id' => $in['id'] ?? null, 'month' => $in['month'] ?? null,
         'name' => cleanValue($in['name'] ?? ''), 'key' => cleanValue($in['key'] ?? '', 40),
-        'kinds' => array_values(array_filter((array) ($in['kinds'] ?? []), function ($k) {
+        'kinds' => array_values(array_unique(array_filter((array) ($in['kinds'] ?? []), function ($k) {
             return is_string($k) && isset(KINDS[$k]);
-        })),
+        }))),
         'message' => cleanText($in['message'] ?? '', MESSAGE_MAX),
         'contact' => cleanText(str_replace("\n", ' ', (string) ($in['contact'] ?? '')), CONTACT_MAX),
     ];
@@ -358,8 +444,8 @@ function handleWords(array $in, string $dir, int $now) {
     $key = $w['id'] . '|' . $w['month'];
 
     $plan = withLock($dir, function () use ($dir, $now, $w, $key) {
-        if (!rateTake($dir . '/reports-rate.json', $w['id'], limit('MUSLI_REPORT_PER_ID_HOUR', 20), $now)
-            || !rateTake($dir . '/reports-rate.json', '*', limit('MUSLI_REPORT_TOTAL_HOUR', 3000), $now)) {
+        if (!rateTake($dir . '/reports-rate.json', [$w['id'] => limit('MUSLI_REPORT_PER_ID_HOUR', 20),
+                                                    '*' => limit('MUSLI_REPORT_TOTAL_HOUR', 3000)], $now)) {
             respond(429, ['ok' => false]);
         }
         $seen = readJson(seenPath($dir, $w['id']));
@@ -376,7 +462,9 @@ function handleWords(array $in, string $dir, int $now) {
         $entry['words'][] = $w['key'];
         $seen[$key] = $entry;
         if (!writeJson(seenPath($dir, $w['id']), $seen)) respond(500, ['ok' => false]);
-        $capped = !rateTake($dir . '/telegram-rate.json', '*', limit('MUSLI_REPORT_TG_PER_HOUR', 120), $now);
+        // Свой потолок у каждой установки: один человек не забьёт Telegram и общий потолок.
+        $capped = !rateTake($dir . '/telegram-rate.json', [$w['id'] => limit('MUSLI_REPORT_TG_PER_ID_HOUR', 3),
+                                                           '*' => limit('MUSLI_REPORT_TG_PER_HOUR', 120)], $now);
         if ($capped) appendLine(reportsFile($dir, $now), ['at' => $at, 'warn' => 'telegram-capped', 'id' => $w['id'], 'month' => $w['month']]);
         return $capped ? null : $entry;
     });
@@ -401,6 +489,11 @@ function handleWords(array $in, string $dir, int $now) {
 
 function handleRequest() {
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') respond(405, ['ok' => false]);
+    $dir = statsDir();
+    if (!is_dir($dir) && !@mkdir($dir, 0700, true)) respond(500, ['ok' => false]);
+    $now = time();
+    checkAddress($dir, $now);
+
     $length = (int) ($_SERVER['CONTENT_LENGTH'] ?? 0);
     if ($length > BODY_MAX) respond(413, ['ok' => false]);
     $raw = (string) file_get_contents('php://input', false, null, 0, BODY_MAX + 1);
@@ -408,9 +501,6 @@ function handleRequest() {
     $in = json_decode($raw, true);
     if (!is_array($in)) respond(400, ['ok' => false]);
 
-    $dir = statsDir();
-    if (!is_dir($dir) && !@mkdir($dir, 0700, true)) respond(500, ['ok' => false]);
-    $now = time();
     $type = $in['type'] ?? '';
     if ($type === 'report') handleReports($in, $dir, $now);
     if ($type === 'words') handleWords($in, $dir, $now);

@@ -30,7 +30,7 @@ const hasPhp = spawnSync("php", ["-v"]).status === 0;
 type Server = { url: string; stats: string; stop: () => void };
 
 /** Копия раскладки сайта во временной папке + свой файл счёта. */
-async function startServer(stats?: string): Promise<Server> {
+async function startServer(stats?: string, env: Record<string, string> = {}): Promise<Server> {
   const root = mkdtempSync(join(tmpdir(), "appcast-counter-"));
   mkdirSync(join(root, "updates"));
   mkdirSync(join(root, "musli"));
@@ -40,7 +40,7 @@ async function startServer(stats?: string): Promise<Server> {
 
   const port = 18000 + Math.floor(Math.random() * 2000);
   const proc: ChildProcess = spawn("php", ["-S", `127.0.0.1:${port}`, "-t", root], {
-    env: { ...process.env, MUSLI_STATS_DIR: statsDir },
+    env: { ...process.env, MUSLI_STATS_DIR: statsDir, ...env },
     stdio: "ignore",
   });
   const url = `http://127.0.0.1:${port}/updates/appcast.php`;
@@ -169,6 +169,31 @@ test.describe("счётчик проверок обновлений — updates/
     expect(line.id.length).toBeLessThanOrEqual(64);
     expect(line.model).toBe("Mac15,6");
     expect(line.ram).toBe("17179869184");
+  });
+
+  // 293: адрес ленты открыт — поток запросов не должен забивать место на хостинге.
+
+  test("потолок строк в сутки — дальше лента уходит без записи", async () => {
+    server = await startServer(undefined, { MUSLI_CHECKS_PER_DAY: "3" });
+    const feed = readFileSync(FEED, "utf8");
+    for (let i = 0; i < 5; i++) {
+      const res = await fetch(`${server.url}?id=a${i}`, { headers: { "User-Agent": UA, "X-Real-IP": `198.51.100.${i}` } });
+      expect(res.status).toBe(200);
+      expect(await res.text()).toBe(feed);
+    }
+    expect(lines(server.stats)).toHaveLength(3);
+  });
+
+  test("один адрес — свой потолок в сутки, другие адреса не задеты; адрес не пишется", async () => {
+    server = await startServer(undefined, { MUSLI_CHECKS_PER_ADDR_DAY: "2" });
+    for (let i = 0; i < 4; i++) {
+      await fetch(`${server.url}?id=b${i}`, { headers: { "User-Agent": UA, "X-Real-IP": "203.0.113.7" } });
+    }
+    await fetch(`${server.url}?id=c1`, { headers: { "User-Agent": UA, "X-Real-IP": "198.51.100.4" } });
+    expect(lines(server.stats).map((l) => l.id)).toEqual(["b0", "b1", "c1"]);
+    for (const f of readdirSync(server.stats)) {
+      expect(readFileSync(join(server.stats, f), "utf8"), f).not.toContain("203.0.113.7");
+    }
   });
 
   test("не смог записать — лента всё равно уходит", async () => {

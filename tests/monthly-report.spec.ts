@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { spawn, spawnSync, type ChildProcess } from "node:child_process";
 import { createServer, type Server as HttpServer } from "node:http";
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -277,6 +277,93 @@ test.describe("приёмник сводок месяца — updates/report.php
     const codes = [];
     for (let i = 0; i < 4; i++) codes.push((await post(box, words({ message: `раз ${i}` }))).status);
     expect(codes).toEqual([200, 200, 200, 429]);
+  });
+
+  // 293: адрес приёмника открыт — мусорный поток не должен задевать настоящих людей и ленту обновлений.
+
+  test("один адрес не заваливает приёмник случайными номерами — отказ до разбора", async () => {
+    box = await start({ MUSLI_REPORT_PER_ADDR_HOUR: "3" });
+    const from = (ip: string, i: number) =>
+      post(box, { type: "report", reports: [report(OCT, { id: i.toString(16).padStart(32, "0") })] }, { "X-Real-IP": ip });
+    const codes = [];
+    for (let i = 1; i <= 4; i++) codes.push((await from("203.0.113.7", i)).status);
+    expect(codes).toEqual([200, 200, 200, 429]);
+    expect((await post(box, "{ битый", { "X-Real-IP": "203.0.113.7" })).status, "до разбора тела").toBe(429);
+    expect((await from("198.51.100.4", 9)).status, "другой адрес не задет").toBe(200);
+    for (const f of readdirSync(box.stats)) {
+      if (statSync(join(box.stats, f)).isFile()) {
+        expect(readFileSync(join(box.stats, f), "utf8"), f).not.toContain("203.0.113.7");
+      }
+    }
+  });
+
+  test("отказ по общему потолку не оставляет отметок — файл частоты не растёт от мусора", async () => {
+    box = await start({ MUSLI_REPORT_TOTAL_HOUR: "2" });
+    for (let i = 1; i <= 6; i++) {
+      await post(box, { type: "report", reports: [report(OCT, { id: i.toString(16).padStart(32, "0") })] },
+                 { "X-Real-IP": `198.51.100.${i}` });
+    }
+    const rate = JSON.parse(readFileSync(join(box.stats, "reports-rate.json"), "utf8"));
+    expect(Object.keys(rate).filter((k) => /^[0-9a-f]{32}$/.test(k))).toHaveLength(2);
+    expect(rate["*"]).toHaveLength(2);
+  });
+
+  test("замок занят — приёмник не стоит в очереди, просит повторить позже", async () => {
+    box = await start();
+    await post(box, { type: "report", reports: [report()] });
+    const holder = spawn("python3", ["-c",
+      "import fcntl,sys,time; f=open(sys.argv[1],'a'); fcntl.flock(f,fcntl.LOCK_EX); print('held',flush=True); time.sleep(8)",
+      join(box.stats, "reports.lock")], { stdio: ["ignore", "pipe", "ignore"] });
+    await new Promise<void>((r) => holder.stdout!.once("data", () => r()));
+    const started = Date.now();
+    const res = await post(box, { type: "report", reports: [report("2026-08-17..2026-09-16")] });
+    holder.kill();
+    expect(res.status).toBe(503);
+    expect(Date.now() - started).toBeLessThan(5000);
+  });
+
+  test("одна установка не забивает Telegram: потолок сообщений с номера, дальше только на диск", async () => {
+    box = await start({ MUSLI_REPORT_TG_PER_ID_HOUR: "1" });
+    await post(box, { type: "report", reports: [report()] });
+    await post(box, words());
+    await post(box, words({ message: "ещё" }));
+    expect(box.tg.calls).toHaveLength(1);
+    expect(rows(box.stats).filter((r) => r.kind === "words")).toHaveLength(2);
+    expect(rows(box.stats).some((r) => r.warn === "telegram-capped")).toBe(true);
+  });
+
+  test("виды отзыва — без повторов; сообщение в Telegram не длиннее 4000 знаков", async () => {
+    box = await start();
+    await post(box, { type: "report", reports: [report()] });
+    await post(box, words({ kinds: ["idea", "idea", "use", "idea"], message: "ж".repeat(5000) }));
+    const said = rows(box.stats).find((r) => r.kind === "words")!;
+    expect(said.kinds).toEqual(["idea", "use"]);
+    expect(said.message).toHaveLength(2000);
+    expect(box.tg.calls[0].text).toContain("идея, польза: ж");
+    expect(box.tg.calls[0].text.length).toBeLessThanOrEqual(4000);
+  });
+
+  test("подделанное звание числом не ломает слова к месяцу", async () => {
+    box = await start();
+    await post(box, { type: "report", reports: [report(OCT, { card: 7 })] });
+    const res = await post(box, words());
+    expect(res.status).toBe(200);
+    expect(box.tg.calls).toHaveLength(1);
+  });
+
+  test("контакты старше 14 месяцев убираются вместе со сводками", async () => {
+    const stats = mkdtempSync(join(tmpdir(), "monthly-report-stats-"));
+    const back = (months: number) => {
+      const d = new Date();
+      d.setUTCMonth(d.getUTCMonth() - months);
+      return d.toISOString().slice(0, 19) + "Z";
+    };
+    writeFileSync(join(stats, "contacts.jsonl"),
+      JSON.stringify({ at: back(15), id: ID, month: OCT, contact: "old@mail.ru" }) + "\n" +
+      JSON.stringify({ at: back(2), id: ID, month: OCT, contact: "new@mail.ru" }) + "\n");
+    box = await start({}, stats);
+    await post(box, { type: "report", reports: [report()] });
+    expect(rows(stats, "contacts").map((r) => r.contact)).toEqual(["new@mail.ru"]);
   });
 
   test("сырые строки старше 14 месяцев сервер убирает сам", async () => {

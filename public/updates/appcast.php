@@ -18,7 +18,8 @@ declare(strict_types=1);
  * public_html) туда не дотягивается, и снаружи их не скачать.
  *
  * Главное правило: счёт не важнее обновлений. Любая ошибка записи глотается, лента
- * уходит всё равно. Сайту отдаёт PHP 7.4 — без возможностей восьмой версии.
+ * уходит всё равно. Адрес открыт всем (карточка 293), поэтому у записи два потолка на сутки:
+ * общий и на один адрес (по метке с солью дня). Сверх потолка лента уходит без строки. Сайту отдаёт PHP 7.4 — без возможностей восьмой версии.
  */
 
 ini_set('display_errors', '0'); // предупреждение в теле сломало бы ленту
@@ -28,6 +29,13 @@ const KEYS = ['id', 'name', 'v', 'build', 'os', 'chip', 'model', 'ram', 'first',
 const VALUE_MAX = 64;
 /** «Что пробовал»: все 11 возможностей через запятую — 66 знаков, общий предел их режет. */
 const LONG_KEYS = ['tried' => 128];
+
+/** Числа можно подменить окружением — только для тестов. Копия Mac проверяет раз в сутки:
+ *  200 с адреса — офис за одним адресом, 20 000 в сутки — с большим запасом на сегодня. */
+function limit(string $env, int $fallback): int {
+    $v = getenv($env);
+    return is_string($v) && ctype_digit($v) ? (int) $v : $fallback;
+}
 
 function feedPath(): string { return dirname(__DIR__) . '/musli/appcast.xml'; }
 
@@ -75,11 +83,45 @@ function todaySalt(string $dir, int $now): string {
     return '';
 }
 
+/** Укладывается ли строка в потолки дня. Счёт — в `checks-day.json` (день, всего, по меткам
+ *  адресов), со сменой дня начинается заново. Замок занят дольше 0,3 с — строку пропускаем:
+ *  лента не ждёт счёта. */
+function dayAllows(string $dir, int $now, string $mark): bool {
+    $fh = @fopen($dir . '/checks-day.json', 'c+');
+    if ($fh === false) return false;
+    $until = microtime(true) + 0.3;
+    while (!flock($fh, LOCK_EX | LOCK_NB)) {
+        if (microtime(true) >= $until) { fclose($fh); return false; }
+        usleep(20000);
+    }
+    try {
+        $data = json_decode((string) stream_get_contents($fh), true);
+        $day = gmdate('Y-m-d', $now);
+        if (!is_array($data) || ($data['day'] ?? '') !== $day) $data = ['day' => $day, 'total' => 0, 'addr' => []];
+        if ($data['total'] >= limit('MUSLI_CHECKS_PER_DAY', 20000)) return false;
+        if ($mark !== '' && ($data['addr'][$mark] ?? 0) >= limit('MUSLI_CHECKS_PER_ADDR_DAY', 200)) return false;
+        $data['total']++;
+        if ($mark !== '') $data['addr'][$mark] = ($data['addr'][$mark] ?? 0) + 1;
+        ftruncate($fh, 0);
+        rewind($fh);
+        fwrite($fh, (string) json_encode($data));
+        return true;
+    } finally {
+        flock($fh, LOCK_UN);
+        fclose($fh);
+    }
+}
+
 function record(): void {
     $dir = statsDir();
     if (!is_dir($dir) && !@mkdir($dir, 0700, true)) return;
 
     $now = time();
+    $ip = clientIp();
+    $salt = todaySalt($dir, $now);
+    $mark = ($ip !== '' && $salt !== '') ? substr(hash_hmac('sha256', $ip, $salt), 0, 16) : '';
+    if (!dayAllows($dir, $now, $mark)) return;
+
     $line = ['at' => gmdate('Y-m-d\TH:i:s\Z', $now)];
 
     $ua = substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 160);
@@ -96,11 +138,8 @@ function record(): void {
         if ($v !== '') $line[$k] = $v;
     }
 
-    if (!isset($line['id'])) {
-        $salt = todaySalt($dir, $now);
-        if ($salt !== '') {
-            $line['day'] = substr(hash_hmac('sha256', clientIp() . '|' . $ua, $salt), 0, 16);
-        }
+    if (!isset($line['id']) && $salt !== '') {
+        $line['day'] = substr(hash_hmac('sha256', $ip . '|' . $ua, $salt), 0, 16);
     }
 
     $json = json_encode($line, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
