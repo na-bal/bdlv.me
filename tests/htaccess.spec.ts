@@ -74,6 +74,14 @@ test.describe(".htaccess — Apache config", () => {
     ).toBe(true);
   });
 
+  test("Windows latest.json keeps its URL and reaches the shared counter", () => {
+    const text = readFileSync(DIST_HTACCESS, "utf8");
+    expect(text).toContain("RewriteRule ^products/musli/windows/latest\\.json$ updates/latest.php [L]");
+    for (const name of ["latest.php", "check-log.php"]) {
+      expect(existsSync(resolve(process.cwd(), "dist", "updates", name))).toBe(true);
+    }
+  });
+
   test("old /musli/Musli-*.dmg URLs are 410 Gone", () => {
     const text = readFileSync(DIST_HTACCESS, "utf8");
     expect(text).toMatch(/RewriteRule\s+\^musli\/Musli-\[\\d\.\]\+\\\.\(dmg\|zip\)\$\s+-\s+\[G,L\]/);

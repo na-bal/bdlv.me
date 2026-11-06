@@ -35,6 +35,7 @@ async function startServer(stats?: string, env: Record<string, string> = {}): Pr
   mkdirSync(join(root, "updates"));
   mkdirSync(join(root, "musli"));
   copyFileSync(SCRIPT, join(root, "updates", "appcast.php"));
+  copyFileSync(join(PUBLIC, "updates", "check-log.php"), join(root, "updates", "check-log.php"));
   copyFileSync(FEED, join(root, "musli", "appcast.xml"));
   const statsDir = stats ?? join(root, "stats");
 

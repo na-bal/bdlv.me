@@ -29,6 +29,9 @@ RewriteRule ^ https://bdlv.me%{REQUEST_URI} [R=301,L]
 # переписанный адрес идёт по правилам второй раз, и /musli/* ниже увёл бы его в 301.
 RewriteRule ^musli/appcast\.xml$ updates/appcast.php [L]
 
+# Windows keeps its shipped URL; PHP serves the unchanged JSON and counts checks.
+RewriteRule ^products/musli/windows/latest\.json$ updates/latest.php [L]
+
 # ============================================================================
 # 3. Старые DMG-URL /musli/Musli-*.dmg → 410 Gone.
 #    Установленные Sparkle-клиенты читают новые URL из appcast, к этим не ходят.
