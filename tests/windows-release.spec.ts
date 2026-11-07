@@ -5,15 +5,15 @@ test('Windows feed storage points at the signed x64 installer',async({request})=
  const response=await request.get(base+'release.json');
  expect(response.status()).toBe(200);
  const feed=await response.json();
- expect(feed.version).toBe('0.1.6');
- expect(feed.platforms['windows-x86_64'].url).toBe('https://bdlv.me'+base+'Musli_0.1.6_x64-setup.exe');
+ expect(feed.version).toBe('0.1.7');
+ expect(feed.platforms['windows-x86_64'].url).toBe('https://bdlv.me'+base+'Musli_0.1.7_x64-setup.exe');
  expect(Buffer.from(feed.platforms['windows-x86_64'].signature,'base64').toString()).toContain('untrusted comment:');
 });
 test('Windows installer is served in full and matches its published checksum',async({request})=>{
  const sums=await (await request.get(base+'SHA256SUMS')).text();
  const [hash,name]=sums.trim().split(/\s+/);
  expect(hash).toMatch(/^[0-9a-f]{64}$/);
- expect(name).toBe('Musli_0.1.6_x64-setup.exe');
+ expect(name).toBe('Musli_0.1.7_x64-setup.exe');
  const response=await request.get(base+name);
  expect(response.status()).toBe(200);
  const bytes=await response.body();

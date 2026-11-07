@@ -1,11 +1,11 @@
 {
-  "version": "0.1.6",
-  "notes": "Установщик теперь на русском и в стиле Мюслей: фирменные шапка и боковая панель, тёплые цвета и понятные шаги. Обновлена инструкция по установке. Справка приложения уточняет предупреждения Windows и антивируса.",
-  "pub_date": "2026-11-06T23:26:31Z",
+  "version": "0.1.7",
+  "notes": "При скачивании обновления окно сохраняет ширину: кнопка установки остаётся на экране.\n\nРусский установщик и инструкция в стиле Мюслей. Обновление сохраняет ваши встречи, записи и настройки.",
+  "pub_date": "2026-11-07T10:49:45Z",
   "platforms": {
     "windows-x86_64": {
-      "url": "https://bdlv.me/products/musli/windows/Musli_0.1.6_x64-setup.exe",
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNEFjenBFRUNqSmJyVC9kVFBnRWYrdFB0ckdYdFBjR1VXM2ZWNUR1VzJRZDBkUUJ6NVZlTUtPL2l2RDNJUFFyL051K0VEUXJ3TUhNQnFjc0NScGUxN0E0cGxBdlhxbXcwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0MDA3NTkxCWZpbGU6TXVzbGlfMC4xLjZfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjAuMS42Cm9XSWhwS0pWSEVJblMvUVQ2eWpab1JrWE1BL1ViWXRJcisrTmFYazZRR2FMVVRlR25NdXhhSzFnbkhMbFY1LytzMGhvZ3FvV1BBOWZqSSt3dEZDeEJ3PT0K"
+      "url": "https://bdlv.me/products/musli/windows/Musli_0.1.7_x64-setup.exe",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNEFjenBFRUNqSlloRW56czB0cU5xazhKVko4SWdYMm9xNXRIVXR3RTJFVm9ZUzV1RDRLSVlibTZ2YmoxT2pxSmt5TUhyenY3b3EwRUNTQWZQbERtdmpLRGNKWi91TmdNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0MDQ4NTg1CWZpbGU6TXVzbGlfMC4xLjdfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjAuMS43CmFOd3ZSNHJBdXJVS05VSWc0Y2Y1QnZoK1NsVnpsVUZoWFNWV09Rd0p6S05IaTkrbm93VG5rU29zNWxackFJWjVOcEp6ZEZCbVlpV0ZETkxyU0pqbEF3PT0K"
     }
   }
 }
