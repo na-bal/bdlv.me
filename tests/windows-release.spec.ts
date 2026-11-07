@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { createHash } from 'node:crypto';
 const base='/products/musli/windows/';
-test('Windows update feed points at the signed x64 installer',async({request})=>{
- const response=await request.get(base+'latest.json');
+test('Windows feed storage points at the signed x64 installer',async({request})=>{
+ const response=await request.get(base+'release.json');
  expect(response.status()).toBe(200);
  const feed=await response.json();
  expect(feed.version).toBe('0.1.6');

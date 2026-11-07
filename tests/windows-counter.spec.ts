@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
 const publicDir = resolve('public');
-const feed = readFileSync(join(publicDir, 'products/musli/windows/latest.json'), 'utf8');
+const feed = readFileSync(join(publicDir, 'products/musli/windows/release.json'), 'utf8');
 const macFeed = readFileSync(join(publicDir, 'musli/appcast.xml'), 'utf8');
 const hasPhp = spawnSync('php', ['-v']).status === 0;
 type Box = { win: string; mac: string; stats: string; stop: () => void };
@@ -18,7 +18,7 @@ async function start(options: { brokenStats?: boolean; missingFeed?: boolean; mi
     if (name === 'check-log.php' && options.missingLogger) continue;
     copyFileSync(join(publicDir, 'updates', name), join(root, 'updates', name));
   }
-  if (!options.missingFeed) writeFileSync(join(root, 'products/musli/windows/latest.json'), feed);
+  if (!options.missingFeed) writeFileSync(join(root, 'products/musli/windows/release.json'), feed);
   writeFileSync(join(root, 'musli/appcast.xml'), macFeed);
   const stats = join(root, 'stats');
   if (options.brokenStats) writeFileSync(stats, 'not a directory');

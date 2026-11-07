@@ -11,7 +11,7 @@ try {
     // Logging must never prevent an update.
 }
 
-$feed = dirname(__DIR__) . '/products/musli/windows/latest.json';
+$feed = dirname(__DIR__) . '/products/musli/windows/release.json';
 header('Content-Type: application/json');
 header('Cache-Control: no-store');
 if (!is_file($feed)) {

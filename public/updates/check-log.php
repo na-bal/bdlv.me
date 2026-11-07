@@ -127,4 +127,3 @@ function record(string $platform = ''): void {
             FILE_APPEND | LOCK_EX);
     }
 }
-

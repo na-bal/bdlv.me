@@ -8,6 +8,11 @@ these files alone is not deployment verification.
 `/products/musli/windows/latest.json` is internally rewritten to
 `updates/latest.php`. It returns the existing JSON bytes and updater signature
 unchanged, with `Cache-Control: no-store`. GET records a feed check; HEAD does not.
+
+The physical manifest is `products/musli/windows/release.json`. Do not create a
+physical `latest.json`: this hosting serves existing JSON files directly through
+nginx with a seven-day cache, before Apache can run the counter rewrite. The
+shipped client URL remains the virtual `/products/musli/windows/latest.json`.
 This does **not** count completed installer downloads or installations.
 
 The Mac XML and Windows JSON entry points use `updates/check-log.php`, extracted

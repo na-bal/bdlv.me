@@ -80,6 +80,10 @@ test.describe(".htaccess — Apache config", () => {
     for (const name of ["latest.php", "check-log.php"]) {
       expect(existsSync(resolve(process.cwd(), "dist", "updates", name))).toBe(true);
     }
+    // Existing .json files are served by the hosting's nginx before Apache.
+    // The client URL must be virtual so checks reach PHP and bypass static caching.
+    expect(existsSync(resolve(process.cwd(), "dist", "products/musli/windows/latest.json"))).toBe(false);
+    expect(existsSync(resolve(process.cwd(), "dist", "products/musli/windows/release.json"))).toBe(true);
   });
 
   test("old /musli/Musli-*.dmg URLs are 410 Gone", () => {
