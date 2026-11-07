@@ -1,8 +1,9 @@
 # Windows update checks
 
-Prepared locally on 7 November 2026; not deployed. The live Windows URL was HTTP404
-and its server counter was absent when audited. This change becomes effective
-only when the prepared release files and server handlers are published.
+Windows release 0.1.6 adds the JSON feed and counter described here. Before this
+publication the Windows URL returned HTTP404. Deployment and native acceptance
+are recorded in the Windows application repository's release report; committing
+these files alone is not deployment verification.
 
 `/products/musli/windows/latest.json` is internally rewritten to
 `updates/latest.php`. It returns the existing JSON bytes and updater signature
